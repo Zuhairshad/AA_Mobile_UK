@@ -12,8 +12,6 @@ export type Product = {
   category: Category
   price: number
   staffPick?: boolean
-  accent: string
-  variant: "bar" | "notch" | "punch-hole" | "flip" | "tablet"
 }
 
 export const categories: Category[] = [
@@ -32,8 +30,6 @@ export const products: Product[] = [
     category: "Apple",
     price: 1199,
     staffPick: true,
-    accent: "#c9a876",
-    variant: "punch-hole",
   },
   {
     id: "iphone-15",
@@ -41,8 +37,6 @@ export const products: Product[] = [
     brand: "Apple",
     category: "Apple",
     price: 799,
-    accent: "#e8b4c8",
-    variant: "punch-hole",
   },
   {
     id: "iphone-se",
@@ -50,8 +44,6 @@ export const products: Product[] = [
     brand: "Apple",
     category: "Apple",
     price: 429,
-    accent: "#d6d6d6",
-    variant: "bar",
   },
   {
     id: "ipad-mini",
@@ -59,8 +51,6 @@ export const products: Product[] = [
     brand: "Apple",
     category: "Apple",
     price: 499,
-    accent: "#b8b8b8",
-    variant: "tablet",
   },
   {
     id: "galaxy-s24-ultra",
@@ -69,8 +59,6 @@ export const products: Product[] = [
     category: "Samsung",
     price: 1249,
     staffPick: true,
-    accent: "#8fa3c9",
-    variant: "punch-hole",
   },
   {
     id: "galaxy-s24",
@@ -78,8 +66,6 @@ export const products: Product[] = [
     brand: "Samsung",
     category: "Samsung",
     price: 799,
-    accent: "#a3c9a8",
-    variant: "punch-hole",
   },
   {
     id: "galaxy-z-flip-5",
@@ -88,8 +74,6 @@ export const products: Product[] = [
     category: "Samsung",
     price: 999,
     staffPick: true,
-    accent: "#c98fa3",
-    variant: "flip",
   },
   {
     id: "galaxy-a55",
@@ -97,8 +81,6 @@ export const products: Product[] = [
     brand: "Samsung",
     category: "Samsung",
     price: 439,
-    accent: "#7d8f9c",
-    variant: "notch",
   },
   {
     id: "galaxy-tab-s9",
@@ -106,8 +88,6 @@ export const products: Product[] = [
     brand: "Samsung",
     category: "Samsung",
     price: 699,
-    accent: "#9c9c9c",
-    variant: "tablet",
   },
   {
     id: "pixel-8-pro",
@@ -116,8 +96,6 @@ export const products: Product[] = [
     category: "Google",
     price: 999,
     staffPick: true,
-    accent: "#c9c08f",
-    variant: "punch-hole",
   },
   {
     id: "pixel-8",
@@ -125,8 +103,6 @@ export const products: Product[] = [
     brand: "Google",
     category: "Google",
     price: 699,
-    accent: "#8fc9bb",
-    variant: "punch-hole",
   },
   {
     id: "pixel-8a",
@@ -134,8 +110,6 @@ export const products: Product[] = [
     brand: "Google",
     category: "Google",
     price: 499,
-    accent: "#9db8c9",
-    variant: "notch",
   },
   {
     id: "oneplus-12",
@@ -144,8 +118,6 @@ export const products: Product[] = [
     category: "Other Android",
     price: 849,
     staffPick: true,
-    accent: "#c98f8f",
-    variant: "punch-hole",
   },
   {
     id: "xiaomi-14",
@@ -153,8 +125,6 @@ export const products: Product[] = [
     brand: "Xiaomi",
     category: "Other Android",
     price: 799,
-    accent: "#d67d4a",
-    variant: "punch-hole",
   },
   {
     id: "nothing-phone-2",
@@ -162,8 +132,6 @@ export const products: Product[] = [
     brand: "Nothing",
     category: "Other Android",
     price: 579,
-    accent: "#d6d6d6",
-    variant: "bar",
   },
   {
     id: "motorola-edge-50",
@@ -171,8 +139,6 @@ export const products: Product[] = [
     brand: "Motorola",
     category: "Other Android",
     price: 449,
-    accent: "#a67dc9",
-    variant: "notch",
   },
   {
     id: "magsafe-charger",
@@ -180,8 +146,6 @@ export const products: Product[] = [
     brand: "Apple",
     category: "Accessories",
     price: 39,
-    accent: "#d6d6d6",
-    variant: "bar",
   },
   {
     id: "25w-fast-charger",
@@ -189,8 +153,6 @@ export const products: Product[] = [
     brand: "Samsung",
     category: "Accessories",
     price: 25,
-    accent: "#8fa3c9",
-    variant: "bar",
   },
   {
     id: "clear-case-15",
@@ -198,8 +160,6 @@ export const products: Product[] = [
     brand: "AA Mobile",
     category: "Accessories",
     price: 19,
-    accent: "#9c9c9c",
-    variant: "bar",
   },
   {
     id: "screen-protector",
@@ -208,8 +168,6 @@ export const products: Product[] = [
     category: "Accessories",
     price: 12,
     staffPick: true,
-    accent: "#c9c9c9",
-    variant: "bar",
   },
   {
     id: "wireless-earbuds-pro",
@@ -217,8 +175,6 @@ export const products: Product[] = [
     brand: "AA Mobile",
     category: "Accessories",
     price: 89,
-    accent: "#c9a876",
-    variant: "bar",
   },
   {
     id: "power-bank-20000",
@@ -226,7 +182,5 @@ export const products: Product[] = [
     brand: "Anker",
     category: "Accessories",
     price: 45,
-    accent: "#7d8f9c",
-    variant: "bar",
   },
 ]

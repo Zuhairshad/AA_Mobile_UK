@@ -1,4 +1,4 @@
-import PhoneIllustration from "./PhoneIllustration"
+import { productImages } from "../data/productImages"
 import type { Product } from "../data/products"
 
 export default function ProductCard({ product }: { product: Product }) {
@@ -17,7 +17,7 @@ export default function ProductCard({ product }: { product: Product }) {
       )}
 
       <div className="product-image">
-        <PhoneIllustration accent={product.accent} variant={product.variant} label={product.name} />
+        <img src={productImages[product.id]} alt={product.name} />
       </div>
 
       <div className="product-meta">
