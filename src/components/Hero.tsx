@@ -1,8 +1,13 @@
 import { useState, type FormEvent } from "react"
+import { Link } from "react-router-dom"
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
-export default function Hero() {
+type HeroProps = {
+  onBrowseClick: () => void
+}
+
+export default function Hero({ onBrowseClick }: HeroProps) {
   const [email, setEmail] = useState("")
   const [status, setStatus] = useState<"idle" | "success" | "error">("idle")
 
@@ -24,6 +29,19 @@ export default function Hero() {
         <br />
         mobile phone deals.
       </h1>
+      <p className="hero-subhead">
+        Compare the latest iPhones, Galaxy, and Pixel phones, trade in your old handset, and get
+        notified the moment prices drop.
+      </p>
+
+      <div className="hero-ctas">
+        <button type="button" className="pill-button" onClick={onBrowseClick}>
+          Browse phones
+        </button>
+        <Link className="pill-button pill-button-ghost" to="/signup">
+          Create a free account
+        </Link>
+      </div>
 
       <form className="subscribe-form" onSubmit={handleSubmit} noValidate>
         <input

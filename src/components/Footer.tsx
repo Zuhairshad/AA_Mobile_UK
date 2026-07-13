@@ -1,12 +1,14 @@
+import { Link } from "react-router-dom"
+
 export default function Footer() {
   return (
     <div className="footer-bar">
-      <a className="pill-button" href="#sell">
+      <Link className="pill-button" to="/sell">
         <span className="plus">+</span> Sell your phone
-      </a>
-      <a className="pill-button pill-button-solid" href="#top">
+      </Link>
+      <Link className="pill-button pill-button-solid" to="/#top">
         Subscribe
-      </a>
+      </Link>
     </div>
   )
 }

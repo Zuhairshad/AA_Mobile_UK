@@ -1,42 +1,26 @@
-import { useMemo, useState } from "react"
-import Header from "./components/Header"
-import Hero from "./components/Hero"
-import CategoryTabs from "./components/CategoryTabs"
-import ProductGrid from "./components/ProductGrid"
-import Footer from "./components/Footer"
-import { categories, products, type Category } from "./data/products"
+import { BrowserRouter, Routes, Route } from "react-router-dom"
+import { SearchProvider } from "./lib/SearchContext"
+import Layout from "./components/Layout"
+import Home from "./pages/Home"
+import About from "./pages/About"
+import SignUp from "./pages/SignUp"
+import Sell from "./pages/Sell"
 import "./App.css"
 
 function App() {
-  const [search, setSearch] = useState("")
-  const [activeCategory, setActiveCategory] = useState<Category | "Latest">("Latest")
-
-  const visibleProducts = useMemo(() => {
-    const query = search.trim().toLowerCase()
-
-    return products.filter((product) => {
-      const matchesCategory = activeCategory === "Latest" || product.category === activeCategory
-      const matchesSearch =
-        query === "" ||
-        product.name.toLowerCase().includes(query) ||
-        product.brand.toLowerCase().includes(query)
-
-      return matchesCategory && matchesSearch
-    })
-  }, [search, activeCategory])
-
   return (
-    <div className="page">
-      <Header search={search} onSearchChange={setSearch} />
-      <Hero />
-
-      <main>
-        <CategoryTabs categories={categories} active={activeCategory} onChange={setActiveCategory} />
-        <ProductGrid products={visibleProducts} />
-      </main>
-
-      <Footer />
-    </div>
+    <BrowserRouter>
+      <SearchProvider>
+        <Routes>
+          <Route element={<Layout />}>
+            <Route index element={<Home />} />
+            <Route path="about" element={<About />} />
+            <Route path="signup" element={<SignUp />} />
+            <Route path="sell" element={<Sell />} />
+          </Route>
+        </Routes>
+      </SearchProvider>
+    </BrowserRouter>
   )
 }
 

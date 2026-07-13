@@ -145,7 +145,27 @@
   font-weight: 500;
   letter-spacing: -1px;
   line-height: 1.15;
-  margin-bottom: 32px;
+  margin-bottom: 16px;
+}
+
+.hero-subhead {
+  max-width: 480px;
+  color: var(--text-dim);
+  font-size: 15px;
+  line-height: 1.5;
+  margin-bottom: 28px;
+}
+
+.hero-ctas {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+
+.pill-button-ghost {
+  background: none;
+  color: var(--text) !important;
+  border: 1px solid var(--card-border);
 }
 
 .subscribe-form {
@@ -193,6 +213,164 @@
 
 .subscribe-note.is-error {
   color: var(--accent);
+}
+
+/* ---------- Features ---------- */
+
+.features {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--card-border);
+  border: 1px solid var(--card-border);
+  margin-bottom: 56px;
+}
+
+.feature-card {
+  background: var(--card-bg);
+  padding: 24px;
+}
+
+.feature-card h2 {
+  font-size: 15px;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.feature-card p {
+  font-size: 13px;
+  color: var(--text-dim);
+  line-height: 1.5;
+}
+
+/* ---------- Auth / quote pages ---------- */
+
+.auth-page {
+  display: flex;
+  justify-content: center;
+  padding: 56px 0 120px;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 420px;
+  text-align: center;
+}
+
+.auth-card h1 {
+  font-size: 28px;
+  font-weight: 500;
+  letter-spacing: -0.5px;
+  margin: 16px 0;
+}
+
+.auth-subhead {
+  color: var(--text-dim);
+  font-size: 14px;
+  line-height: 1.5;
+  margin-bottom: 28px;
+}
+
+.auth-card > p:not(.auth-subhead) {
+  color: var(--text-dim);
+  font-size: 14px;
+  line-height: 1.5;
+  margin-bottom: 24px;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  text-align: left;
+}
+
+.auth-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--text-dim);
+}
+
+.auth-form input,
+.auth-form select {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 10px;
+  padding: 12px 14px;
+  color: var(--text);
+  font-size: 14px;
+}
+
+.auth-form input::placeholder {
+  color: var(--text-faint);
+}
+
+.auth-error {
+  font-size: 13px;
+  color: var(--accent);
+}
+
+.auth-submit {
+  width: 100%;
+  justify-content: center;
+  padding: 12px 18px;
+  margin-top: 4px;
+}
+
+.auth-toggle {
+  display: block;
+  width: 100%;
+  text-align: center;
+  background: none;
+  border: none;
+  color: var(--text-dim);
+  font-size: 13px;
+  margin-top: 20px;
+}
+
+.auth-toggle:hover {
+  color: var(--text);
+}
+
+/* ---------- About page ---------- */
+
+.about-page {
+  padding: 56px 0 120px;
+  max-width: 720px;
+}
+
+.about-page h1 {
+  font-size: 32px;
+  font-weight: 500;
+  letter-spacing: -0.5px;
+  margin: 16px 0;
+}
+
+.about-lede {
+  color: var(--text-dim);
+  font-size: 15px;
+  line-height: 1.6;
+  margin-bottom: 40px;
+}
+
+.about-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 32px;
+}
+
+.about-grid h2 {
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.about-grid p {
+  font-size: 14px;
+  color: var(--text-dim);
+  line-height: 1.6;
 }
 
 /* ---------- Category tabs ---------- */
@@ -341,9 +519,27 @@
 
 /* ---------- Breakpoints ---------- */
 
+@media (min-width: 1440px) {
+  .page {
+    max-width: 1728px;
+  }
+
+  .product-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
 @media (max-width: 1024px) {
   .product-grid {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  .features {
+    grid-template-columns: 1fr;
+  }
+
+  .about-grid {
+    grid-template-columns: 1fr;
   }
 }
 
@@ -387,6 +583,16 @@
 
   .hero {
     padding: 24px 0 40px;
+  }
+
+  .hero-ctas {
+    flex-direction: column;
+    width: 100%;
+    max-width: 380px;
+  }
+
+  .hero-ctas .pill-button {
+    justify-content: center;
   }
 
   .product-grid {

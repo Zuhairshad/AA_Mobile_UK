@@ -1,20 +1,27 @@
-import { useState } from "react"
+import { useState, type FormEvent } from "react"
+import { Link, useNavigate, useLocation } from "react-router-dom"
+import { useSearch } from "../lib/SearchContext"
 
-type HeaderProps = {
-  search: string
-  onSearchChange: (value: string) => void
-}
-
-export default function Header({ search, onSearchChange }: HeaderProps) {
+export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
+  const { search, setSearch } = useSearch()
+  const navigate = useNavigate()
+  const location = useLocation()
+
+  function handleSearchSubmit(e: FormEvent) {
+    e.preventDefault()
+    if (location.pathname !== "/") {
+      navigate("/")
+    }
+  }
 
   return (
     <header className="site-header">
-      <a className="logo" href="#top">
+      <Link className="logo" to="/">
         AA Mobile
-      </a>
+      </Link>
 
-      <div className="search-box">
+      <form className="search-box" onSubmit={handleSearchSubmit} role="search">
         <svg className="search-icon" viewBox="0 0 20 20" aria-hidden="true">
           <circle cx="9" cy="9" r="6.5" stroke="currentColor" strokeWidth="1.5" fill="none" />
           <line x1="13.8" y1="13.8" x2="18" y2="18" stroke="currentColor" strokeWidth="1.5" />
@@ -23,17 +30,17 @@ export default function Header({ search, onSearchChange }: HeaderProps) {
           type="text"
           placeholder="Search phones"
           value={search}
-          onChange={(e) => onSearchChange(e.target.value)}
+          onChange={(e) => setSearch(e.target.value)}
           aria-label="Search phones"
         />
         <kbd>S</kbd>
-      </div>
+      </form>
 
       <nav className="header-nav">
-        <a href="#about">About</a>
-        <a className="pill-button" href="#trade-in">
+        <Link to="/about">About</Link>
+        <Link className="pill-button" to="/sell">
           <span className="plus">+</span> Get a quote
-        </a>
+        </Link>
       </nav>
 
       <button
@@ -47,12 +54,15 @@ export default function Header({ search, onSearchChange }: HeaderProps) {
 
       {menuOpen && (
         <div className="mobile-menu">
-          <a href="#about" onClick={() => setMenuOpen(false)}>
+          <Link to="/about" onClick={() => setMenuOpen(false)}>
             About
-          </a>
-          <a className="pill-button" href="#trade-in" onClick={() => setMenuOpen(false)}>
+          </Link>
+          <Link to="/signup" onClick={() => setMenuOpen(false)}>
+            Sign up
+          </Link>
+          <Link className="pill-button" to="/sell" onClick={() => setMenuOpen(false)}>
             <span className="plus">+</span> Get a quote
-          </a>
+          </Link>
         </div>
       )}
     </header>
