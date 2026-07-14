@@ -1,7 +1,8 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import { SearchProvider } from "./lib/SearchContext"
 import Layout from "./components/Layout"
-import Home from "./pages/Home"
+import Landing from "./pages/Landing"
+import Shop from "./pages/Shop"
 import About from "./pages/About"
 import SignUp from "./pages/SignUp"
 import Sell from "./pages/Sell"
@@ -13,7 +14,8 @@ function App() {
       <SearchProvider>
         <Routes>
           <Route element={<Layout />}>
-            <Route index element={<Home />} />
+            <Route index element={<Landing />} />
+            <Route path="shop" element={<Shop />} />
             <Route path="about" element={<About />} />
             <Route path="signup" element={<SignUp />} />
             <Route path="sell" element={<Sell />} />

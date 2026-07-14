@@ -120,15 +120,7 @@
   display: none;
 }
 
-/* ---------- Hero ---------- */
-
-.hero {
-  text-align: center;
-  padding: 40px 0 56px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
+/* ---------- Shared badge / ghost button ---------- */
 
 .badge {
   display: inline-block;
@@ -140,79 +132,10 @@
   margin-bottom: 24px;
 }
 
-.hero h1 {
-  font-size: 40px;
-  font-weight: 500;
-  letter-spacing: -1px;
-  line-height: 1.15;
-  margin-bottom: 16px;
-}
-
-.hero-subhead {
-  max-width: 480px;
-  color: var(--text-dim);
-  font-size: 15px;
-  line-height: 1.5;
-  margin-bottom: 28px;
-}
-
-.hero-ctas {
-  display: flex;
-  gap: 12px;
-  margin-bottom: 28px;
-}
-
 .pill-button-ghost {
   background: none;
   color: var(--text) !important;
   border: 1px solid var(--card-border);
-}
-
-.subscribe-form {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  background: var(--card-bg);
-  border: 1px solid var(--card-border);
-  border-radius: 999px;
-  padding: 6px 6px 6px 20px;
-  width: 100%;
-  max-width: 380px;
-}
-
-.subscribe-form input {
-  flex: 1;
-  background: none;
-  border: none;
-  outline: none;
-  color: var(--text);
-  font-size: 14px;
-  min-width: 0;
-}
-
-.subscribe-form input::placeholder {
-  color: var(--text-faint);
-}
-
-.subscribe-form button {
-  background: var(--text);
-  color: #000;
-  border: none;
-  border-radius: 999px;
-  padding: 10px 18px;
-  font-size: 14px;
-  font-weight: 500;
-  white-space: nowrap;
-}
-
-.subscribe-note {
-  margin-top: 12px;
-  font-size: 13px;
-  color: var(--text-faint);
-}
-
-.subscribe-note.is-error {
-  color: var(--accent);
 }
 
 /* ---------- Features ---------- */
@@ -517,6 +440,590 @@
   background: #fff;
 }
 
+/* ---------- Shop page ---------- */
+
+.shop-page {
+  padding-top: 16px;
+}
+
+.shop-heading {
+  font-size: 28px;
+  font-weight: 500;
+  letter-spacing: -0.5px;
+  margin-bottom: 24px;
+}
+
+/* ---------- Reveal on scroll ---------- */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity 0.6s ease,
+    transform 0.6s ease;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ---------- Landing hero ---------- */
+
+.landing-hero {
+  position: relative;
+  padding: 48px 0 64px;
+  text-align: center;
+  overflow: hidden;
+}
+
+.landing-wordmark {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  text-align: center;
+  font-size: clamp(64px, 14vw, 180px);
+  font-weight: 700;
+  letter-spacing: -4px;
+  color: var(--card-bg);
+  line-height: 1;
+  white-space: nowrap;
+  z-index: 0;
+  user-select: none;
+}
+
+.landing-hero-inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.landing-hero-image {
+  width: min(100%, 340px);
+  height: auto;
+  border-radius: 16px;
+  margin-top: 24px;
+  box-shadow: 0 40px 80px -30px rgba(0, 0, 0, 0.8);
+}
+
+.landing-hero-meta {
+  position: relative;
+  z-index: 1;
+  max-width: 480px;
+  margin: 32px auto 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.landing-hero-copy {
+  color: var(--text-dim);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.landing-hero-tagline {
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.accent-text {
+  color: var(--accent);
+}
+
+.landing-hero-availability {
+  font-size: 13px;
+  color: var(--text-faint);
+}
+
+/* ---------- Scroll story ---------- */
+
+.scroll-story {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+  padding: 64px 0;
+  text-align: center;
+}
+
+.story-sticky {
+  position: sticky;
+  top: 24px;
+}
+
+.story-image {
+  width: min(100%, 280px);
+  height: auto;
+  border-radius: 16px;
+}
+
+.story-text {
+  max-width: 640px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.story-eyebrow {
+  color: var(--accent);
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.story-line {
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--text);
+}
+
+/* ---------- Shared section headings ---------- */
+
+.section-eyebrow {
+  text-align: center;
+  color: var(--accent);
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.section-heading {
+  text-align: center;
+  font-size: 32px;
+  font-weight: 500;
+  letter-spacing: -0.5px;
+  margin-bottom: 12px;
+}
+
+.section-subhead {
+  text-align: center;
+  color: var(--text-dim);
+  font-size: 15px;
+  max-width: 480px;
+  margin: 0 auto 32px;
+}
+
+.section-subhead-center {
+  text-align: center;
+  color: var(--text-dim);
+  font-size: 15px;
+  max-width: 480px;
+  margin: 0 auto 40px;
+}
+
+.style-section,
+.spec-section,
+.testimonials-section,
+.pricing-section,
+.faq-section {
+  padding: 72px 0;
+  border-top: 1px solid var(--card-border);
+}
+
+/* ---------- Style picker ---------- */
+
+.style-picker {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.style-image-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.style-glow {
+  position: absolute;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  filter: blur(60px);
+  opacity: 0.5;
+  transition: background 0.3s ease;
+}
+
+.style-image {
+  position: relative;
+  width: min(100%, 260px);
+  height: auto;
+  border-radius: 16px;
+}
+
+.style-color-name {
+  margin-top: 24px;
+  font-size: 15px;
+  color: var(--text-dim);
+}
+
+.swatch-row {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.swatch {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  padding: 0;
+  cursor: pointer;
+}
+
+.swatch.is-active {
+  border-color: var(--text);
+}
+
+/* ---------- Spec table ---------- */
+
+.spec-table {
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.spec-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--card-border);
+  font-size: 14px;
+}
+
+.spec-row-head {
+  color: var(--text-faint);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.spec-feature {
+  color: var(--text-dim);
+}
+
+.spec-value {
+  color: var(--text);
+  text-align: right;
+}
+
+/* ---------- Testimonials ---------- */
+
+.testimonial-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.testimonial-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  padding: 24px;
+}
+
+.testimonial-quote-mark {
+  display: block;
+  font-size: 24px;
+  color: var(--accent);
+  margin-bottom: 12px;
+  line-height: 1;
+}
+
+.testimonial-card p {
+  font-size: 15px;
+  line-height: 1.5;
+  margin-bottom: 24px;
+}
+
+.testimonial-author {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.testimonial-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--card-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.testimonial-name {
+  font-size: 13px;
+  color: var(--text);
+}
+
+.testimonial-handle {
+  font-size: 12px;
+  color: var(--text-faint);
+}
+
+.carousel-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 32px;
+}
+
+.carousel-controls button {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--card-border);
+  background: var(--card-bg);
+  color: var(--text);
+}
+
+.carousel-dots {
+  display: flex;
+  gap: 6px;
+}
+
+.carousel-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--card-border);
+}
+
+.carousel-dot.is-active {
+  background: var(--text);
+}
+
+/* ---------- Pricing ---------- */
+
+.price-card {
+  max-width: 360px;
+  margin: 0 auto;
+  text-align: center;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+  padding: 40px 24px;
+}
+
+.price-amount {
+  font-size: 40px;
+  font-weight: 600;
+  letter-spacing: -1px;
+}
+
+.price-note {
+  color: var(--text-dim);
+  font-size: 13px;
+  margin-bottom: 24px;
+}
+
+.price-ctas {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.price-ctas .pill-button {
+  justify-content: center;
+}
+
+/* ---------- FAQ ---------- */
+
+.faq-list {
+  max-width: 640px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.faq-item {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.faq-question {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 20px;
+  background: none;
+  border: none;
+  color: var(--text);
+  font-size: 14px;
+  text-align: left;
+}
+
+.faq-icon {
+  color: var(--text-dim);
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.faq-answer {
+  padding: 0 20px 20px;
+  color: var(--text-dim);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* ---------- CTA band ---------- */
+
+.cta-band {
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  width: 100vw;
+  text-align: center;
+  padding: 80px 24px;
+  background: linear-gradient(120deg, #1d2b64, #2f6f6a, #3d8f5f);
+  color: #f4fdf8;
+}
+
+.cta-band h2 {
+  font-size: 28px;
+  font-weight: 500;
+  margin-bottom: 24px;
+}
+
+.cta-band-form {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+.cta-band-form input {
+  flex: 1;
+  border-radius: 999px;
+  border: none;
+  padding: 12px 18px;
+  font-size: 14px;
+}
+
+.cta-band-form button {
+  background: #0c0c0d;
+  color: #fff;
+  border: none;
+  border-radius: 999px;
+  padding: 12px 20px;
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.cta-band-note {
+  margin-top: 16px;
+  font-size: 13px;
+  opacity: 0.85;
+}
+
+.cta-band-note.is-error {
+  color: #ffd7d7;
+}
+
+/* ---------- Site footer ---------- */
+
+.site-footer {
+  position: relative;
+  border-top: 1px solid var(--card-border);
+  padding: 56px 0 0;
+  overflow: hidden;
+}
+
+.footer-top {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 32px;
+  margin-bottom: 56px;
+}
+
+.footer-logo {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.footer-tagline {
+  color: var(--text-dim);
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+.footer-socials {
+  display: flex;
+  gap: 10px;
+}
+
+.footer-socials a {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--card-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  color: var(--text-dim);
+}
+
+.footer-column-title {
+  color: var(--text-faint);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 16px;
+}
+
+.footer-column {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  font-size: 14px;
+  color: var(--text-dim);
+}
+
+.footer-wordmark {
+  text-align: center;
+  font-size: clamp(48px, 12vw, 140px);
+  font-weight: 700;
+  letter-spacing: -3px;
+  color: var(--card-bg);
+  line-height: 1;
+  user-select: none;
+}
+
+.footer-bottom {
+  text-align: center;
+  padding: 24px 0;
+  border-top: 1px solid var(--card-border);
+  color: var(--text-faint);
+  font-size: 13px;
+}
+
 /* ---------- Breakpoints ---------- */
 
 @media (min-width: 1440px) {
@@ -540,6 +1047,15 @@
 
   .about-grid {
     grid-template-columns: 1fr;
+  }
+
+  .testimonial-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .footer-top {
+    grid-template-columns: 1fr;
+    gap: 40px;
   }
 }
 
@@ -577,22 +1093,24 @@
     width: 100%;
   }
 
-  .hero h1 {
-    font-size: 28px;
+  .landing-hero-image {
+    width: 240px;
   }
 
-  .hero {
-    padding: 24px 0 40px;
+  .story-line {
+    font-size: 19px;
   }
 
-  .hero-ctas {
+  .section-heading {
+    font-size: 26px;
+  }
+
+  .price-card {
+    padding: 32px 20px;
+  }
+
+  .cta-band-form {
     flex-direction: column;
-    width: 100%;
-    max-width: 380px;
-  }
-
-  .hero-ctas .pill-button {
-    justify-content: center;
   }
 
   .product-grid {

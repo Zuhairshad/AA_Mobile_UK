@@ -10,8 +10,8 @@ export default function Header() {
 
   function handleSearchSubmit(e: FormEvent) {
     e.preventDefault()
-    if (location.pathname !== "/") {
-      navigate("/")
+    if (location.pathname !== "/shop") {
+      navigate("/shop")
     }
   }
 
@@ -37,6 +37,7 @@ export default function Header() {
       </form>
 
       <nav className="header-nav">
+        <Link to="/shop">Shop</Link>
         <Link to="/about">About</Link>
         <Link className="pill-button" to="/sell">
           <span className="plus">+</span> Get a quote
@@ -54,6 +55,9 @@ export default function Header() {
 
       {menuOpen && (
         <div className="mobile-menu">
+          <Link to="/shop" onClick={() => setMenuOpen(false)}>
+            Shop
+          </Link>
           <Link to="/about" onClick={() => setMenuOpen(false)}>
             About
           </Link>
