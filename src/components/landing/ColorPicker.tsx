@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { flagshipColors } from "../../data/flagship"
-import phoneImage from "../../assets/products/iphone-15-pro-max.jpg"
+import phoneImage from "../../assets/products/iphone-15-pro-max-cutout.webp"
 
 export default function ColorPicker() {
   const [active, setActive] = useState(0)
@@ -14,7 +14,7 @@ export default function ColorPicker() {
           src={phoneImage}
           alt="AA Mobile flagship phone"
           className="style-image"
-          style={{ boxShadow: `0 50px 90px -30px ${color.hex}80` }}
+          style={{ filter: `drop-shadow(0 40px 60px ${color.hex}66)` }}
         />
       </div>
 

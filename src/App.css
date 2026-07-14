@@ -509,9 +509,8 @@
 .landing-hero-image {
   width: min(80%, 460px);
   height: auto;
-  border-radius: 20px;
   margin-top: 32px;
-  box-shadow: 0 60px 120px -30px rgba(0, 0, 0, 0.85);
+  filter: drop-shadow(0 50px 70px rgba(0, 0, 0, 0.7));
 }
 
 .landing-hero-meta {
@@ -569,8 +568,7 @@
 .story-image {
   width: min(100%, 380px);
   height: auto;
-  border-radius: 20px;
-  box-shadow: 0 50px 100px -30px rgba(0, 0, 0, 0.8);
+  filter: drop-shadow(0 40px 60px rgba(0, 0, 0, 0.7));
 }
 
 .story-text-col {
@@ -683,8 +681,7 @@
   position: relative;
   width: min(100%, 320px);
   height: auto;
-  border-radius: 20px;
-  transition: box-shadow 0.4s ease;
+  transition: filter 0.4s ease;
 }
 
 .style-color-name {

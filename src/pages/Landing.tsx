@@ -1,14 +1,15 @@
 import { useState, type FormEvent } from "react"
 import { Link } from "react-router-dom"
-import Reveal from "../components/Reveal"
+import GsapReveal from "../components/GsapReveal"
 import Features from "../components/Features"
 import ColorPicker from "../components/landing/ColorPicker"
+import ScrollStory from "../components/landing/ScrollStory"
 import SpecTable from "../components/landing/SpecTable"
 import Testimonials from "../components/landing/Testimonials"
 import FaqAccordion from "../components/landing/FaqAccordion"
 import SiteFooter from "../components/landing/SiteFooter"
 import { flagship } from "../data/flagship"
-import { productImages } from "../data/productImages"
+import flagshipCutout from "../assets/products/iphone-15-pro-max-cutout.webp"
 import { useSmoothScroll } from "../lib/useSmoothScroll"
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
@@ -38,11 +39,7 @@ export default function Landing() {
 
         <div className="landing-hero-inner">
           <span className="badge">In stock today</span>
-          <img
-            src={productImages[flagship.id]}
-            alt={flagship.name}
-            className="landing-hero-image"
-          />
+          <img src={flagshipCutout} alt={flagship.name} className="landing-hero-image" />
         </div>
 
         <div className="landing-hero-meta">
@@ -66,80 +63,62 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* Scroll story */}
-      <section className="scroll-story" id="story">
-        <div className="story-grid">
-          <div className="story-sticky-col">
-            <img src={productImages[flagship.id]} alt="" className="story-image" />
-          </div>
+      <ScrollStory />
 
-          <div className="story-text-col">
-            <Reveal className="story-eyebrow">Meet AA Mobile</Reveal>
-            <Reveal className="story-line" delay={60}>
-              A UK phone shop that blends fair prices, fast delivery, and honest trade-ins.
-            </Reveal>
-            <Reveal className="story-line" delay={60}>
-              Instant quotes, certified refurbished stock, and a fit for every budget.
-            </Reveal>
-            <Reveal className="story-line" delay={60}>
-              Just the phone you want, no distractions.
-            </Reveal>
-          </div>
-        </div>
-      </section>
-
-      <Reveal>
+      <GsapReveal>
         <Features />
-      </Reveal>
+      </GsapReveal>
 
       {/* Style picker */}
       <section className="style-section">
-        <Reveal className="section-eyebrow">Design &amp; finish</Reveal>
-        <Reveal>
+        <GsapReveal className="section-eyebrow">Design &amp; finish</GsapReveal>
+        <GsapReveal>
           <h2 className="section-heading">Choose your finish.</h2>
-        </Reveal>
-        <Reveal>
+        </GsapReveal>
+        <GsapReveal>
           <ColorPicker />
-        </Reveal>
+        </GsapReveal>
       </section>
 
       {/* Spec table */}
       <section className="spec-section">
         <div className="spec-section-inner">
-          <Reveal className="section-eyebrow section-eyebrow-left">Technical specifications</Reveal>
-          <Reveal>
+          <GsapReveal className="section-eyebrow section-eyebrow-left">
+            Technical specifications
+          </GsapReveal>
+          <GsapReveal>
             <h2 className="section-heading section-heading-left">Engineered to perform.</h2>
-          </Reveal>
-          <Reveal className="section-subhead section-subhead-left">
+          </GsapReveal>
+          <GsapReveal className="section-subhead section-subhead-left">
             All the details on our current top pick, the {flagship.name}.
-          </Reveal>
-          <Reveal>
+          </GsapReveal>
+          <GsapReveal>
             <SpecTable />
-          </Reveal>
+          </GsapReveal>
         </div>
       </section>
 
       {/* Testimonials */}
       <section className="testimonials-section">
-        <Reveal className="section-subhead-center">
+        <GsapReveal className="section-subhead-center">
           Trusted by thousands of happy upgraders across the UK.
-        </Reveal>
-        <Reveal>
+        </GsapReveal>
+        <GsapReveal>
           <Testimonials />
-        </Reveal>
+        </GsapReveal>
       </section>
 
       {/* Pricing / pre-order */}
       <section className="pricing-section">
-        <Reveal className="section-eyebrow">Pricing</Reveal>
-        <Reveal>
+        <GsapReveal className="section-eyebrow">Pricing</GsapReveal>
+        <GsapReveal>
           <h2 className="section-heading">Get the {flagship.name}.</h2>
-        </Reveal>
-        <Reveal className="section-subhead">
+        </GsapReveal>
+        <GsapReveal className="section-subhead">
           Reserve yours today — trade in your old phone for even more off.
-        </Reveal>
+        </GsapReveal>
 
-        <Reveal>
+        <GsapReveal>
           <div className="price-card">
             <p className="price-amount">£{flagship.price.toLocaleString("en-GB")}</p>
             <p className="price-note">or less with a trade-in</p>
@@ -152,25 +131,23 @@ export default function Landing() {
               </Link>
             </div>
           </div>
-        </Reveal>
+        </GsapReveal>
       </section>
 
       {/* FAQ */}
       <section className="faq-section">
-        <Reveal className="section-eyebrow" delay={0}>
-          FAQ
-        </Reveal>
-        <Reveal>
+        <GsapReveal className="section-eyebrow">FAQ</GsapReveal>
+        <GsapReveal>
           <h2 className="section-heading">Got questions? We&rsquo;ve got answers.</h2>
-        </Reveal>
-        <Reveal>
+        </GsapReveal>
+        <GsapReveal>
           <FaqAccordion />
-        </Reveal>
+        </GsapReveal>
       </section>
 
       {/* Email capture band */}
       <section className="cta-band">
-        <Reveal>
+        <GsapReveal>
           <h2>Stay ahead of every price drop.</h2>
           <form className="cta-band-form" onSubmit={handleSubscribe} noValidate>
             <input
@@ -192,7 +169,7 @@ export default function Landing() {
                 ? "Enter a valid email address."
                 : "Free. No spam. Unsubscribe anytime."}
           </p>
-        </Reveal>
+        </GsapReveal>
       </section>
 
       <SiteFooter />
