@@ -50,7 +50,11 @@ export default function Landing() {
             Free next-day delivery, honest trade-in quotes, and every phone properly checked
             before it reaches you.
           </p>
-          <button type="button" className="pill-button-ghost pill-button" onClick={() => scrollToId("story")}>
+          <button
+            type="button"
+            className="pill-button-ghost pill-button"
+            onClick={() => scrollToId("story")}
+          >
             See how trade-in works
           </button>
           <p className="landing-hero-tagline">
@@ -64,21 +68,23 @@ export default function Landing() {
 
       {/* Scroll story */}
       <section className="scroll-story" id="story">
-        <div className="story-sticky">
-          <img src={productImages[flagship.id]} alt="" className="story-image" />
-        </div>
+        <div className="story-grid">
+          <div className="story-sticky-col">
+            <img src={productImages[flagship.id]} alt="" className="story-image" />
+          </div>
 
-        <div className="story-text">
-          <Reveal className="story-eyebrow">Meet AA Mobile</Reveal>
-          <Reveal className="story-line" delay={80}>
-            A UK phone shop that blends fair prices, fast delivery, and honest trade-ins —
-          </Reveal>
-          <Reveal className="story-line" delay={160}>
-            featuring instant quotes, certified refurbished stock, and a fit for every budget.
-          </Reveal>
-          <Reveal className="story-line" delay={240}>
-            Just the phone you want, no distractions.
-          </Reveal>
+          <div className="story-text-col">
+            <Reveal className="story-eyebrow">Meet AA Mobile</Reveal>
+            <Reveal className="story-line" delay={60}>
+              A UK phone shop that blends fair prices, fast delivery, and honest trade-ins.
+            </Reveal>
+            <Reveal className="story-line" delay={60}>
+              Instant quotes, certified refurbished stock, and a fit for every budget.
+            </Reveal>
+            <Reveal className="story-line" delay={60}>
+              Just the phone you want, no distractions.
+            </Reveal>
+          </div>
         </div>
       </section>
 
@@ -99,16 +105,18 @@ export default function Landing() {
 
       {/* Spec table */}
       <section className="spec-section">
-        <Reveal className="section-eyebrow">Technical specifications</Reveal>
-        <Reveal>
-          <h2 className="section-heading">Engineered to perform.</h2>
-        </Reveal>
-        <Reveal className="section-subhead">
-          All the details on our current top pick, the {flagship.name}.
-        </Reveal>
-        <Reveal>
-          <SpecTable />
-        </Reveal>
+        <div className="spec-section-inner">
+          <Reveal className="section-eyebrow section-eyebrow-left">Technical specifications</Reveal>
+          <Reveal>
+            <h2 className="section-heading section-heading-left">Engineered to perform.</h2>
+          </Reveal>
+          <Reveal className="section-subhead section-subhead-left">
+            All the details on our current top pick, the {flagship.name}.
+          </Reveal>
+          <Reveal>
+            <SpecTable />
+          </Reveal>
+        </div>
       </section>
 
       {/* Testimonials */}

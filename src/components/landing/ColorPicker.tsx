@@ -9,8 +9,13 @@ export default function ColorPicker() {
   return (
     <div className="style-picker">
       <div className="style-image-wrap">
-        <div className="style-glow" style={{ background: color.hex }} aria-hidden="true" />
-        <img src={phoneImage} alt="AA Mobile flagship phone" className="style-image" />
+        <div className="style-backdrop" style={{ background: color.hex }} aria-hidden="true" />
+        <img
+          src={phoneImage}
+          alt="AA Mobile flagship phone"
+          className="style-image"
+          style={{ boxShadow: `0 50px 90px -30px ${color.hex}80` }}
+        />
       </div>
 
       <p className="style-color-name">{color.name}</p>
