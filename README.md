@@ -36,19 +36,64 @@ Two patterns worth knowing:
 - **`bleed-x`** — a carousel viewport that runs to the window edges while its
   items stay aligned to the page gutter. No carousel library.
 
+## Pages
+
+575 routes, all generated from data rather than hand-built. `/sitemap` lists
+every one and is generated from the same source, so an orphaned page type shows
+up there immediately.
+
+| Route | Count | What it is |
+| --- | --- | --- |
+| `/` | 1 | Home |
+| `/:category` | 4 | Phones, parts, tools, accessories |
+| `/:category/:subcategory` | 19 | Canonical page per part type |
+| `/product/:id` | 443 | One per product |
+| `/device/:slug` | 73 | Every part, repair price and guide for one model |
+| `/devices`, `/brand/:slug` | 8 | Device index and per-brand pages |
+| `/guide/:slug`, `/guides` | 15 | Repair guides |
+| `/repairs`, `/repairs/:service` | 7 | Repairs hub and a page per service |
+| `/sell`, `/about`, `/cart`, `/search`, `/sitemap` | 5 | Everything else |
+
 ## Structure
 
 ```
 src/
-  data/          catalogue, taxonomy, repair services, page copy, nav
+  data/          devices, parts (derived), catalogue, taxonomy, guides,
+                 services, page copy, nav
   lib/           cart (localStorage), faceting, search, formatting
   components/
     ui/          Button, Badge, Icon, Rating, PriceTag, Carousel, Accordion, …
     layout/      Header (menubar + instant search), Footer, Layout
     sections/    the landing-page section types
     product/     ProductCard, ProductGrid, ProductImage, FacetSidebar
-  pages/         Home, Category, Product, Search, Cart, Repairs, Sell, About
+  pages/         Home, Category, Product, Device, Devices, Brand, Guide,
+                 Guides, Repairs, ServiceDetail, Sell, About, Cart, Search,
+                 Sitemap, NotFound
 ```
+
+### Devices drive the catalogue
+
+`src/data/devices.ts` holds 73 real models. Model names and release years come
+from the public iFixit device taxonomy
+(`https://www.ifixit.com/api/2.0/categories`), filtered to the ranges a UK
+high-street shop actually sees — those are facts. All descriptive copy, guides
+and pricing are our own; none of iFixit's text or photography is reproduced.
+
+`src/data/parts.ts` then derives the 401-part catalogue from that roster. A
+shop's parts list is the cross product of "devices we service" and "things that
+break on them", so writing it by hand guarantees the two drift apart. Each
+device declares which parts exist for it, and price follows from part kind,
+panel type, tier and age:
+
+```
+part price  = base(kind, panel) x tier x (1 + (year - 2019) x 0.13)
+fitted price = part price + bench labour(kind)
+```
+
+Add a device to the roster and it gains parts, a device page, repair prices,
+guides and search entries with no further edits. Ratings, review counts, stock
+state and clearance discounts come from a deterministic hash of the product id,
+so they are stable across reloads instead of reshuffling on every render.
 
 ### Catalogue
 
@@ -74,8 +119,20 @@ collapsing them to zero. Selected options are always rendered, even when a group
 would otherwise be collapsed or hidden — a filter you cannot see is a filter you
 cannot remove.
 
+### Guides
+
+`src/data/guides.ts` holds 14 guides written from our own bench process. A guide
+matches devices by brand, family or kind rather than listing models, so the
+roster and the guides stay in step. Each carries difficulty, time, per-step
+safety warnings, and the tool product ids it needs — the guide page turns those
+into an "add all tools" button.
+
 ## Notes
 
 Cart state persists to `localStorage` and drops any line whose product no longer
 exists in the catalogue. Checkout, the repair booking form and the trade-in quote
 are front-end only — nothing is submitted and no payment is taken.
+
+Product prices, ratings, review counts, the press quotes and the company and VAT
+numbers in the footer are placeholders. Replace them with real figures before
+this is used commercially.

@@ -14,6 +14,8 @@ type Props = {
   selectedCount: number
   onToggle: (key: FacetKey, value: string) => void
   onClear: () => void
+  /** Facets already fixed by the URL path, e.g. on a subcategory page. */
+  hideGroups?: FacetKey[]
 }
 
 export default function FacetSidebar({
@@ -23,6 +25,7 @@ export default function FacetSidebar({
   selectedCount,
   onToggle,
   onClear,
+  hideGroups,
 }: Props) {
   const [expanded, setExpanded] = useState<Record<string, boolean>>({})
 
@@ -34,7 +37,9 @@ export default function FacetSidebar({
         </Button>
       ) : null}
 
-      {facetGroups[category].map((group) => {
+      {facetGroups[category]
+        .filter((group) => !hideGroups?.includes(group.key))
+        .map((group) => {
         const options = facetOptions(
           categoryProducts,
           category,

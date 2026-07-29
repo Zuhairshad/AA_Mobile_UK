@@ -65,10 +65,10 @@ export default function RepairServices({ limit, showHeading = true }: Props) {
                 </p>
 
                 <Link
-                  to="/repairs#book"
+                  to={`/repairs/${service.id}`}
                   className={buttonClass("outline", "sm", "mt-auto")}
                 >
-                  Book this repair
+                  Prices and details
                 </Link>
               </article>
             </li>

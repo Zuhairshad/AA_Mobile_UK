@@ -145,6 +145,7 @@ export const footerColumns: Array<{
       { label: "Repair Parts", to: "/parts" },
       { label: "Tools & Fix Kits", to: "/tools" },
       { label: "Accessories", to: "/accessories" },
+      { label: "Find your device", to: "/devices" },
     ],
   },
   {
@@ -153,7 +154,8 @@ export const footerColumns: Array<{
       { label: "Book a repair", to: "/repairs" },
       { label: "Sell or trade in", to: "/sell" },
       { label: "Business & trade", to: "/about" },
-      { label: "Free diagnostic", to: "/repairs" },
+      { label: "Free diagnostic", to: "/repairs/diagnostic" },
+      { label: "Repair guides", to: "/guides" },
     ],
   },
   {
@@ -163,6 +165,7 @@ export const footerColumns: Array<{
       { label: "Delivery & returns", to: "/about" },
       { label: "12-month guarantee", to: "/about" },
       { label: "Contact", to: "/about" },
+      { label: "Sitemap", to: "/sitemap" },
     ],
   },
 ]

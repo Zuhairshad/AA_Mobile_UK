@@ -38,6 +38,11 @@ export const navMenus: NavMenu[] = [
         to: "/accessories",
         description: "Charging, cases and audio worth keeping.",
       },
+      {
+        label: "Find your device",
+        to: "/devices",
+        description: "Every part and repair price for your exact model.",
+      },
     ],
   },
   {
@@ -50,18 +55,28 @@ export const navMenus: NavMenu[] = [
       },
       {
         label: "Screen replacement",
-        to: "/repairs#screen-replacement",
+        to: "/repairs/screen-replacement",
         description: "From £59, done in forty-five minutes.",
       },
       {
         label: "Battery replacement",
-        to: "/repairs#battery-replacement",
+        to: "/repairs/battery-replacement",
         description: "From £39, health reporting kept intact.",
       },
       {
+        label: "Charging port repair",
+        to: "/repairs/charging-port",
+        description: "From £45, usually the port rather than the board.",
+      },
+      {
         label: "Free diagnostic",
-        to: "/repairs#diagnostic",
+        to: "/repairs/diagnostic",
         description: "We will tell you if it is not worth fixing.",
+      },
+      {
+        label: "Repair guides",
+        to: "/guides",
+        description: "The process we follow, written out step by step.",
       },
     ],
   },

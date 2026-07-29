@@ -22,21 +22,34 @@ import ProductGrid from "../components/product/ProductGrid"
 import NotFound from "./NotFound"
 
 export default function Category() {
-  const { category: slug } = useParams<{ category: string }>()
+  const { category: slug, subcategory: subSlug } = useParams<{
+    category: string
+    subcategory?: string
+  }>()
   const [params, setParams] = useSearchParams()
   const [filtersOpen, setFiltersOpen] = useState(false)
 
   const category = slug ? categoryBySlug.get(slug as CategorySlug) : undefined
+  const sub = subSlug
+    ? category?.subcategories.find((s) => s.slug === subSlug)
+    : undefined
 
   const selections = useMemo(() => selectionsFromParams(params), [params])
   const selectedCount = countSelected(selections)
   const sort = (params.get("sort") as SortValue | null) ?? "featured"
   const page = Math.max(1, Number(params.get("page") ?? 1) || 1)
 
-  const categoryProducts = useMemo(
-    () => (category ? products.filter((p) => p.category === category.slug) : []),
-    [category],
-  )
+  /**
+   * On a subcategory page the subcategory is part of the URL path rather than a
+   * filter, so it is applied here and its facet group is hidden below.
+   */
+  const categoryProducts = useMemo(() => {
+    if (!category) return []
+    return products.filter(
+      (p) =>
+        p.category === category.slug && (!sub || p.subcategory === sub.slug),
+    )
+  }, [category, sub])
 
   const results = useMemo(() => {
     const filtered = applyFacets(categoryProducts, selections)
@@ -58,6 +71,12 @@ export default function Category() {
   }, [page, pageCount, params, setParams])
 
   if (!category) return <NotFound />
+  if (subSlug && !sub) return <NotFound />
+
+  const heading = sub ? sub.name : category.name
+  const lede = sub
+    ? `${sub.name} in ${category.name}. ${category.tagline}`
+    : category.tagline
 
   const update = (mutate: (next: URLSearchParams) => void) => {
     const next = new URLSearchParams(params)
@@ -98,42 +117,64 @@ export default function Category() {
       selectedCount={selectedCount}
       onToggle={toggleFacet}
       onClear={clearFacets}
+      hideGroups={sub ? ["subcategory"] : undefined}
     />
   )
+
+  // Pagination gets unwieldy past a handful of pages; window it around current.
+  const pageWindow = (() => {
+    const span = 2
+    const from = Math.max(1, safePage - span)
+    const to = Math.min(pageCount, safePage + span)
+    return Array.from({ length: to - from + 1 }, (_, i) => from + i)
+  })()
 
   return (
     <>
       <div className="border-b border-gray-200 bg-white">
         <div className="content-boundary py-8 md:py-10">
           <Breadcrumbs
-            trail={[{ label: "Home", to: "/" }, { label: category.name }]}
+            trail={[
+              { label: "Home", to: "/" },
+              ...(sub
+                ? [
+                    { label: category.name, to: `/${category.slug}` },
+                    { label: sub.name },
+                  ]
+                : [{ label: category.name }]),
+            ]}
           />
-          <h1 className="section-heading mt-4">{category.name}</h1>
-          <p className="section-lede mt-2">{category.tagline}</p>
-          <p className="prose-body mt-4 max-w-3xl text-sm">{category.intro}</p>
+          <h1 className="section-heading mt-4">{heading}</h1>
+          <p className="section-lede mt-2">{lede}</p>
+          {!sub ? (
+            <p className="prose-body mt-4 max-w-3xl text-sm">{category.intro}</p>
+          ) : null}
         </div>
       </div>
 
-      {/* Subcategory tiles: a shortcut for people who know what they want and
-          do not want to read a filter list. */}
+      {/* Canonical subcategory pages — a real URL per part type, rather than
+          only a filter, so they can be linked and indexed. */}
       <div className="content-boundary pt-8">
         <ul className="flex flex-wrap gap-2">
-          {category.subcategories.map((sub) => {
-            const active = selections.subcategory?.includes(sub.slug) ?? false
+          {category.subcategories.map((entry) => {
+            const active = entry.slug === sub?.slug
             return (
-              <li key={sub.slug}>
-                <button
-                  type="button"
-                  onClick={() => toggleFacet("subcategory", sub.slug)}
-                  aria-pressed={active}
+              <li key={entry.slug}>
+                <Link
+                  to={
+                    active
+                      ? `/${category.slug}`
+                      : `/${category.slug}/${entry.slug}`
+                  }
+                  aria-current={active ? "page" : undefined}
                   className={cx(
                     "btn btn-sm gap-2",
                     active ? "btn-primary" : "btn-outline",
                   )}
                 >
-                  <Icon name={sub.glyph} className="size-4" />
-                  {sub.name}
-                </button>
+                  <Icon name={entry.glyph} className="size-4" />
+                  {entry.name}
+                </Link>
               </li>
             )
           })}
@@ -206,7 +247,7 @@ export default function Category() {
 
             {pageCount > 1 ? (
               <nav
-                className="mt-10 flex items-center justify-center gap-1"
+                className="mt-10 flex flex-wrap items-center justify-center gap-1"
                 aria-label="Pagination"
               >
                 <Button
@@ -218,7 +259,17 @@ export default function Category() {
                 >
                   <Icon name="chevronLeft" />
                 </Button>
-                {Array.from({ length: pageCount }, (_, i) => i + 1).map((n) => (
+                {pageWindow[0] > 1 ? (
+                  <>
+                    <Button variant="outline" size="icon" onClick={() => goToPage(1)}>
+                      1
+                    </Button>
+                    {pageWindow[0] > 2 ? (
+                      <span className="px-1 text-gray-500">…</span>
+                    ) : null}
+                  </>
+                ) : null}
+                {pageWindow.map((n) => (
                   <Button
                     key={n}
                     variant={n === safePage ? "primary" : "outline"}
@@ -230,6 +281,20 @@ export default function Category() {
                     {n}
                   </Button>
                 ))}
+                {pageWindow[pageWindow.length - 1] < pageCount ? (
+                  <>
+                    {pageWindow[pageWindow.length - 1] < pageCount - 1 ? (
+                      <span className="px-1 text-gray-500">…</span>
+                    ) : null}
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      onClick={() => goToPage(pageCount)}
+                    >
+                      {pageCount}
+                    </Button>
+                  </>
+                ) : null}
                 <Button
                   variant="outline"
                   size="icon"
@@ -240,6 +305,16 @@ export default function Category() {
                   <Icon name="chevronRight" />
                 </Button>
               </nav>
+            ) : null}
+
+            {category.slug === "parts" ? (
+              <p className="mt-8 text-sm text-gray-600">
+                Looking for a specific model?{" "}
+                <Link to="/devices" className="text-primary hover:underline">
+                  Browse by device
+                </Link>{" "}
+                to see everything that fits it, with fitted repair prices.
+              </p>
             ) : null}
           </div>
         </div>

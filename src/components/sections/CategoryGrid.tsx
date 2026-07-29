@@ -54,6 +54,12 @@ export default function CategoryGrid() {
         <div className="col-span-6 md:col-span-3">
           <CompactTile to="/sell" glyph="banknote" label="Sell or trade in" />
         </div>
+        <div className="col-span-6 md:col-span-3">
+          <CompactTile to="/devices" glyph="sliders" label="Find your device" />
+        </div>
+        <div className="col-span-6 md:col-span-3">
+          <CompactTile to="/guides" glyph="toolkit" label="Repair guides" />
+        </div>
 
         {/* Popular repairs get their own row: the fastest route from "my screen
             is cracked" to a price. */}
@@ -62,7 +68,7 @@ export default function CategoryGrid() {
           .map((service) => (
             <div key={service.id} className="col-span-6 md:col-span-3">
               <CompactTile
-                to={`/repairs#${service.id}`}
+                to={`/repairs/${service.id}`}
                 glyph={service.glyph}
                 label={service.name}
                 hint={`from £${service.fromPrice}`}
