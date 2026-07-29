@@ -99,9 +99,9 @@ so they are stable across reloads instead of reshuffling on every render.
 
 `src/data/catalogue.ts` is one `Product` model across four branches — phones,
 parts, tools, accessories — keyed by `category` and faceted on `subcategory`,
-`brand`, `compatibility`, `condition` and price band. Parts are generated from a
-`part()` template because they genuinely share a shape; phones and tools are
-written out individually because they do not.
+`brand`, `compatibility`, `condition` and price band. Parts arrive from
+`parts.ts` as described above; phones, tools and accessories are written out
+individually because they do not share a shape.
 
 Products we have photography for use it. Parts and tools fall back to a drawn
 SVG glyph (`ProductImage`), so a listing of mixed stock still reads as one
