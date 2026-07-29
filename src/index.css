@@ -1,45 +1,262 @@
-:root {
-  --bg: #000;
-  --card-bg: #131313;
-  --card-border: #232323;
-  --text: #fff;
-  --text-dim: #8a8a8a;
-  --text-faint: #616161;
-  --accent: #ff5b1e;
-  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+@import "tailwindcss";
 
-  font: 16px/145% var(--sans);
-  color: var(--text);
-  background: var(--bg);
-  color-scheme: dark;
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+/* ---------------------------------------------------------------------------
+   Design tokens.
+
+   One brand scale drives the whole storefront. Components never reference raw
+   hex values — they use either a brand step or one of the semantic aliases
+   below, so a rebrand is a single edit here.
+   --------------------------------------------------------------------------- */
+
+@theme {
+  --color-brand-50: #eef6ff;
+  --color-brand-100: #d8eaff;
+  --color-brand-200: #b3d6ff;
+  --color-brand-300: #7fbaff;
+  --color-brand-400: #4498fb;
+  --color-brand-500: #1668c7;
+  --color-brand-600: #0f52a3;
+  --color-brand-700: #0d4180;
+  --color-brand-800: #0e3563;
+  --color-brand-900: #0d2a4c;
+  --color-brand-950: #08192e;
+
+  /* Semantic aliases. `foreground` is text on `background`, `primary` is the
+     interactive brand colour, `muted` is the recessed surface. */
+  --color-background: #f9fafb;
+  --color-foreground: #030712;
+  --color-card: #ffffff;
+  --color-muted: #f3f4f6;
+  --color-muted-foreground: #6a7282;
+  --color-primary: var(--color-brand-500);
+  --color-primary-foreground: #ffffff;
+  --color-line: #d1d5dc;
+
+  --font-sans:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial,
+    "Helvetica Neue", sans-serif;
+  --font-mono:
+    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+    monospace;
 }
 
-* {
-  box-sizing: border-box;
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    overflow-x: hidden;
+  }
+
+  /* Every focusable element gets the same brand ring. */
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-brand-500;
+  }
 }
 
-body {
-  margin: 0;
-  overflow-x: hidden;
+/* ---------------------------------------------------------------------------
+   Component primitives.
+
+   Kept as real CSS classes rather than long utility strings repeated across
+   files, so the React components stay readable and a variant change lands in
+   one place.
+   --------------------------------------------------------------------------- */
+
+@layer components {
+  /* Page gutter. Every full-width section wraps its content in this. */
+  .content-boundary {
+    @apply mx-auto w-full max-w-7xl px-4 md:px-6 lg:px-8;
+  }
+
+  /* Uniform vertical rhythm for landing/marketing sections. */
+  .section-y {
+    @apply py-12 md:py-16;
+  }
+
+  /* One heading style, reused everywhere. */
+  .section-heading {
+    @apply text-3xl font-semibold tracking-tight md:text-5xl;
+  }
+
+  .section-lede {
+    @apply text-lg text-gray-700 md:text-xl;
+  }
+
+  /* --- Button ------------------------------------------------------------ */
+  .btn {
+    @apply inline-flex shrink-0 items-center justify-center gap-2 rounded-lg
+      font-medium whitespace-nowrap transition-[opacity,background-color,color]
+      duration-150 select-none;
+  }
+
+  .btn:disabled {
+    @apply pointer-events-none opacity-50;
+  }
+
+  .btn:active {
+    @apply scale-[0.98];
+  }
+
+  .btn-primary {
+    @apply bg-primary text-primary-foreground hover:bg-brand-600;
+  }
+
+  .btn-secondary {
+    @apply bg-gray-900 text-white hover:bg-gray-800;
+  }
+
+  .btn-outline {
+    @apply border border-line bg-white text-foreground hover:bg-gray-50;
+  }
+
+  .btn-ghost {
+    @apply text-foreground hover:bg-gray-100;
+  }
+
+  .btn-link {
+    @apply text-primary underline-offset-4 hover:underline;
+  }
+
+  .btn-xs {
+    @apply h-7 px-2 text-sm;
+  }
+
+  .btn-sm {
+    @apply h-8 gap-1.5 px-3 text-sm;
+  }
+
+  .btn-md {
+    @apply h-9 px-4 text-sm;
+  }
+
+  .btn-lg {
+    @apply h-11 px-6 text-base;
+  }
+
+  .btn-icon {
+    @apply h-9 w-9 px-0;
+  }
+
+  /* --- Badge ------------------------------------------------------------- */
+  .badge {
+    @apply inline-flex w-fit shrink-0 items-center gap-1 rounded-md font-medium
+      whitespace-nowrap;
+    background-color: var(--badge-bg);
+    color: var(--badge-fg);
+  }
+
+  .badge > svg {
+    color: var(--badge-icon);
+  }
+
+  .badge-brand {
+    --badge-bg: var(--color-brand-100);
+    --badge-fg: var(--color-brand-900);
+    --badge-icon: var(--color-brand-600);
+  }
+
+  .badge-gray {
+    --badge-bg: var(--color-gray-200);
+    --badge-fg: var(--color-gray-900);
+    --badge-icon: var(--color-gray-600);
+  }
+
+  .badge-green {
+    --badge-bg: var(--color-green-200);
+    --badge-fg: var(--color-green-900);
+    --badge-icon: var(--color-green-700);
+  }
+
+  .badge-amber {
+    --badge-bg: var(--color-amber-200);
+    --badge-fg: var(--color-amber-900);
+    --badge-icon: var(--color-amber-700);
+  }
+
+  .badge-red {
+    --badge-bg: var(--color-red-200);
+    --badge-fg: var(--color-red-900);
+    --badge-icon: var(--color-red-700);
+  }
+
+  .badge-sm {
+    @apply gap-0.5 px-1.5 py-0.5 text-[10px];
+  }
+
+  .badge-md {
+    @apply px-1.5 py-1 text-xs;
+  }
+
+  .badge-lg {
+    @apply px-2 py-[5px] text-sm;
+  }
+
+  /* --- Card ------------------------------------------------------------- */
+  /* Grey card with a white image well inside: product photography reads
+     cleanly regardless of the background it was shot on. */
+  /* Pair with Tailwind's `group` marker on the element itself — `group` is not
+     a utility and cannot be applied here. */
+  .product-card {
+    @apply relative flex h-full flex-col gap-4 rounded-xl bg-gray-100 p-4
+      transition-colors hover:bg-gray-200/70;
+  }
+
+  .product-card-well {
+    @apply rounded-lg bg-white p-3;
+  }
+
+  /* Stretched link: the whole card is the click target but there is only one
+     anchor, so no nested-interactive accessibility problem. */
+  .stretched-link::after {
+    @apply absolute inset-0 content-[''];
+  }
+
+  .resource-card {
+    @apply relative flex items-center gap-4 rounded-xl border border-gray-200
+      bg-white p-4 transition-colors hover:border-gray-400;
+  }
+
+  .resource-card-lg {
+    @apply rounded-2xl;
+  }
+
+  /* --- Form ------------------------------------------------------------- */
+  /* !text-base stops iOS Safari zooming the viewport on focus. */
+  .field {
+    @apply w-full rounded-lg border border-line bg-white px-3 py-2 !text-base
+      text-gray-900 placeholder:text-gray-500 focus:border-brand-500
+      focus:ring-2 focus:ring-brand-500/40 focus:outline-none;
+  }
+
+  .field-label {
+    @apply mb-1.5 block text-sm font-medium text-gray-800;
+  }
+
+  /* --- Prose ------------------------------------------------------------ */
+  .prose-body {
+    @apply text-gray-700;
+  }
+
+  .prose-body p + p {
+    @apply mt-4;
+  }
+
+  .prose-body ul {
+    @apply mt-3 list-disc space-y-1 pl-5;
+  }
+
+  .prose-body a {
+    @apply text-primary hover:underline;
+  }
 }
 
-h1,
-p,
-button,
-input {
-  margin: 0;
-  font-family: inherit;
-}
-
-button {
-  cursor: pointer;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
+@layer utilities {
+  /* Full-bleed carousel viewport that still aligns its first item to the page
+     gutter — the trick iFixit uses, no JS carousel needed. */
+  .bleed-x {
+    margin-inline: calc(50% - 50vw);
+    padding-inline: calc(50vw - 50%);
+  }
 }

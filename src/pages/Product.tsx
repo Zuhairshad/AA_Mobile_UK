@@ -1,0 +1,349 @@
+import { useState } from "react"
+import { Link, useParams } from "react-router-dom"
+import {
+  badgeMeta,
+  badgesFor,
+  boughtTogether,
+  productById,
+  relatedTo,
+} from "../data/catalogue"
+import { categoryBySlug, subcategoryName } from "../data/taxonomy"
+import { formatPrice } from "../lib/format"
+import { useCart } from "../lib/cart"
+import Accordion from "../components/ui/Accordion"
+import Badge from "../components/ui/Badge"
+import Breadcrumbs from "../components/ui/Breadcrumbs"
+import Button, { buttonClass } from "../components/ui/Button"
+import Icon from "../components/ui/Icon"
+import PriceTag from "../components/ui/PriceTag"
+import QuantityStepper from "../components/ui/QuantityStepper"
+import Rating from "../components/ui/Rating"
+import FeaturedProducts from "../components/sections/FeaturedProducts"
+import ProductImage from "../components/product/ProductImage"
+import NotFound from "./NotFound"
+
+const stockCopy = {
+  in: {
+    tone: "green" as const,
+    label: "In stock",
+    detail: "Dispatched from Birmingham within 24 hours on working days.",
+  },
+  low: {
+    tone: "amber" as const,
+    label: "Low stock",
+    detail: "Only a few left. Order before 3pm for same-day dispatch.",
+  },
+  out: {
+    tone: "gray" as const,
+    label: "Out of stock",
+    detail: "Back in stock within 7 – 10 days. Nothing is charged until we ship.",
+  },
+}
+
+export default function Product() {
+  const { id } = useParams<{ id: string }>()
+  const product = id ? productById.get(id) : undefined
+  const { add } = useCart()
+  const [qty, setQty] = useState(1)
+  const [added, setAdded] = useState(false)
+
+  if (!product) return <NotFound />
+
+  const category = categoryBySlug.get(product.category)
+  const subName = subcategoryName(product.category, product.subcategory)
+  const stock = stockCopy[product.stock]
+  const soldOut = product.stock === "out"
+  const badges = badgesFor(product)
+  const pairs = boughtTogether(product)
+  const related = relatedTo(product)
+
+  const faqs = [
+    {
+      q: "What does the 12-month guarantee cover?",
+      a: "Any failure in normal use. We replace the item and there is no diagnostic fee on a guarantee claim. It does not cover new physical damage or liquid ingress.",
+    },
+    {
+      q: "How fast will it arrive?",
+      a: "Orders placed before 3pm on a working day are dispatched the same day. Free over £65, otherwise £3.95 tracked 48 or £5.95 next day.",
+    },
+    product.fittingAvailable
+      ? {
+          q: "Can you fit this for me?",
+          a: "Yes. Bring it to the Birmingham shop or order it to us, and we will deduct the price of the part from the repair quote so you are not paying for it twice.",
+        }
+      : {
+          q: "Can I return it if I change my mind?",
+          a: "You have 30 days from delivery. Unopened items are refunded in full; opened items are refunded less any loss of value, as the Consumer Contracts Regulations allow.",
+        },
+  ]
+
+  const addToCart = () => {
+    add(product.id, qty)
+    setAdded(true)
+    window.setTimeout(() => setAdded(false), 2500)
+  }
+
+  return (
+    <>
+      <div className="content-boundary pt-8">
+        <Breadcrumbs
+          trail={[
+            { label: "Home", to: "/" },
+            { label: category?.name ?? "Shop", to: `/${product.category}` },
+            ...(subName
+              ? [
+                  {
+                    label: subName,
+                    to: `/${product.category}?type=${product.subcategory}`,
+                  },
+                ]
+              : []),
+            { label: product.name },
+          ]}
+        />
+      </div>
+
+      <div className="content-boundary grid gap-10 py-8 lg:grid-cols-2 lg:gap-16">
+        <div className="rounded-2xl bg-gray-100 p-4">
+          <div className="product-card-well">
+            <div className="relative aspect-square">
+              <ProductImage product={product} priority />
+            </div>
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-5">
+          <div>
+            <p className="text-sm font-medium text-gray-500">{product.brand}</p>
+            <h1 className="mt-1 text-3xl font-semibold tracking-tight md:text-4xl">
+              {product.name}
+            </h1>
+            <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2">
+              <Rating value={product.rating} />
+              <span className="text-sm text-gray-600">
+                {product.rating} out of 5 · {product.reviews} reviews
+              </span>
+            </div>
+          </div>
+
+          <p className="text-lg text-gray-700">{product.blurb}</p>
+
+          <PriceTag price={product.price} compareAt={product.compareAt} size="lg" />
+
+          <div className="flex flex-wrap gap-2">
+            {badges.map((key) => (
+              <Badge
+                key={key}
+                tone={badgeMeta[key].tone}
+                icon={badgeMeta[key].icon}
+              >
+                {badgeMeta[key].label}
+              </Badge>
+            ))}
+            {product.grade ? <Badge tone="gray">Grade {product.grade}</Badge> : null}
+          </div>
+
+          <div className="rounded-xl border border-gray-200 bg-white p-4">
+            <p className="flex items-center gap-2 text-sm font-semibold">
+              <span
+                className={
+                  product.stock === "out"
+                    ? "size-2 rounded-full bg-gray-400"
+                    : product.stock === "low"
+                      ? "size-2 rounded-full bg-amber-500"
+                      : "size-2 rounded-full bg-green-600"
+                }
+                aria-hidden="true"
+              />
+              {stock.label}
+            </p>
+            <p className="mt-1 text-sm text-gray-600">{stock.detail}</p>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-3">
+            <QuantityStepper value={qty} onChange={setQty} />
+            <Button
+              size="lg"
+              variant={soldOut ? "outline" : "primary"}
+              disabled={soldOut}
+              onClick={addToCart}
+              className="min-w-44 flex-1 sm:flex-none"
+            >
+              {soldOut ? (
+                "Out of stock"
+              ) : added ? (
+                <>
+                  <Icon name="check" className="size-5" />
+                  Added to basket
+                </>
+              ) : (
+                `Add to basket · ${formatPrice(product.price * qty)}`
+              )}
+            </Button>
+          </div>
+
+          {added ? (
+            <p role="status" className="text-sm">
+              <Link to="/cart" className="font-medium text-primary hover:underline">
+                View basket and check out →
+              </Link>
+            </p>
+          ) : null}
+
+          {product.fittingAvailable ? (
+            <div className="flex items-start gap-3 rounded-xl border border-brand-200 bg-brand-50 p-4">
+              <Icon name="wrench" className="mt-0.5 size-5 shrink-0 text-brand-600" />
+              <div className="text-sm">
+                <p className="font-semibold text-brand-900">
+                  Would rather we fitted it?
+                </p>
+                <p className="mt-1 text-brand-800">
+                  We deduct the price of the part from the repair quote, so you
+                  are not paying for it twice.
+                </p>
+                <Link
+                  to="/repairs#book"
+                  className="mt-2 inline-block font-medium text-primary hover:underline"
+                >
+                  Book a fitting →
+                </Link>
+              </div>
+            </div>
+          ) : null}
+        </div>
+      </div>
+
+      <div className="content-boundary grid gap-10 py-8 lg:grid-cols-3 lg:gap-16">
+        <div className="lg:col-span-2">
+          {product.description ? (
+            <section>
+              <h2 className="text-2xl font-semibold">Description</h2>
+              <div className="prose-body mt-4">
+                {product.description.map((para) => (
+                  <p key={para}>{para}</p>
+                ))}
+              </div>
+            </section>
+          ) : null}
+
+          {product.includes ? (
+            <section className="mt-10">
+              <h2 className="text-2xl font-semibold">What is in the kit</h2>
+              <ul className="mt-4 grid gap-2 sm:grid-cols-2">
+                {product.includes.map((item) => (
+                  <li key={item} className="flex items-start gap-2 text-sm">
+                    <Icon
+                      name="check"
+                      className="mt-0.5 size-4 shrink-0 text-green-600"
+                    />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </section>
+          ) : null}
+
+          {product.compatibility ? (
+            <section className="mt-10">
+              <h2 className="text-2xl font-semibold">Fits these models</h2>
+              <ul className="mt-4 flex flex-wrap gap-2">
+                {product.compatibility.map((model) => (
+                  <li key={model}>
+                    <Badge tone="brand" size="lg">
+                      {model}
+                    </Badge>
+                  </li>
+                ))}
+              </ul>
+              <p className="mt-3 text-sm text-gray-600">
+                Not sure which model you have? Bring it in and we will check for
+                free, or{" "}
+                <Link to="/repairs" className="text-primary hover:underline">
+                  book a free diagnostic
+                </Link>
+                .
+              </p>
+            </section>
+          ) : null}
+
+          <section className="mt-10">
+            <h2 className="text-2xl font-semibold">Questions</h2>
+            <div className="mt-4">
+              <Accordion items={faqs} />
+            </div>
+          </section>
+        </div>
+
+        <div className="lg:col-span-1">
+          {product.specs ? (
+            <section>
+              <h2 className="text-2xl font-semibold">Specifications</h2>
+              <dl className="mt-4 overflow-hidden rounded-xl border border-gray-200 bg-white">
+                {product.specs.map((spec, i) => (
+                  <div
+                    key={spec.label}
+                    className={
+                      i % 2 === 0
+                        ? "grid grid-cols-2 gap-3 bg-gray-50 px-4 py-3 text-sm"
+                        : "grid grid-cols-2 gap-3 px-4 py-3 text-sm"
+                    }
+                  >
+                    <dt className="text-gray-600">{spec.label}</dt>
+                    <dd className="font-medium">{spec.value}</dd>
+                  </div>
+                ))}
+              </dl>
+            </section>
+          ) : null}
+
+          {pairs.length > 0 ? (
+            <section className="mt-10">
+              <h2 className="text-2xl font-semibold">Often bought with</h2>
+              <ul className="mt-4 space-y-3">
+                {pairs.map((item) => (
+                  <li
+                    key={item.id}
+                    className="flex items-center gap-3 rounded-xl border border-gray-200 bg-white p-3"
+                  >
+                    <span className="size-14 shrink-0 rounded-lg bg-gray-100 p-1.5">
+                      <ProductImage product={item} />
+                    </span>
+                    <span className="min-w-0 flex-1">
+                      <Link
+                        to={`/product/${item.id}`}
+                        className="block truncate text-sm font-medium hover:text-primary"
+                      >
+                        {item.name}
+                      </Link>
+                      <span className="text-sm text-gray-600">
+                        {formatPrice(item.price)}
+                      </span>
+                    </span>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => add(item.id)}
+                      aria-label={`Add ${item.name} to basket`}
+                    >
+                      Add
+                    </Button>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          ) : null}
+        </div>
+      </div>
+
+      {related.length > 0 ? (
+        <FeaturedProducts heading="You might also need" products={related} />
+      ) : null}
+
+      <div className="content-boundary pb-16 text-center">
+        <Link to={`/${product.category}`} className={buttonClass("outline", "lg")}>
+          Back to {category?.name ?? "the shop"}
+        </Link>
+      </div>
+    </>
+  )
+}

@@ -1,0 +1,220 @@
+import { useEffect, useRef, useState } from "react"
+import { Link, NavLink, useLocation } from "react-router-dom"
+import { navMenus } from "../../data/nav"
+import { site } from "../../data/content"
+import { useCart } from "../../lib/cart"
+import { cx } from "../../lib/cx"
+import Icon from "../ui/Icon"
+import SearchBox from "./SearchBox"
+
+export default function Header() {
+  const [openMenu, setOpenMenu] = useState<string | null>(null)
+  const [drawerOpen, setDrawerOpen] = useState(false)
+  const { count } = useCart()
+  const location = useLocation()
+  const nav = useRef<HTMLElement>(null)
+
+  // Any navigation closes whatever was open.
+  useEffect(() => {
+    setOpenMenu(null)
+    setDrawerOpen(false)
+  }, [location.pathname, location.hash])
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setOpenMenu(null)
+        setDrawerOpen(false)
+      }
+    }
+    document.addEventListener("keydown", onKey)
+    return () => document.removeEventListener("keydown", onKey)
+  }, [])
+
+  useEffect(() => {
+    if (!openMenu) return
+    const onDown = (e: MouseEvent) => {
+      if (!nav.current?.contains(e.target as Node)) setOpenMenu(null)
+    }
+    document.addEventListener("mousedown", onDown)
+    return () => document.removeEventListener("mousedown", onDown)
+  }, [openMenu])
+
+  // Prevent the page scrolling behind the mobile drawer.
+  useEffect(() => {
+    document.body.style.overflow = drawerOpen ? "hidden" : ""
+    return () => {
+      document.body.style.overflow = ""
+    }
+  }, [drawerOpen])
+
+  return (
+    <header className="sticky top-0 z-40 border-b border-gray-200 bg-white/95 backdrop-blur">
+      <p className="bg-brand-500 py-2 text-center text-xs font-medium text-white sm:text-sm">
+        {site.promo}
+      </p>
+
+      <div className="content-boundary flex h-16 items-center gap-3">
+        <button
+          type="button"
+          className="btn btn-ghost btn-icon lg:hidden"
+          aria-label="Open navigation menu"
+          aria-expanded={drawerOpen}
+          onClick={() => setDrawerOpen(true)}
+        >
+          <Icon name="menu" />
+        </button>
+
+        <Link
+          to="/"
+          className="flex shrink-0 items-center gap-2"
+          aria-label={`${site.name} home`}
+        >
+          <span className="flex size-9 items-center justify-center rounded-lg bg-brand-500 text-sm font-bold text-white">
+            AA
+          </span>
+          <span className="hidden text-base leading-none font-semibold sm:block">
+            Mobile
+            <span className="block text-xs font-normal text-gray-500">UK</span>
+          </span>
+        </Link>
+
+        <nav ref={nav} className="hidden lg:block" aria-label="Main">
+          <ul className="flex items-center gap-1">
+            {navMenus.map((menu) => {
+              const open = openMenu === menu.label
+              return (
+                <li
+                  key={menu.label}
+                  className="relative"
+                  onMouseEnter={() => setOpenMenu(menu.label)}
+                  onMouseLeave={() => setOpenMenu(null)}
+                >
+                  <button
+                    type="button"
+                    aria-expanded={open}
+                    aria-haspopup="true"
+                    onClick={() => setOpenMenu(open ? null : menu.label)}
+                    className={cx(
+                      "btn btn-ghost btn-md",
+                      open && "bg-gray-100 text-primary",
+                    )}
+                  >
+                    {menu.label}
+                    <Icon
+                      name="chevronDown"
+                      className={cx(
+                        "size-4 transition-transform",
+                        open && "-rotate-180",
+                      )}
+                    />
+                  </button>
+
+                  {open ? (
+                    <ul className="absolute top-full left-0 z-50 w-90 overflow-hidden rounded-xl border border-gray-200 bg-white p-2 shadow-xl">
+                      {menu.items.map((item) => (
+                        <li key={item.to + item.label}>
+                          <Link
+                            to={item.to}
+                            className="block rounded-lg px-3 py-2.5 hover:bg-brand-50"
+                          >
+                            <span className="block text-sm font-semibold">
+                              {item.label}
+                            </span>
+                            <span className="mt-0.5 block text-xs text-gray-600">
+                              {item.description}
+                            </span>
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : null}
+                </li>
+              )
+            })}
+          </ul>
+        </nav>
+
+        <div className="ml-auto hidden max-w-md flex-1 lg:block">
+          <SearchBox />
+        </div>
+
+        <Link
+          to="/cart"
+          className="btn btn-ghost btn-icon relative ml-auto lg:ml-0"
+          aria-label={count > 0 ? `Basket, ${count} items` : "Basket, empty"}
+        >
+          <Icon name="cart" />
+          {count > 0 ? (
+            <span className="absolute -top-0.5 -right-0.5 flex size-5 items-center justify-center rounded-full bg-brand-500 text-[10px] font-semibold text-white">
+              {count > 99 ? "99+" : count}
+            </span>
+          ) : null}
+        </Link>
+      </div>
+
+      {/* Mobile: search sits on its own row so it gets full width. */}
+      <div className="content-boundary pb-3 lg:hidden">
+        <SearchBox placeholder="Search phones, parts and tools" />
+      </div>
+
+      {drawerOpen ? (
+        <div className="fixed inset-0 z-50 lg:hidden">
+          <button
+            type="button"
+            className="absolute inset-0 bg-black/50"
+            aria-label="Close navigation menu"
+            onClick={() => setDrawerOpen(false)}
+          />
+          <div className="absolute inset-y-0 left-0 flex w-80 max-w-[85vw] flex-col overflow-y-auto bg-white">
+            <div className="flex h-16 items-center justify-between border-b border-gray-200 px-4">
+              <span className="font-semibold">Menu</span>
+              <button
+                type="button"
+                className="btn btn-ghost btn-icon"
+                aria-label="Close navigation menu"
+                onClick={() => setDrawerOpen(false)}
+              >
+                <Icon name="close" />
+              </button>
+            </div>
+            <nav className="flex-1 px-2 py-4" aria-label="Mobile">
+              {navMenus.map((menu) => (
+                <div key={menu.label} className="mb-5">
+                  <p className="px-3 pb-1 text-xs font-semibold tracking-wide text-gray-500 uppercase">
+                    {menu.label}
+                  </p>
+                  <ul>
+                    {menu.items.map((item) => (
+                      <li key={item.to + item.label}>
+                        <NavLink
+                          to={item.to}
+                          className={({ isActive }) =>
+                            cx(
+                              "block rounded-lg px-3 py-2.5 text-sm font-medium",
+                              isActive
+                                ? "bg-brand-50 text-primary"
+                                : "hover:bg-gray-100",
+                            )
+                          }
+                        >
+                          {item.label}
+                        </NavLink>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+              <Link
+                to="/about"
+                className="block rounded-lg px-3 py-2.5 text-sm font-medium hover:bg-gray-100"
+              >
+                About us
+              </Link>
+            </nav>
+          </div>
+        </div>
+      ) : null}
+    </header>
+  )
+}
