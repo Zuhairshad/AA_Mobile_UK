@@ -1,5 +1,7 @@
 import type { IconName } from "../components/ui/Icon"
 import type { AccordionItem } from "../components/ui/Accordion"
+import { products } from "./catalogue"
+import { devices } from "./devices"
 
 export const site = {
   name: "AA Mobile UK",
@@ -8,12 +10,35 @@ export const site = {
   strapline: "Phones, parts and repairs — all under one roof.",
 }
 
+/**
+ * Counts read off the catalogue rather than typed out, so a figure quoted on the
+ * home page can never contradict what the listings actually contain.
+ */
+const count = (category: string) =>
+  products.filter((p) => p.category === category).length
+
+export const catalogueStats = {
+  parts: count("parts"),
+  tools: count("tools"),
+  accessories: count("accessories"),
+  handsets: count("phones"),
+  devices: devices.length,
+  inStock: products.filter((p) => p.stock !== "out").length,
+  averageRating:
+    Math.round(
+      (products.reduce((sum, p) => sum + p.rating, 0) / products.length) * 10,
+    ) / 10,
+}
+
 /** Counters band. Deliberately specific: round numbers read as invented. */
 export const stats: Array<{ value: string; label: string }> = [
   { value: "38,412", label: "Repairs completed" },
-  { value: "2,190", label: "Parts in stock" },
-  { value: "4.8 / 5", label: "Average rating" },
-  { value: "12 mo", label: "Guarantee on every job" },
+  { value: `${catalogueStats.parts}`, label: "Parts in stock" },
+  { value: `${catalogueStats.devices}`, label: "Models serviced" },
+  {
+    value: `${catalogueStats.averageRating.toFixed(1)} / 5`,
+    label: "Average rating",
+  },
 ]
 
 export const valueProps: Array<{
