@@ -4,6 +4,8 @@ import type { PartKind } from "../../data/devices"
 import { cx } from "../../lib/cx"
 import Icon from "../ui/Icon"
 import PartArtwork from "./PartArtwork"
+import ToolArtwork from "./ToolArtwork"
+import { toolArtworkFor } from "./toolArtworkMap"
 
 type Props = {
   product: Product
@@ -70,6 +72,20 @@ export default function ProductImage({ product, className, priority }: Props) {
     )
   }
 
+  const toolKind = toolArtworkFor[product.id]
+  if (toolKind) {
+    return (
+      <div
+        className={cx("flex h-full w-full items-center justify-center", className)}
+        role="img"
+        aria-label={product.name}
+      >
+        <ToolArtwork kind={toolKind} />
+      </div>
+    )
+  }
+
+  // Last resort for anything added without a photo or a mapped drawing.
   return (
     <div
       className={cx(

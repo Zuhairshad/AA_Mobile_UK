@@ -1,5 +1,15 @@
 import type { PartKind } from "../../data/devices"
-import { cx } from "../../lib/cx"
+import {
+  ArtworkSvg,
+  BODY,
+  CONTACT,
+  Connector,
+  DARK,
+  Flex,
+  METAL,
+  METAL_EDGE,
+  FLEX,
+} from "./artworkShared"
 
 /**
  * Technical illustrations for repair parts.
@@ -14,14 +24,6 @@ import { cx } from "../../lib/cx"
  * screens is not twelve identical drawings.
  */
 
-const FLEX = "#d9a15b" // polyimide ribbon
-const FLEX_EDGE = "#a97534"
-const METAL = "#cbd2da"
-const METAL_EDGE = "#8b95a1"
-const BODY = "#eef1f4"
-const CONTACT = "#d8b055"
-const DARK = "#1e2939"
-
 type Props = {
   kind: PartKind
   seed?: number
@@ -30,29 +32,7 @@ type Props = {
 
 export default function PartArtwork({ kind, seed = 0, className }: Props) {
   return (
-    <svg
-      viewBox="0 0 240 240"
-      className={cx("h-full w-full", className)}
-      aria-hidden="true"
-      focusable="false"
-    >
-      <defs>
-        <linearGradient id="pa-glass" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor="#243044" />
-          <stop offset="55%" stopColor="#16202f" />
-          <stop offset="100%" stopColor="#2b3a52" />
-        </linearGradient>
-        <linearGradient id="pa-metal" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor="#f6f8fa" />
-          <stop offset="45%" stopColor="#dbe1e8" />
-          <stop offset="100%" stopColor="#c3cbd5" />
-        </linearGradient>
-        <linearGradient id="pa-sheen" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor="#ffffff" stopOpacity="0.55" />
-          <stop offset="60%" stopColor="#ffffff" stopOpacity="0" />
-        </linearGradient>
-      </defs>
-
+    <ArtworkSvg className={className}>
       {kind === "screen" ? <Screen seed={seed} /> : null}
       {kind === "battery" ? <Battery seed={seed} /> : null}
       {kind === "charging" ? <ChargePort seed={seed} /> : null}
@@ -60,97 +40,7 @@ export default function PartArtwork({ kind, seed = 0, className }: Props) {
       {kind === "front-camera" ? <FrontCamera /> : null}
       {kind === "back-glass" ? <BackGlass seed={seed} /> : null}
       {kind === "speaker" ? <Speaker /> : null}
-    </svg>
-  )
-}
-
-/** Ribbon cable with a board connector on the end. */
-/** SVG attributes accept either, and the call sites read better as strings. */
-type Coord = number | string
-
-function Flex({
-  x,
-  y,
-  w,
-  h,
-  vertical = false,
-}: {
-  x: Coord
-  y: Coord
-  w: Coord
-  h: Coord
-  vertical?: boolean
-}) {
-  const [nx, ny, nw, nh] = [x, y, w, h].map(Number)
-  return (
-    <g>
-      <rect
-        x={x}
-        y={y}
-        width={w}
-        height={h}
-        rx={3}
-        fill={FLEX}
-        stroke={FLEX_EDGE}
-        strokeWidth="1.5"
-      />
-      {/* trace lines along the ribbon */}
-      {[0.3, 0.5, 0.7].map((f) =>
-        vertical ? (
-          <line
-            key={f}
-            x1={nx + nw * f}
-            y1={ny + 4}
-            x2={nx + nw * f}
-            y2={ny + nh - 4}
-            stroke={FLEX_EDGE}
-            strokeWidth="1"
-            opacity="0.6"
-          />
-        ) : (
-          <line
-            key={f}
-            x1={nx + 4}
-            y1={ny + nh * f}
-            x2={nx + nw - 4}
-            y2={ny + nh * f}
-            stroke={FLEX_EDGE}
-            strokeWidth="1"
-            opacity="0.6"
-          />
-        ),
-      )}
-    </g>
-  )
-}
-
-function Connector({
-  x,
-  y,
-  w = 34,
-  h = 15,
-}: {
-  x: Coord
-  y: Coord
-  w?: Coord
-  h?: Coord
-}) {
-  const [nx, ny, nw, nh] = [x, y, w, h].map(Number)
-  const pins = 5
-  return (
-    <g>
-      <rect x={x} y={y} width={w} height={h} rx={3} fill="#3d4a5c" />
-      {Array.from({ length: pins }, (_, i) => (
-        <rect
-          key={i}
-          x={nx + 4 + i * ((nw - 8) / pins)}
-          y={ny + nh - 4}
-          width={(nw - 8) / pins - 2}
-          height={3}
-          fill={CONTACT}
-        />
-      ))}
-    </g>
+    </ArtworkSvg>
   )
 }
 
