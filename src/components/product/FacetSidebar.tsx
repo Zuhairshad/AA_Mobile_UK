@@ -90,7 +90,7 @@ export default function FacetSidebar({
                       <span className="min-w-0 flex-1 truncate">
                         {option.label}
                       </span>
-                      <span className="shrink-0 text-xs text-ink-500">
+                      <span className="figure shrink-0 text-xs text-ink-500">
                         {formatCount(option.count)}
                       </span>
                     </label>
@@ -106,7 +106,7 @@ export default function FacetSidebar({
                       [group.key]: !prev[group.key],
                     }))
                   }
-                  className="mt-1.5 px-1 py-1 text-sm font-medium text-primary hover:underline"
+                  className="micro-label mt-2 px-1 py-2 text-primary hover:underline"
                 >
                   {open ? "Show fewer" : `Show ${hidden} more`}
                 </button>

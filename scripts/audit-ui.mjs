@@ -10,6 +10,11 @@ import { chromium } from 'playwright'
  * target sizes, horizontal overflow, dead hrefs, and keyboard behaviour
  * (skip link, focus visibility, modal focus trap). Exits non-zero on findings.
  *
+ * Exempted from contrast: text inside an aria-hidden subtree that conveys no
+ * information — currently only the measuring rails' tick numbers, which are a
+ * drafting artefact. WCAG 1.4.3 exempts decorative text; everything a user can
+ * actually read is still measured.
+ *
  * Two things it deliberately does NOT guess at: colours are resolved through a
  * canvas because Tailwind v4 emits oklch() that a regex will silently miss, and
  * text on a gradient or photo is skipped rather than measured against an
@@ -73,7 +78,33 @@ const collect = () => {
     b: fg.b * fg.a + bg.b * (1 - fg.a),
     a: 1,
   })
+  /**
+   * True when an absolutely-positioned gradient scrim overlaps the element.
+   *
+   * The ancestor walk alone cannot see this: a caption laid over a banner image
+   * sits in a plain div whose *sibling* is the scrim, so walking up finds the
+   * frame's own flat colour and measures white text against it. That reported
+   * every product page as a 1.05:1 failure while the painted pixels were 11:1.
+   * Text in this situation is unresolvable statically, so it is skipped — same
+   * rule as text directly on a gradient.
+   */
+  const scrimmedBy = el => {
+    const r = el.getBoundingClientRect()
+    for (let n = el.parentElement; n && n !== document.documentElement; n = n.parentElement) {
+      for (const sib of n.children) {
+        if (sib === el || sib.contains(el)) continue
+        const scs = getComputedStyle(sib)
+        if (scs.backgroundImage === 'none' || scs.position === 'static') continue
+        const s = sib.getBoundingClientRect()
+        const overlaps =
+          s.left <= r.left && s.right >= r.right && s.top <= r.top && s.bottom >= r.bottom
+        if (overlaps) return true
+      }
+    }
+    return false
+  }
   const effectiveBg = el => {
+    if (scrimmedBy(el)) return null
     for (let n = el; n && n !== document.documentElement; n = n.parentElement) {
       const ncs = getComputedStyle(n)
       if (ncs.backgroundImage !== 'none') return null // gradient or photo
@@ -150,6 +181,10 @@ const collect = () => {
     if (el.children.length || !vis(el)) continue
     const text = el.textContent?.trim()
     if (!text) continue
+    // Decorative text is exempt under WCAG 1.4.3. The only such text on the site
+    // is the measuring rails' tick numbers, which sit in an aria-hidden subtree
+    // and carry no information a user needs.
+    if (el.closest('[aria-hidden="true"]')) continue
     const cs = getComputedStyle(el)
     let fg = parse(cs.color)
     if (!fg) continue

@@ -104,6 +104,26 @@ export default function Product() {
   const pairs = boughtTogether(product)
   const related = relatedTo(product)
 
+  /**
+   * The mono label/value strip under the banner, mirroring the reference
+   * template's "ROLE IN PROJECT / PROJECT YEAR" meta row. Four cells so the row
+   * divides evenly at every breakpoint.
+   */
+  const metaStrip = [
+    { label: "Price", value: formatPrice(product.price) },
+    { label: "Category", value: subName ?? category?.name ?? "Shop" },
+    {
+      label: "Availability",
+      value: stock.label,
+    },
+    {
+      label: product.compatibility?.length ? "Fits" : "Guarantee",
+      value: product.compatibility?.length
+        ? `${product.compatibility.length} model${product.compatibility.length === 1 ? "" : "s"}`
+        : "12 months",
+    },
+  ]
+
   const faqs = [
     {
       q: "What does the 12-month guarantee cover?",
@@ -139,7 +159,7 @@ export default function Product() {
 
   return (
     <>
-      <div className="content-boundary pt-8">
+      <div className="content-boundary pt-6">
         <Breadcrumbs
           trail={[
             { label: "Home", to: "/" },
@@ -157,27 +177,59 @@ export default function Product() {
         />
       </div>
 
-      <div className="content-boundary grid gap-10 py-8 lg:grid-cols-2 lg:gap-16">
-        {/* One field, no nested wells: the image gets the whole column. */}
-        <div className="media-frame min-w-0 aspect-square">
+      {/* Wide banner image with the name laid over it, then the mono
+          label/value meta strip — the reference template's detail-page opening.
+          A square image in a half-width column was a shop layout wearing the
+          design's clothes; this is the design's own composition. */}
+      <div className="content-boundary pt-4">
+        <div className="media-frame relative aspect-[4/3] md:aspect-[21/9]">
           <ProductImage product={product} priority />
+          <div
+            className="absolute inset-0 bg-gradient-to-t from-ink-950/90 via-ink-950/65 to-transparent"
+            aria-hidden="true"
+          />
+          <div className="absolute inset-x-0 bottom-0 p-6 md:p-10">
+            <p className="micro-label text-white">
+              {product.brand}
+              {subName ? ` // ${subName}` : ""}
+            </p>
+            <h1 className="section-heading mt-3 text-white">{product.name}</h1>
+          </div>
+        </div>
+
+        <dl className="grid grid-cols-2 border-b border-line md:grid-cols-4">
+          {metaStrip.map((item, i) => (
+            <div
+              key={item.label}
+              className={
+                "flex flex-col gap-1.5 py-5 " +
+                (i % 2 === 1 ? "border-l border-line pl-4 " : "") +
+                (i > 1 ? "border-t border-line md:border-t-0 " : "") +
+                (i > 0 ? "md:border-l md:pl-4" : "")
+              }
+            >
+              <dt className="micro-label">{item.label}</dt>
+              <dd className="figure m-0 text-base font-extrabold">
+                {item.value}
+              </dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+
+      <div className="content-boundary grid gap-10 py-10 lg:grid-cols-[1.1fr_1fr] lg:gap-16">
+        <div className="prose-body min-w-0">
+          <p className="text-lg text-ink-800">{product.blurb}</p>
+          {product.description?.map((para) => <p key={para}>{para}</p>)}
         </div>
 
         <div className="flex min-w-0 flex-col gap-5">
-          <div>
-            <p className="micro-label">{product.brand}</p>
-            <h1 className="section-heading mt-3 text-3xl md:text-4xl">
-              {product.name}
-            </h1>
-            <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2">
-              <Rating value={product.rating} />
-              <span className="text-sm text-ink-500">
-                {product.rating} out of 5 · {product.reviews} reviews
-              </span>
-            </div>
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+            <Rating value={product.rating} />
+            <span className="text-sm text-ink-500">
+              {product.rating} out of 5 · {product.reviews} reviews
+            </span>
           </div>
-
-          <p className="text-lg text-ink-600">{product.blurb}</p>
 
           <PriceTag
             price={product.price}
@@ -278,21 +330,8 @@ export default function Product() {
 
       <div className="content-boundary grid gap-10 py-8 lg:grid-cols-3 lg:gap-16">
         <div className="min-w-0 lg:col-span-2">
-          {product.description ? (
-            <section>
-              <h2 className="section-heading-sm text-xl md:text-2xl">
-                Description
-              </h2>
-              <div className="prose-body mt-4">
-                {product.description.map((para) => (
-                  <p key={para}>{para}</p>
-                ))}
-              </div>
-            </section>
-          ) : null}
-
           {product.includes ? (
-            <section className="mt-10">
+            <section>
               <h2 className="section-heading-sm text-xl md:text-2xl">
                 What is in the kit
               </h2>

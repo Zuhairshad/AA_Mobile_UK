@@ -90,6 +90,19 @@ function ServiceCard({
           (tall ? "aspect-[16/9] md:aspect-[21/9]" : "aspect-[4/3]")
         }
       >
+        {/* Window chrome, straight off the reference's work cards. Decorative
+            only, so it is out of the accessibility tree. */}
+        <div
+          className="absolute top-5 left-6 z-10 flex items-center gap-1.5 md:left-8"
+          aria-hidden="true"
+        >
+          <span className="size-2 rounded-full bg-[#e0564a]" />
+          <span className="size-2 rounded-full bg-[#4a4a4a]" />
+          <span className="size-2 rounded-full bg-[#3fa855]" />
+        </div>
+        <p className="micro-label micro-label-invert absolute top-11 left-6 z-10 max-w-[80%] truncate md:left-8">
+          {service.blurb.split(".")[0]}
+        </p>
         {/* The image gets the frame minus the caption's own band. Filling the
             whole frame ran the artwork behind the title, so a battery looked
             cropped at the card's bottom edge. */}

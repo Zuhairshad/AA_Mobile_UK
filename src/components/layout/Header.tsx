@@ -7,10 +7,12 @@ import { cx } from "../../lib/cx"
 import Icon from "../ui/Icon"
 import Logo from "./Logo"
 import SearchBox from "./SearchBox"
+import { buttonClass } from "../ui/Button"
 
 export default function Header() {
   const [openMenu, setOpenMenu] = useState<string | null>(null)
   const [menuOpen, setMenuOpen] = useState(false)
+  const [searchOpen, setSearchOpen] = useState(false)
   const { count, openDrawer } = useCart()
   const location = useLocation()
   const nav = useRef<HTMLElement>(null)
@@ -19,6 +21,7 @@ export default function Header() {
   useEffect(() => {
     setOpenMenu(null)
     setMenuOpen(false)
+    setSearchOpen(false)
   }, [location.pathname, location.hash])
 
   useEffect(() => {
@@ -26,6 +29,16 @@ export default function Header() {
       if (e.key === "Escape") {
         setOpenMenu(null)
         setMenuOpen(false)
+        setSearchOpen(false)
+      }
+      // "/" has to open the sheet, because the input it used to focus is no
+      // longer in the DOM until the sheet exists.
+      if (e.key === "/") {
+        const el = e.target as HTMLElement | null
+        if (el && /^(INPUT|TEXTAREA|SELECT)$/.test(el.tagName)) return
+        if (el?.isContentEditable) return
+        e.preventDefault()
+        setSearchOpen(true)
       }
     }
     document.addEventListener("keydown", onKey)
@@ -43,11 +56,11 @@ export default function Header() {
 
   // Prevent the page scrolling behind the mobile drawer.
   useEffect(() => {
-    document.body.style.overflow = menuOpen ? "hidden" : ""
+    document.body.style.overflow = menuOpen || searchOpen ? "hidden" : ""
     return () => {
       document.body.style.overflow = ""
     }
-  }, [menuOpen])
+  }, [menuOpen, searchOpen])
 
   return (
     <header className="sticky top-0 z-40 border-b border-line bg-white/95 backdrop-blur">
@@ -58,7 +71,7 @@ export default function Header() {
       <div className="content-boundary flex h-16 items-center gap-3">
         <button
           type="button"
-          className="btn btn-ghost btn-icon lg:hidden"
+          className="btn btn-ghost btn-icon -ml-2 lg:hidden"
           aria-label="Open navigation menu"
           aria-expanded={menuOpen}
           onClick={() => setMenuOpen(true)}
@@ -71,8 +84,14 @@ export default function Header() {
           <Logo markOnly className="sm:hidden" />
         </Link>
 
-        <nav ref={nav} className="hidden lg:block" aria-label="Main">
-          <ul className="flex items-center gap-1">
+        {/* Centred absolutely: flexing it would shift the nav every time the
+            cart badge appears or the wordmark changes width. */}
+        <nav
+          ref={nav}
+          className="absolute left-1/2 hidden -translate-x-1/2 lg:block"
+          aria-label="Main"
+        >
+          <ul className="flex items-center gap-2">
             {navMenus.map((menu) => {
               const open = openMenu === menu.label
               return (
@@ -88,22 +107,22 @@ export default function Header() {
                     aria-haspopup="true"
                     onClick={() => setOpenMenu(open ? null : menu.label)}
                     className={cx(
-                      "btn btn-ghost btn-md font-mono",
-                      open && "bg-ink-100",
+                      "micro-label flex items-center gap-1.5 px-4 py-3 transition-colors",
+                      open ? "text-ink-950" : "hover:text-ink-950",
                     )}
                   >
                     {menu.label}
                     <Icon
                       name="chevronDown"
                       className={cx(
-                        "size-4 transition-transform",
+                        "size-3 transition-transform",
                         open && "-rotate-180",
                       )}
                     />
                   </button>
 
                   {open ? (
-                    <ul className="absolute top-full left-0 z-50 w-90 overflow-hidden border border-line bg-white p-2 shadow-lg">
+                    <ul className="absolute top-full left-1/2 z-50 w-90 -translate-x-1/2 overflow-hidden border border-line bg-white p-2 shadow-lg">
                       {menu.items.map((item) => (
                         <li key={item.to + item.label}>
                           <Link
@@ -127,37 +146,79 @@ export default function Header() {
           </ul>
         </nav>
 
-        <div className="ml-auto hidden max-w-md flex-1 lg:block">
-          <SearchBox />
+        <div className="ml-auto flex items-center gap-1.5">
+          <button
+            type="button"
+            onClick={() => setSearchOpen(true)}
+            className="micro-label flex items-center gap-2 border border-line px-3 py-2.5 transition-colors hover:border-ink-400 hover:text-ink-950"
+            aria-label="Search phones, parts and tools"
+          >
+            <Icon name="search" className="size-4" />
+            <span className="hidden sm:inline">Search</span>
+            <kbd className="hidden bg-ink-100 px-1.5 py-0.5 font-mono text-[10px] leading-none text-ink-600 sm:block">
+              /
+            </kbd>
+          </button>
+
+          <button
+            type="button"
+            onClick={openDrawer}
+            className="btn btn-ghost btn-icon relative"
+            aria-label={
+              count > 0 ? `Open basket, ${count} items` : "Open basket, empty"
+            }
+          >
+            <Icon name="cart" />
+            {count > 0 ? (
+              <span className="absolute -top-0.5 -right-0.5 flex size-5 items-center justify-center rounded-full bg-primary text-[10px] font-semibold text-white">
+                {count > 99 ? "99+" : count}
+              </span>
+            ) : null}
+          </button>
+
+          <Link
+            to="/repairs#book"
+            className={buttonClass("primary", "md", "ml-1 hidden md:inline-flex")}
+          >
+            Book a repair
+          </Link>
         </div>
-
-        <button
-          type="button"
-          onClick={openDrawer}
-          className="btn btn-ghost btn-icon relative ml-auto lg:ml-0"
-          aria-label={
-            count > 0 ? `Open basket, ${count} items` : "Open basket, empty"
-          }
-        >
-          <Icon name="cart" />
-          {count > 0 ? (
-            <span className="absolute -top-0.5 -right-0.5 flex size-5 items-center justify-center rounded-full bg-primary text-[10px] font-semibold text-white">
-              {count > 99 ? "99+" : count}
-            </span>
-          ) : null}
-        </button>
       </div>
 
-      {/* Mobile: search sits on its own row so it gets full width. */}
-      <div className="content-boundary pb-3 lg:hidden">
-        <SearchBox placeholder="Search phones, parts and tools" />
-      </div>
+      {/* Search sheet. Opening it on demand is what frees the centre of the bar
+          for the nav; the "/" shortcut opens it too, so the keycap on the
+          button is a real affordance rather than decoration. */}
+      {searchOpen ? (
+        <div className="fixed inset-0 z-50">
+          <button
+            type="button"
+            className="absolute inset-0 bg-ink-950/40"
+            aria-label="Close search"
+            onClick={() => setSearchOpen(false)}
+          />
+          <div className="absolute inset-x-0 top-0 border-b border-line bg-white">
+            <div className="content-boundary flex items-center gap-3 py-4">
+              <div className="min-w-0 flex-1">
+                <SearchBox variant="hero" autoFocus />
+              </div>
+              <button
+                type="button"
+                className="btn btn-ghost btn-icon"
+                aria-label="Close search"
+                onClick={() => setSearchOpen(false)}
+              >
+                <Icon name="close" />
+              </button>
+            </div>
+          </div>
+        </div>
+      ) : null}
 
       {menuOpen ? (
         <div className="fixed inset-0 z-50 lg:hidden">
           <button
             type="button"
-            className="absolute inset-0 bg-black/50"
+            className="absolute inset-0 bg-ink-950/50"
             aria-label="Close navigation menu"
             onClick={() => setMenuOpen(false)}
           />
@@ -203,6 +264,15 @@ export default function Header() {
                 About us
               </Link>
             </nav>
+            {/* The header CTA is md-and-up only, so it lives here on a phone. */}
+            <div className="border-t border-line p-4">
+              <Link
+                to="/repairs#book"
+                className={buttonClass("primary", "lg", "w-full")}
+              >
+                Book a repair
+              </Link>
+            </div>
           </div>
         </div>
       ) : null}

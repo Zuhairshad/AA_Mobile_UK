@@ -34,12 +34,26 @@ const socials = [
   },
 ] as const
 
+/** The bottom bar's two link cells. Real routes only — no placeholder hrefs. */
+const barLinks = [
+  { to: "/", label: "Home" },
+  { to: "/parts", label: "Shop" },
+  { to: "/repairs", label: "Repairs" },
+  { to: "/guides", label: "Guides" },
+]
+
+const barLinksSecondary = [
+  { to: "/about", label: "About" },
+  { to: "/sitemap", label: "Sitemap" },
+  { to: "/sell", label: "Trade in" },
+]
+
 export default function Footer() {
   const [email, setEmail] = useState("")
   const [signedUp, setSignedUp] = useState(false)
 
   return (
-    <footer className="bg-dark py-14 text-dark-muted">
+    <footer className="bg-dark pt-14 text-dark-muted">
       <div className="content-boundary">
         <Link
           to="/"
@@ -134,21 +148,52 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="flex flex-col gap-4 border-t border-white/15 pt-6 md:flex-row md:items-center md:justify-between">
+        <ul className="flex flex-wrap gap-2 border-t border-white/15 pt-8">
+          {paymentMethods.map((method) => (
+            <li
+              key={method}
+              className="micro-label micro-label-invert border border-white/15 px-2 py-1.5"
+            >
+              {method}
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      {/* Single-row bar with dotted dividers, as on the reference template:
+          three cells of mono links with the legal line in the middle. */}
+      <div className="mt-12 border-t border-white/15">
+        <div className="content-boundary grid divide-y divide-dotted divide-white/20 md:grid-cols-3 md:divide-x md:divide-y-0">
+          <ul className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 py-5 md:justify-start">
+            {barLinks.map((link) => (
+              <li key={link.to}>
+                <Link
+                  to={link.to}
+                  className="micro-label micro-label-invert transition-colors hover:text-white"
+                >
+                  {link.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+
           {/* Deliberately not a well-formed company/VAT number. A plausible one
               here reads as fact and could point at a real registration, so the
               placeholder is left obvious until the real details are supplied. */}
-          <p className="micro-label micro-label-invert">
-            © {new Date().getFullYear()} {site.name} · Company no. [COMPANY
-            NUMBER] · VAT [VAT NUMBER]
+          <p className="micro-label micro-label-invert flex items-center justify-center py-5 text-center">
+            © {new Date().getFullYear()} {site.name} · Co. no. [COMPANY NUMBER] ·
+            VAT [VAT NUMBER]
           </p>
-          <ul className="flex flex-wrap gap-2">
-            {paymentMethods.map((method) => (
-              <li
-                key={method}
-                className="micro-label micro-label-invert border border-white/15 px-2 py-1.5"
-              >
-                {method}
+
+          <ul className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 py-5 md:justify-end">
+            {barLinksSecondary.map((link) => (
+              <li key={link.to}>
+                <Link
+                  to={link.to}
+                  className="micro-label micro-label-invert transition-colors hover:text-white"
+                >
+                  {link.label}
+                </Link>
               </li>
             ))}
           </ul>

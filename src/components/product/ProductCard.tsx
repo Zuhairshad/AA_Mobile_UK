@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom"
 import { badgeMeta, badgesFor, type Product } from "../../data/catalogue"
+import { subcategoryName } from "../../data/taxonomy"
 import { useCart } from "../../lib/cart"
 import { useToast } from "../../lib/toast"
 import { cx } from "../../lib/cx"
@@ -14,6 +15,8 @@ type Props = {
   /** Fixed width for carousel use; grid cells stretch instead. */
   fixedWidth?: boolean
   priority?: boolean
+  /** `wide` is the promoted first item of a collection grid. */
+  aspect?: "square" | "wide"
 }
 
 /**
@@ -24,22 +27,41 @@ type Props = {
  * which left the actual photograph occupying about a third of the cell and
  * showed two backgrounds behind every lifestyle shot. Removing both layers of
  * padding roughly doubles the rendered image at the same grid width.
+ *
+ * The label above the title is the part type in the accent colour — the one
+ * place the reference template uses colour on a collection card, and it does
+ * more work than the brand did: on a listing of 401 parts, "Screens & Displays"
+ * distinguishes rows where "AA Mobile" repeated 401 times does not.
  */
-export default function ProductCard({ product, fixedWidth, priority }: Props) {
+export default function ProductCard({
+  product,
+  fixedWidth,
+  priority,
+  aspect = "square",
+}: Props) {
   const { add } = useCart()
   const { push } = useToast()
   const badges = badgesFor(product)
   const lead = badges[0]
   const soldOut = product.stock === "out"
+  const kicker =
+    subcategoryName(product.category, product.subcategory) ?? product.brand
+  const wide = aspect === "wide"
 
   return (
     <article
       className={cx(
         "group product-card",
         fixedWidth && "w-[280px] md:w-[340px]",
+        wide && "md:grid md:grid-cols-[2fr_1fr] md:items-end md:gap-8",
       )}
     >
-      <div className="product-card-well">
+      <div
+        className={cx(
+          "product-card-well",
+          wide && "aspect-[16/10] md:aspect-[21/9]",
+        )}
+      >
         <ProductImage product={product} priority={priority} />
 
         {/* Over the image rather than under the price: the badge is about the
@@ -58,18 +80,31 @@ export default function ProductCard({ product, fixedWidth, priority }: Props) {
       </div>
 
       <div className="flex flex-1 flex-col gap-2">
-        <p className="micro-label">{product.brand}</p>
+        <p className="micro-label text-primary">{kicker}</p>
 
         <Link to={`/product/${product.id}`} className="stretched-link">
-          <h3 className="section-heading-sm line-clamp-2 text-base md:text-lg">
+          <h3
+            className={cx(
+              "section-heading-sm line-clamp-2",
+              wide ? "text-lg md:text-2xl" : "text-base md:text-lg",
+            )}
+          >
             {product.name}
           </h3>
         </Link>
 
+        {wide ? (
+          <p className="mt-1 line-clamp-2 text-sm text-ink-500">{product.blurb}</p>
+        ) : null}
+
         <Rating value={product.rating} reviews={product.reviews} />
 
         <div className="mt-auto flex flex-col gap-3 pt-1">
-          <PriceTag price={product.price} compareAt={product.compareAt} />
+          <PriceTag
+            price={product.price}
+            compareAt={product.compareAt}
+            size={wide ? "lg" : "md"}
+          />
 
           {/* Sits above the stretched link so it stays clickable. */}
           <Button

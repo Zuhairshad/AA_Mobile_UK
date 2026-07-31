@@ -11,12 +11,16 @@ type Props = {
   variant?: "header" | "hero"
   placeholder?: string
   className?: string
+  /** Take focus on mount — for the header's search sheet, which only exists
+      once the user has asked for it. */
+  autoFocus?: boolean
 }
 
 export default function SearchBox({
   variant = "header",
   placeholder = "Search phones, parts and tools",
   className,
+  autoFocus,
 }: Props) {
   const [query, setQuery] = useState("")
   const [open, setOpen] = useState(false)
@@ -105,6 +109,10 @@ export default function SearchBox({
           />
           <input
             ref={input}
+            // eslint-disable-next-line jsx-a11y/no-autofocus -- only set when
+            // the user has just opened the search sheet, which exists to be
+            // typed into.
+            autoFocus={autoFocus}
             type="search"
             value={query}
             onChange={(e) => {

@@ -138,8 +138,14 @@ export default function Category() {
 
   return (
     <>
+      {/* Compact header. The heading, tagline and full intro paragraph used to
+          take 350px before a single product appeared; the reference template
+          gives its collection pages no header block at all. The intro still
+          matters for search and for a first-time visitor, so it stays — folded
+          into one measured column beside the title rather than stacked above
+          the grid. */}
       <div className="border-b border-line bg-white">
-        <div className="content-boundary py-8 md:py-10">
+        <div className="content-boundary py-6">
           <Breadcrumbs
             trail={[
               { label: "Home", to: "/" },
@@ -151,13 +157,18 @@ export default function Category() {
                 : [{ label: category.name }]),
             ]}
           />
-          <h1 className="section-heading mt-4">{heading}</h1>
-          <p className="section-lede mt-2">{lede}</p>
-          {!sub ? (
-            <p className="prose-body mt-4 max-w-3xl text-sm">
-              {category.intro}
+          <div className="mt-4 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between lg:gap-12">
+            <div className="min-w-0">
+              <p className="micro-label text-primary">
+                {formatCount(results.length)}{" "}
+                {results.length === 1 ? "product" : "products"}
+              </p>
+              <h1 className="section-heading mt-3">{heading}</h1>
+            </div>
+            <p className="section-lede max-w-md text-sm lg:text-right">
+              {sub ? lede : category.intro}
             </p>
-          ) : null}
+          </div>
         </div>
       </div>
 
@@ -199,7 +210,7 @@ export default function Category() {
 
           <div className="min-w-0 flex-1">
             <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
-              <p className="text-sm text-ink-500" role="status">
+              <p className="micro-label" role="status">
                 {formatCount(results.length)}{" "}
                 {results.length === 1 ? "result" : "results"}
                 {selectedCount > 0 ? ` · ${selectedCount} filters applied` : ""}
@@ -259,7 +270,10 @@ export default function Category() {
                 </Button>
               </div>
             ) : (
-              <ProductGrid products={pageItems} />
+              <ProductGrid
+                products={pageItems}
+                feature={safePage === 1 && selectedCount === 0}
+              />
             )}
 
             {pageCount > 1 ? (
