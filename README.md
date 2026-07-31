@@ -13,6 +13,7 @@ npm install
 npm run dev      # dev server
 npm run build    # tsc -b && vite build
 npm run lint     # oxlint
+npm run audit    # UI audit (needs a running preview: BASE=http://127.0.0.1:4173)
 npm run preview  # serve the production build
 ```
 
@@ -152,6 +153,30 @@ into an "add all tools" button.
   is ever evaluated.
 - **Recently viewed** persists to `localStorage`, excludes the item on screen,
   and drops ids no longer in the catalogue.
+
+## UI audit
+
+`scripts/audit-ui.mjs` drives Chromium over representative routes at 320/768/1440
+and exits non-zero on findings. It covers duplicate ids, heading-level skips,
+controls with no accessible name, unlabelled fields, colour contrast, target
+sizes, horizontal overflow, dead hrefs, and keyboard behaviour — skip link, focus
+visibility, and whether focus can escape the modal drawer.
+
+```bash
+npm run build && npm run preview        # in one shell
+BASE=http://127.0.0.1:4173 npm run audit
+```
+
+Two deliberate refusals to guess, both of which produced large numbers of false
+positives before they were fixed:
+
+- Colours are resolved through a canvas rather than a regex. Tailwind v4 emits
+  `oklch()`, which an `rgb()` pattern misses silently — the check then walks past
+  the real background and measures against the body colour instead. That alone
+  produced 120 phantom contrast failures.
+- Text sitting on a gradient or a photo is skipped rather than measured against
+  an invented backdrop. Those cases are checked by sampling real pixels from a
+  screenshot instead.
 
 ## Notes
 

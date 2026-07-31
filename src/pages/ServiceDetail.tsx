@@ -109,7 +109,7 @@ export default function ServiceDetail() {
       </section>
 
       <div className="content-boundary grid gap-10 py-12 lg:grid-cols-3 lg:gap-16">
-        <div className="lg:col-span-2">
+        <div className="min-w-0 lg:col-span-2">
           <h2 className="text-2xl font-semibold">What this covers</h2>
           <div className="prose-body mt-4">
             {(service.detail ?? [service.blurb]).map((para) => (
@@ -185,7 +185,7 @@ export default function ServiceDetail() {
           </section>
         </div>
 
-        <aside className="lg:col-span-1">
+        <aside className="min-w-0 lg:col-span-1">
           {service.includes ? (
             <section className="rounded-xl border border-gray-200 bg-white p-5">
               <h2 className="text-lg font-semibold">What is included</h2>

@@ -27,19 +27,52 @@ export default function CartDrawer() {
   } = useCart()
   const panel = useRef<HTMLDivElement>(null)
   const closeButton = useRef<HTMLButtonElement>(null)
+  const returnFocusTo = useRef<HTMLElement | null>(null)
 
   useEffect(() => {
     if (!drawerOpen) return
+
+    // Remember what opened it so focus can go back there on close.
+    returnFocusTo.current = document.activeElement as HTMLElement | null
+
+    const focusable = () =>
+      [
+        ...(panel.current?.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), input:not([disabled]), select, textarea, [tabindex]:not([tabindex="-1"])',
+        ) ?? []),
+      ].filter((el) => el.offsetParent !== null)
+
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") closeDrawer()
+      if (e.key === "Escape") {
+        closeDrawer()
+        return
+      }
+      // Trap: the panel is aria-modal, so Tab must not walk out into the page
+      // behind it. Without this, focus silently leaves the dialog and a keyboard
+      // user is tabbing through content they cannot see.
+      if (e.key !== "Tab") return
+      const items = focusable()
+      if (items.length === 0) return
+      const first = items[0]
+      const last = items[items.length - 1]
+      const active = document.activeElement
+      if (e.shiftKey && (active === first || !panel.current?.contains(active))) {
+        e.preventDefault()
+        last.focus()
+      } else if (!e.shiftKey && (active === last || !panel.current?.contains(active))) {
+        e.preventDefault()
+        first.focus()
+      }
     }
+
     document.addEventListener("keydown", onKey)
     document.body.style.overflow = "hidden"
-    // Move focus in so the panel is reachable by keyboard immediately.
     closeButton.current?.focus()
+
     return () => {
       document.removeEventListener("keydown", onKey)
       document.body.style.overflow = ""
+      returnFocusTo.current?.focus?.()
     }
   }, [drawerOpen, closeDrawer])
 

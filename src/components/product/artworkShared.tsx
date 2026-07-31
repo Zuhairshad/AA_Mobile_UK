@@ -53,6 +53,29 @@ export function ArtworkDefs() {
   )
 }
 
+/**
+ * Paint-server host. Mounted once near the root so the gradient ids exist
+ * exactly once in the document — every artwork SVG referencing its own copy
+ * meant a listing page carried twelve duplicates of each id, which is invalid
+ * HTML and relies on the browser picking the first definition.
+ *
+ * Must not be display:none, or the gradients stop resolving; a zero-sized
+ * absolutely positioned SVG is the standard way to keep them live.
+ */
+export function ArtworkPaintServers() {
+  return (
+    <svg
+      width="0"
+      height="0"
+      aria-hidden="true"
+      focusable="false"
+      style={{ position: "absolute" }}
+    >
+      <ArtworkDefs />
+    </svg>
+  )
+}
+
 /** Square canvas every illustration is drawn on. */
 export function ArtworkSvg({
   className,
@@ -68,7 +91,6 @@ export function ArtworkSvg({
       aria-hidden="true"
       focusable="false"
     >
-      <ArtworkDefs />
       {children}
     </svg>
   )

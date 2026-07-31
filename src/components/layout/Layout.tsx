@@ -2,6 +2,7 @@ import { useEffect } from "react"
 import { Outlet, useLocation } from "react-router-dom"
 import Header from "./Header"
 import Footer from "./Footer"
+import { ArtworkPaintServers } from "../product/artworkShared"
 import CartDrawer from "../cart/CartDrawer"
 import Toaster from "../ui/Toaster"
 
@@ -27,6 +28,7 @@ export default function Layout() {
         <Outlet />
       </main>
       <Footer />
+      <ArtworkPaintServers />
       <CartDrawer />
       <Toaster />
     </div>

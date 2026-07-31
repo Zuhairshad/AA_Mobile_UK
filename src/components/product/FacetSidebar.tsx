@@ -92,7 +92,7 @@ export default function FacetSidebar({
                 onClick={() =>
                   setExpanded((prev) => ({ ...prev, [group.key]: !prev[group.key] }))
                 }
-                className="mt-1.5 px-1 text-sm font-medium text-primary hover:underline"
+                className="mt-1.5 px-1 py-1 text-sm font-medium text-primary hover:underline"
               >
                 {open ? "Show fewer" : `Show ${hidden} more`}
               </button>

@@ -256,7 +256,7 @@ export default function Product() {
                 </p>
                 <Link
                   to="/repairs#book"
-                  className="mt-2 inline-block font-medium text-primary hover:underline"
+                  className="mt-2 inline-block py-1 font-medium text-primary hover:underline"
                 >
                   Book a fitting →
                 </Link>
@@ -267,7 +267,7 @@ export default function Product() {
       </div>
 
       <div className="content-boundary grid gap-10 py-8 lg:grid-cols-3 lg:gap-16">
-        <div className="lg:col-span-2">
+        <div className="min-w-0 lg:col-span-2">
           {product.description ? (
             <section>
               <h2 className="text-2xl font-semibold">Description</h2>
@@ -327,7 +327,7 @@ export default function Product() {
           </section>
         </div>
 
-        <div className="lg:col-span-1">
+        <div className="min-w-0 lg:col-span-1">
           {product.specs ? (
             <section>
               <h2 className="text-2xl font-semibold">Specifications</h2>

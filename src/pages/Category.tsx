@@ -219,7 +219,7 @@ export default function Category() {
                         else next.set("sort", e.target.value)
                       })
                     }
-                    className="h-8 rounded-lg border border-line bg-white px-2 text-sm focus:border-brand-500 focus:outline-none"
+                    className="h-8 rounded-lg border border-line bg-white px-2 text-sm focus:border-brand-500"
                   >
                     {sortOptions.map((option) => (
                       <option key={option.value} value={option.value}>
@@ -230,6 +230,10 @@ export default function Category() {
                 </label>
               </div>
             </div>
+
+            <h2 className="sr-only">
+              {sub ? sub.name : category.name} products
+            </h2>
 
             {pageItems.length === 0 ? (
               <div className="rounded-xl border border-gray-200 bg-white p-10 text-center">

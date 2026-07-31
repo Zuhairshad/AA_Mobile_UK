@@ -70,7 +70,7 @@ export default function Guide() {
       </div>
 
       <div className="content-boundary grid gap-10 py-10 lg:grid-cols-3 lg:gap-16">
-        <div className="lg:col-span-2">
+        <div className="min-w-0 lg:col-span-2">
           <div className="flex items-start gap-3 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
             <Icon name="shield" className="mt-0.5 size-5 shrink-0" />
             <p>
@@ -148,7 +148,7 @@ export default function Guide() {
           ) : null}
         </div>
 
-        <aside className="lg:col-span-1">
+        <aside className="min-w-0 lg:col-span-1">
           {tools.length > 0 ? (
             <section className="rounded-xl border border-gray-200 bg-white p-5">
               <h2 className="text-lg font-semibold">Tools you will need</h2>

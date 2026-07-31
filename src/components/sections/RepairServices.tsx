@@ -25,7 +25,9 @@ export default function RepairServices({ limit, showHeading = true }: Props) {
               months on the work. Walk in or book a slot.
             </p>
           </div>
-        ) : null}
+        ) : (
+          <h2 className="sr-only">Repair services</h2>
+        )}
 
         <ul className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {services.map((service) => (

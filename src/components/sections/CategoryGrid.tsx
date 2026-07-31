@@ -15,6 +15,8 @@ export default function CategoryGrid() {
 
   return (
     <section className="content-boundary pb-12 md:pb-16">
+      {/* The tiles are h3s; without this the page jumps h1 -> h3. */}
+      <h2 className="sr-only">Browse by category</h2>
       <div className="grid grid-cols-12 gap-4">
         {featured.map((category) => (
           <div key={category.slug} className="col-span-12 md:col-span-6">

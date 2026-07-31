@@ -90,7 +90,7 @@ export default function Sitemap() {
               <div key={category.slug}>
                 <Link
                   to={`/${category.slug}`}
-                  className="text-sm font-semibold text-primary hover:underline"
+                  className="inline-block py-1 text-sm font-semibold text-primary hover:underline"
                 >
                   {category.name}
                 </Link>

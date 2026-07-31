@@ -5,12 +5,17 @@ import Logo from "./Logo"
 import Button from "../ui/Button"
 import Icon from "../ui/Icon"
 
+/**
+ * Real destinations rather than href="/" — every icon previously navigated to
+ * the home page, which reads as a broken link. Handles match the ones used in
+ * the social wall copy; swap them for the real accounts before launch.
+ */
 const socials = [
-  { name: "Instagram", icon: "instagram" },
-  { name: "Facebook", icon: "facebook" },
-  { name: "X", icon: "x" },
-  { name: "YouTube", icon: "youtube" },
-  { name: "TikTok", icon: "tiktok" },
+  { name: "Instagram", icon: "instagram", href: "https://www.instagram.com/aamobileuk" },
+  { name: "Facebook", icon: "facebook", href: "https://www.facebook.com/aamobileuk" },
+  { name: "X", icon: "x", href: "https://x.com/aamobileuk" },
+  { name: "YouTube", icon: "youtube", href: "https://www.youtube.com/@aamobileuk" },
+  { name: "TikTok", icon: "tiktok", href: "https://www.tiktok.com/@aamobileuk" },
 ] as const
 
 export default function Footer() {
@@ -91,13 +96,17 @@ export default function Footer() {
               </form>
             )}
 
-            <div className="mt-6 flex flex-wrap gap-3">
+            {/* size-9 rather than the bare 20px icon: a 20x20 target is below
+                the 24x24 minimum and hard to hit on a phone. */}
+            <div className="mt-6 flex flex-wrap gap-1">
               {socials.map((social) => (
                 <a
                   key={social.name}
-                  href="/"
-                  aria-label={social.name}
-                  className="text-gray-400 transition-colors hover:text-white"
+                  href={social.href}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  aria-label={`${site.name} on ${social.name}`}
+                  className="flex size-9 items-center justify-center rounded-lg text-gray-400 transition-colors hover:bg-white/10 hover:text-white"
                 >
                   <Icon name={social.icon} />
                 </a>
@@ -106,7 +115,8 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="flex flex-col gap-4 border-t border-gray-800 pt-6 text-xs text-gray-500 md:flex-row md:items-center md:justify-between">
+        {/* gray-400 rather than gray-500: on near-black gray-500 measures 4.16:1. */}
+        <div className="flex flex-col gap-4 border-t border-gray-800 pt-6 text-xs text-gray-400 md:flex-row md:items-center md:justify-between">
           <p>
             © {new Date().getFullYear()} {site.name}. Company no. 09284471. VAT
             GB 284 9917 03.

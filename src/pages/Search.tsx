@@ -30,6 +30,7 @@ export default function Search() {
 
       {products.length > 0 ? (
         <div className="mt-8">
+          <h2 className="sr-only">Matching products</h2>
           <ProductGrid products={products} />
         </div>
       ) : (
