@@ -68,44 +68,6 @@ export const valueProps: Array<{
   },
 ]
 
-/** Alternating image/text blocks on the home page. */
-export const splitBlocks: Array<{
-  id: string
-  heading: string
-  body: string
-  ctaLabel: string
-  ctaTo: string
-  photo: string
-  /** Image on the right instead of the left. */
-  flip?: boolean
-}> = [
-  {
-    id: "parts",
-    heading: "The right part, first time",
-    body: "Filter by your exact model and get a part that has been powered on and tested before it was packed. No mystery listings, no guessing at revisions.",
-    ctaLabel: "Shop repair parts",
-    ctaTo: "/parts",
-    photo: "iphone-15-pro-max",
-  },
-  {
-    id: "repairs",
-    heading: "Or let us fit it",
-    body: "Walk in with a cracked screen and walk out in forty-five minutes. Free diagnostic first, fixed price before we start, twelve months on the work.",
-    ctaLabel: "Book a repair",
-    ctaTo: "/repairs",
-    photo: "galaxy-s24-ultra",
-    flip: true,
-  },
-  {
-    id: "tools",
-    heading: "Tools built for the bench",
-    body: "Hardened S2 steel, anti-static handling and fix kits that pair the exact tools with the part you are replacing. The same kit our own technicians use.",
-    ctaLabel: "Shop tools & kits",
-    ctaTo: "/tools",
-    photo: "pixel-8-pro",
-  },
-]
-
 export const pressQuotes: Array<{ source: string; quote: string }> = [
   {
     source: "Birmingham Live",
@@ -125,15 +87,6 @@ export const pressQuotes: Array<{ source: string; quote: string }> = [
     source: "Midlands Business Post",
     quote: "Turned a market stall into the region's busiest independent repairer.",
   },
-]
-
-export const socialPosts: Array<{ handle: string; caption: string }> = [
-  { handle: "@aamobileuk", caption: "Sixty screens in, week one of term" },
-  { handle: "@repaircafebrum", caption: "Fixing night at the library" },
-  { handle: "@sarahfixesphones", caption: "First battery swap, went fine!" },
-  { handle: "@bhamtechschool", caption: "Year 10s stripping a Galaxy S9" },
-  { handle: "@aamobileuk", caption: "Water damage recovery, board saved" },
-  { handle: "@thecasehunter", caption: "New clear case, still clear at 8 months" },
 ]
 
 export const homeFaqs: AccordionItem[] = [

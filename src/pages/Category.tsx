@@ -1,7 +1,11 @@
 import { useEffect, useMemo, useState } from "react"
 import { Link, useParams, useSearchParams } from "react-router-dom"
 import { products } from "../data/catalogue"
-import { categoryBySlug, type CategorySlug, type FacetKey } from "../data/taxonomy"
+import {
+  categoryBySlug,
+  type CategorySlug,
+  type FacetKey,
+} from "../data/taxonomy"
 import {
   PAGE_SIZE,
   applyFacets,
@@ -58,7 +62,10 @@ export default function Category() {
 
   const pageCount = Math.max(1, Math.ceil(results.length / PAGE_SIZE))
   const safePage = Math.min(page, pageCount)
-  const pageItems = results.slice((safePage - 1) * PAGE_SIZE, safePage * PAGE_SIZE)
+  const pageItems = results.slice(
+    (safePage - 1) * PAGE_SIZE,
+    safePage * PAGE_SIZE,
+  )
 
   // A filter change can leave you past the last page; walk back rather than
   // showing an empty grid.
@@ -131,7 +138,7 @@ export default function Category() {
 
   return (
     <>
-      <div className="border-b border-gray-200 bg-white">
+      <div className="border-b border-line bg-white">
         <div className="content-boundary py-8 md:py-10">
           <Breadcrumbs
             trail={[
@@ -147,7 +154,9 @@ export default function Category() {
           <h1 className="section-heading mt-4">{heading}</h1>
           <p className="section-lede mt-2">{lede}</p>
           {!sub ? (
-            <p className="prose-body mt-4 max-w-3xl text-sm">{category.intro}</p>
+            <p className="prose-body mt-4 max-w-3xl text-sm">
+              {category.intro}
+            </p>
           ) : null}
         </div>
       </div>
@@ -184,13 +193,13 @@ export default function Category() {
       <div className="content-boundary py-8">
         <div className="flex gap-8">
           <aside className="hidden w-64 shrink-0 lg:block">
-            <h2 className="mb-4 text-lg font-semibold">Filter</h2>
+            <h2 className="micro-label mb-4">Filter</h2>
             {sidebar}
           </aside>
 
           <div className="min-w-0 flex-1">
             <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
-              <p className="text-sm text-gray-600" role="status">
+              <p className="text-sm text-ink-500" role="status">
                 {formatCount(results.length)}{" "}
                 {results.length === 1 ? "result" : "results"}
                 {selectedCount > 0 ? ` · ${selectedCount} filters applied` : ""}
@@ -208,7 +217,7 @@ export default function Category() {
                 </Button>
 
                 <label className="flex items-center gap-2 text-sm">
-                  <span className="sr-only sm:not-sr-only sm:text-gray-600">
+                  <span className="sr-only sm:not-sr-only sm:text-ink-500">
                     Sort by
                   </span>
                   <select
@@ -219,7 +228,7 @@ export default function Category() {
                         else next.set("sort", e.target.value)
                       })
                     }
-                    className="h-8 rounded-lg border border-line bg-white px-2 text-sm focus:border-brand-500"
+                    className="h-8 border border-line bg-white px-2 text-sm focus:border-brand-500"
                   >
                     {sortOptions.map((option) => (
                       <option key={option.value} value={option.value}>
@@ -236,12 +245,16 @@ export default function Category() {
             </h2>
 
             {pageItems.length === 0 ? (
-              <div className="rounded-xl border border-gray-200 bg-white p-10 text-center">
+              <div className="border border-line bg-white p-10 text-center">
                 <p className="font-semibold">Nothing matches those filters</p>
-                <p className="mt-2 text-sm text-gray-600">
+                <p className="mt-2 text-sm text-ink-500">
                   Try removing a filter, or search for your model directly.
                 </p>
-                <Button variant="outline" className="mt-4" onClick={clearFacets}>
+                <Button
+                  variant="outline"
+                  className="mt-4"
+                  onClick={clearFacets}
+                >
                   Clear all filters
                 </Button>
               </div>
@@ -265,11 +278,15 @@ export default function Category() {
                 </Button>
                 {pageWindow[0] > 1 ? (
                   <>
-                    <Button variant="outline" size="icon" onClick={() => goToPage(1)}>
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      onClick={() => goToPage(1)}
+                    >
                       1
                     </Button>
                     {pageWindow[0] > 2 ? (
-                      <span className="px-1 text-gray-500">…</span>
+                      <span className="px-1 text-ink-500">…</span>
                     ) : null}
                   </>
                 ) : null}
@@ -288,7 +305,7 @@ export default function Category() {
                 {pageWindow[pageWindow.length - 1] < pageCount ? (
                   <>
                     {pageWindow[pageWindow.length - 1] < pageCount - 1 ? (
-                      <span className="px-1 text-gray-500">…</span>
+                      <span className="px-1 text-ink-500">…</span>
                     ) : null}
                     <Button
                       variant="outline"
@@ -312,7 +329,7 @@ export default function Category() {
             ) : null}
 
             {category.slug === "parts" ? (
-              <p className="mt-8 text-sm text-gray-600">
+              <p className="mt-8 text-sm text-ink-500">
                 Looking for a specific model?{" "}
                 <Link to="/devices" className="text-primary hover:underline">
                   Browse by device
@@ -324,14 +341,16 @@ export default function Category() {
         </div>
       </div>
 
-      <section className="border-t border-gray-200 bg-white">
+      <section className="border-t border-line bg-white">
         <div className="content-boundary py-12 text-center">
-          <h2 className="text-2xl font-semibold">Quality guaranteed</h2>
+          <h2 className="section-heading-sm text-xl md:text-2xl">
+            Quality guaranteed
+          </h2>
           <p className="prose-body mx-auto mt-3 max-w-2xl">
-            We have spent years vetting suppliers so you do not have to gamble on
-            a listing. Every part and tool is covered by our 12-month guarantee,
-            and if something fails in normal use we replace it — no diagnostic
-            fee.{" "}
+            We have spent years vetting suppliers so you do not have to gamble
+            on a listing. Every part and tool is covered by our 12-month
+            guarantee, and if something fails in normal use we replace it — no
+            diagnostic fee.{" "}
             <Link to="/about" className="text-primary hover:underline">
               How our guarantee works
             </Link>
@@ -348,7 +367,7 @@ export default function Category() {
             onClick={() => setFiltersOpen(false)}
           />
           <div className="absolute inset-y-0 right-0 flex w-80 max-w-[85vw] flex-col bg-white">
-            <div className="flex h-16 shrink-0 items-center justify-between border-b border-gray-200 px-4">
+            <div className="flex h-16 shrink-0 items-center justify-between border-b border-line px-4">
               <span className="font-semibold">Filter</span>
               <button
                 type="button"
@@ -360,7 +379,7 @@ export default function Category() {
               </button>
             </div>
             <div className="flex-1 overflow-y-auto p-4">{sidebar}</div>
-            <div className="shrink-0 border-t border-gray-200 p-4">
+            <div className="shrink-0 border-t border-line p-4">
               <Button className="w-full" onClick={() => setFiltersOpen(false)}>
                 Show {formatCount(results.length)}{" "}
                 {results.length === 1 ? "result" : "results"}

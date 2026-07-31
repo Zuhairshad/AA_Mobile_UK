@@ -21,7 +21,7 @@ export default function Breadcrumbs({ trail, tone = "dark" }: Props) {
       <ol
         className={cx(
           "flex flex-wrap items-center gap-1 text-sm",
-          light ? "text-brand-100" : "text-gray-600",
+          light ? "text-dark-muted" : "text-ink-500",
         )}
       >
         {trail.map((crumb, i) => {
@@ -42,7 +42,7 @@ export default function Breadcrumbs({ trail, tone = "dark" }: Props) {
                 <span
                   className={cx(
                     last && "font-medium",
-                    last && (light ? "text-white" : "text-gray-900"),
+                    last && (light ? "text-white" : "text-ink-950"),
                   )}
                 >
                   {crumb.label}
@@ -51,7 +51,10 @@ export default function Breadcrumbs({ trail, tone = "dark" }: Props) {
               {!last ? (
                 <Icon
                   name="chevronRight"
-                  className={cx("size-3.5", light ? "text-brand-300" : "text-gray-400")}
+                  className={cx(
+                    "size-3.5",
+                    light ? "text-brand-300" : "text-ink-400",
+                  )}
                 />
               ) : null}
             </li>

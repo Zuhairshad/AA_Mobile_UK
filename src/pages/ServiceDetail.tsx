@@ -58,7 +58,7 @@ export default function ServiceDetail() {
 
   return (
     <>
-      <section className="bg-gradient-to-br from-brand-700 via-brand-800 to-brand-950">
+      <section className="bg-dark">
         <div className="content-boundary py-14 md:py-20">
           <Breadcrumbs
             tone="light"
@@ -71,7 +71,7 @@ export default function ServiceDetail() {
           <h1 className="font-display mt-4 text-4xl font-bold tracking-tight text-white md:text-5xl">
             {service.name}
           </h1>
-          <p className="mt-4 max-w-2xl text-lg text-brand-100 md:text-xl">
+          <p className="mt-4 max-w-2xl text-lg text-dark-muted md:text-xl">
             {service.blurb}
           </p>
 
@@ -79,7 +79,9 @@ export default function ServiceDetail() {
             <div>
               <dt className="text-sm text-brand-200">Price</dt>
               <dd className="mt-1 font-mono text-2xl font-bold">
-                {service.fromPrice === 0 ? "Free" : `from ${formatPrice(cheapest)}`}
+                {service.fromPrice === 0
+                  ? "Free"
+                  : `from ${formatPrice(cheapest)}`}
               </dd>
             </div>
             <div>
@@ -95,12 +97,19 @@ export default function ServiceDetail() {
           </dl>
 
           <div className="mt-8 flex flex-wrap gap-3">
-            <Link to="/repairs#book" className={buttonClass("outline", "lg", "border-transparent")}>
+            <Link
+              to="/repairs#book"
+              className={buttonClass("outline", "lg", "border-transparent")}
+            >
               Book this repair
             </Link>
             <Link
               to="/devices"
-              className={buttonClass("ghost", "lg", "text-white hover:bg-white/10")}
+              className={buttonClass(
+                "ghost",
+                "lg",
+                "text-white hover:bg-white/10",
+              )}
             >
               Find your device
             </Link>
@@ -110,27 +119,31 @@ export default function ServiceDetail() {
 
       <div className="content-boundary grid gap-10 py-12 lg:grid-cols-3 lg:gap-16">
         <div className="min-w-0 lg:col-span-2">
-          <h2 className="text-2xl font-semibold">What this covers</h2>
+          <h2 className="section-heading-sm text-xl md:text-2xl">
+            What this covers
+          </h2>
           <div className="prose-body mt-4">
             {(service.detail ?? [service.blurb]).map((para) => (
               <p key={para}>{para}</p>
             ))}
           </div>
 
-          <p className="mt-6 text-sm text-gray-600">
+          <p className="mt-6 text-sm text-ink-500">
             Devices covered: {service.covers.join(" · ")}
           </p>
 
           {priced.length > 0 ? (
             <section className="mt-10">
-              <h2 className="text-2xl font-semibold">Price by model</h2>
+              <h2 className="section-heading-sm text-xl md:text-2xl">
+                Price by model
+              </h2>
               <p className="prose-body mt-2 text-sm">
-                {priced.length} models priced. Fitted prices include the part, the
-                labour and the guarantee.
+                {priced.length} models priced. Fitted prices include the part,
+                the labour and the guarantee.
               </p>
-              <div className="mt-5 overflow-x-auto rounded-xl border border-gray-200 bg-white">
+              <div className="mt-5 overflow-x-auto border border-line bg-white">
                 <table className="w-full min-w-120 text-sm">
-                  <thead className="bg-gray-50 text-left">
+                  <thead className="bg-muted text-left">
                     <tr>
                       <th scope="col" className="px-4 py-3 font-semibold">
                         Model
@@ -143,10 +156,13 @@ export default function ServiceDetail() {
                       </th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-gray-200">
+                  <tbody className="divide-y divide-line">
                     {priced.map(({ device, fitted, part }) => (
                       <tr key={device.slug}>
-                        <th scope="row" className="px-4 py-3 text-left font-medium">
+                        <th
+                          scope="row"
+                          className="px-4 py-3 text-left font-medium"
+                        >
                           <Link
                             to={`/device/${device.slug}`}
                             className="hover:text-primary hover:underline"
@@ -178,7 +194,9 @@ export default function ServiceDetail() {
           ) : null}
 
           <section className="mt-10">
-            <h2 className="text-2xl font-semibold">Questions</h2>
+            <h2 className="section-heading-sm text-xl md:text-2xl">
+              Questions
+            </h2>
             <div className="mt-4">
               <Accordion items={faqs} />
             </div>
@@ -187,8 +205,8 @@ export default function ServiceDetail() {
 
         <aside className="min-w-0 lg:col-span-1">
           {service.includes ? (
-            <section className="rounded-xl border border-gray-200 bg-white p-5">
-              <h2 className="text-lg font-semibold">What is included</h2>
+            <section className="border border-line bg-white p-5">
+              <h2 className="section-heading-sm">What is included</h2>
               <ul className="mt-4 space-y-2">
                 {service.includes.map((item) => (
                   <li key={item} className="flex items-start gap-2 text-sm">
@@ -204,7 +222,7 @@ export default function ServiceDetail() {
           ) : null}
 
           {relatedGuides.length > 0 ? (
-            <section className="mt-6 rounded-xl border border-brand-200 bg-brand-50 p-5">
+            <section className="mt-6 border border-brand-200 bg-muted p-5">
               <h2 className="text-lg font-semibold text-brand-900">
                 Or do it yourself
               </h2>
@@ -217,9 +235,11 @@ export default function ServiceDetail() {
                   <li key={guide.slug}>
                     <Link
                       to={`/guide/${guide.slug}`}
-                      className="flex items-center justify-between gap-2 rounded-lg bg-white p-3 text-sm font-medium hover:text-primary"
+                      className="flex items-center justify-between gap-2 bg-white p-3 text-sm font-medium hover:text-primary"
                     >
-                      <span className="min-w-0 flex-1 truncate">{guide.title}</span>
+                      <span className="min-w-0 flex-1 truncate">
+                        {guide.title}
+                      </span>
                       <Badge tone="gray" size="sm">
                         {guide.difficulty}
                       </Badge>
@@ -231,7 +251,7 @@ export default function ServiceDetail() {
           ) : null}
 
           <section className="mt-6">
-            <h2 className="text-lg font-semibold">Other repairs</h2>
+            <h2 className="section-heading-sm">Other repairs</h2>
             <ul className="mt-3 space-y-2">
               {repairServices
                 .filter((s) => s.id !== service.id)
@@ -239,13 +259,16 @@ export default function ServiceDetail() {
                   <li key={other.id}>
                     <Link
                       to={`/repairs/${other.id}`}
-                      className="flex items-center justify-between gap-2 rounded-lg border border-gray-200 bg-white p-3 text-sm font-medium hover:border-gray-400 hover:text-primary"
+                      className="flex items-center justify-between gap-2 border border-line bg-white p-3 text-sm font-medium hover:border-ink-400 hover:text-primary"
                     >
                       <span className="flex items-center gap-2">
-                        <Icon name={other.glyph} className="size-4 text-brand-500" />
+                        <Icon
+                          name={other.glyph}
+                          className="size-4 text-ink-950"
+                        />
                         {other.name}
                       </span>
-                      <span className="text-xs text-gray-500">
+                      <span className="text-xs text-ink-500">
                         {other.fromPrice === 0
                           ? "Free"
                           : `from £${other.fromPrice}`}

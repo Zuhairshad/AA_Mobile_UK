@@ -1,62 +1,71 @@
 import { bestsellers, products } from "../data/catalogue"
-import { splitBlocks, homeFaqs } from "../data/content"
+import { homeFaqs } from "../data/content"
 import Accordion from "../components/ui/Accordion"
 import Banner from "../components/sections/Banner"
-import CategoryGrid from "../components/sections/CategoryGrid"
+import CategoryTiles from "../components/sections/CategoryTiles"
+import FeatureBand from "../components/sections/FeatureBand"
 import FeaturedProducts from "../components/sections/FeaturedProducts"
-import HeroSearch from "../components/sections/HeroSearch"
+import Hero from "../components/sections/Hero"
 import PressStrip from "../components/sections/PressStrip"
-import RepairServices from "../components/sections/RepairServices"
-import SocialGallery from "../components/sections/SocialGallery"
-import SplitWithImage from "../components/sections/SplitWithImage"
+import SectionHead from "../components/sections/SectionHead"
 import StatsBand from "../components/sections/StatsBand"
-import ValueProps from "../components/sections/ValueProps"
 
 const refurbished = products.filter((p) => p.condition === "refurbished")
 
+/**
+ * Nine sections, one dark band, and every heading through the same component.
+ *
+ * The previous version stacked fourteen full-bleed bands in alternating white,
+ * pale blue and navy, each with a centred heading of identical weight — so
+ * nothing was more important than anything else and the page read as five
+ * different sites glued together. Three of those sections rendered as visibly
+ * broken placeholders (an empty navy panel, a grid of empty social tiles, and
+ * two cards in a four-column carousel), and they are gone rather than restyled.
+ */
 export default function Home() {
   return (
     <>
-      <HeroSearch />
-      <CategoryGrid />
-      <StatsBand />
-
-      <SplitWithImage {...splitBlocks[0]} />
-      <SplitWithImage {...splitBlocks[1]} />
-
-      <ValueProps />
+      <Hero />
+      <CategoryTiles />
 
       <FeaturedProducts
-        heading="Bestsellers this month"
+        label="Bestsellers"
+        heading="What people actually buy"
         lede="What our customers and our own technicians reach for most."
         products={bestsellers}
+        moreTo="/parts"
+        moreLabel="Shop all parts"
       />
 
-      <SplitWithImage {...splitBlocks[2]} />
+      <FeatureBand />
 
-      <RepairServices limit={3} />
+      <StatsBand />
+
+      {/* Only worth a section of its own once there is a row to fill. */}
+      {refurbished.length >= 3 ? (
+        <FeaturedProducts
+          label="Refurbished"
+          heading="Graded honestly"
+          lede="Battery verified, cosmetically graded, and covered for twelve months."
+          products={refurbished}
+          moreTo="/phones?condition=refurbished"
+          moreLabel="All refurbished stock"
+        />
+      ) : null}
 
       <Banner
+        label="Trade in"
         heading="Trade in. Trade up."
         body="Send us the phone in the drawer. Any condition, cracked or dead, and we will value it in ninety seconds — then put it against something newer or pay you the same day."
         ctaLabel="Get a valuation"
         ctaTo="/sell"
       />
 
-      {refurbished.length > 0 ? (
-        <FeaturedProducts
-          heading="Refurbished, graded honestly"
-          lede="Battery verified, cosmetically graded, and covered for twelve months."
-          products={refurbished}
-        />
-      ) : null}
-
       <PressStrip />
-      <SocialGallery />
 
       <section className="section-y">
-        <div className="content-boundary max-w-3xl">
-          <h2 className="section-heading mb-8 text-center">Common questions</h2>
+        <div className="content-boundary flex max-w-3xl flex-col gap-10">
+          <SectionHead label="FAQ" heading="Common questions" />
           <Accordion items={homeFaqs} />
         </div>
       </section>

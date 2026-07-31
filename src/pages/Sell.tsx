@@ -88,12 +88,12 @@ export default function Sell() {
 
   return (
     <>
-      <section className="bg-gradient-to-br from-brand-700 via-brand-800 to-brand-950">
+      <section className="bg-dark">
         <div className="content-boundary py-16 text-center md:py-20">
-          <h1 className="font-display text-4xl font-bold tracking-tight text-white md:text-6xl">
+          <h1 className="section-heading text-dark-foreground">
             Sell us the phone in your drawer
           </h1>
-          <p className="mx-auto mt-4 max-w-2xl text-lg text-brand-100 md:text-xl">
+          <p className="mx-auto mt-4 max-w-2xl text-lg text-dark-muted md:text-xl">
             Any condition — cracked, dead, or perfect. Valued in ninety seconds,
             paid the same day, or put straight against something newer.
           </p>
@@ -102,8 +102,10 @@ export default function Sell() {
 
       <section className="section-y">
         <div className="content-boundary max-w-3xl">
-          <div className="rounded-2xl border border-gray-200 bg-white p-6 md:p-8">
-            <h2 className="text-2xl font-semibold">Get a valuation</h2>
+          <div className="border border-line bg-white p-6 md:p-8">
+            <h2 className="section-heading-sm text-xl md:text-2xl">
+              Get a valuation
+            </h2>
 
             <div className="mt-6 grid gap-5">
               <div>
@@ -125,7 +127,7 @@ export default function Sell() {
                     </option>
                   ))}
                 </select>
-                <p className="mt-1.5 text-xs text-gray-500">
+                <p className="mt-1.5 text-xs text-ink-500">
                   Not listed? We still buy it —{" "}
                   <Link to="/about" className="text-primary hover:underline">
                     get in touch
@@ -135,15 +137,17 @@ export default function Sell() {
               </div>
 
               <fieldset className="border-0 p-0">
-                <legend className="field-label">What condition is it in?</legend>
+                <legend className="field-label">
+                  What condition is it in?
+                </legend>
                 <div className="mt-1 grid gap-2">
                   {conditions.map((condition) => (
                     <label
                       key={condition.id}
                       className={
                         conditionId === condition.id
-                          ? "flex cursor-pointer items-start gap-3 rounded-lg border border-brand-500 bg-brand-50 p-3"
-                          : "flex cursor-pointer items-start gap-3 rounded-lg border border-gray-200 p-3 hover:bg-gray-50"
+                          ? "flex cursor-pointer items-start gap-3  border border-brand-500 bg-muted p-3"
+                          : "flex cursor-pointer items-start gap-3  border border-line p-3 hover:bg-muted"
                       }
                     >
                       <input
@@ -158,8 +162,10 @@ export default function Sell() {
                         className="mt-0.5 size-4 shrink-0 accent-brand-500"
                       />
                       <span className="text-sm">
-                        <span className="block font-medium">{condition.label}</span>
-                        <span className="block text-gray-600">
+                        <span className="block font-medium">
+                          {condition.label}
+                        </span>
+                        <span className="block text-ink-500">
                           {condition.detail}
                         </span>
                       </span>
@@ -169,21 +175,21 @@ export default function Sell() {
               </fieldset>
             </div>
 
-            <div className="mt-6 rounded-xl bg-gray-100 p-5">
-              <p className="text-sm text-gray-600">Estimated value</p>
+            <div className="mt-6 bg-muted p-5">
+              <p className="text-sm text-ink-500">Estimated value</p>
               <p className="mt-1 text-4xl font-semibold">
                 {estimate > 0 ? formatPrice(estimate) : "—"}
               </p>
-              <p className="mt-2 text-sm text-gray-600">
-                Final offer confirmed once we have checked the device. We tell you
-                before anything is paid, and we post it back free if you would
-                rather keep it.
+              <p className="mt-2 text-sm text-ink-500">
+                Final offer confirmed once we have checked the device. We tell
+                you before anything is paid, and we post it back free if you
+                would rather keep it.
               </p>
             </div>
 
             {quoted ? (
               <div
-                className="mt-5 rounded-xl border border-green-200 bg-green-50 p-5"
+                className="mt-5 border border-green-200 bg-green-50 p-5"
                 role="status"
               >
                 <p className="flex items-center gap-2 font-semibold text-green-900">
@@ -212,14 +218,14 @@ export default function Sell() {
         </div>
       </section>
 
-      <section id="trade-in" className="section-y scroll-mt-32 bg-gray-100">
+      <section id="trade-in" className="section-y scroll-mt-32 bg-muted">
         <div className="content-boundary">
           <div className="mx-auto max-w-3xl text-center">
             <h2 className="section-heading">Or trade up instead</h2>
             <p className="section-lede mt-4">
-              Put the valuation straight against a new or refurbished handset. The
-              value comes off at the till, so there is nothing to claim back and no
-              waiting for a transfer.
+              Put the valuation straight against a new or refurbished handset.
+              The value comes off at the till, so there is nothing to claim back
+              and no waiting for a transfer.
             </p>
           </div>
           <div className="mt-8 flex flex-wrap justify-center gap-3">

@@ -38,7 +38,8 @@ const stockCopy = {
   out: {
     tone: "gray" as const,
     label: "Out of stock",
-    detail: "Back in stock within 7 – 10 days. Nothing is charged until we ship.",
+    detail:
+      "Back in stock within 7 – 10 days. Nothing is charged until we ship.",
   },
 }
 
@@ -157,31 +158,32 @@ export default function Product() {
       </div>
 
       <div className="content-boundary grid gap-10 py-8 lg:grid-cols-2 lg:gap-16">
-        <div className="rounded-2xl bg-gray-100 p-4">
-          <div className="product-card-well">
-            <div className="relative aspect-square">
-              <ProductImage product={product} priority />
-            </div>
-          </div>
+        {/* One field, no nested wells: the image gets the whole column. */}
+        <div className="media-frame min-w-0 aspect-square">
+          <ProductImage product={product} priority />
         </div>
 
-        <div className="flex flex-col gap-5">
+        <div className="flex min-w-0 flex-col gap-5">
           <div>
-            <p className="text-sm font-medium text-gray-500">{product.brand}</p>
-            <h1 className="font-display mt-1 text-3xl font-bold tracking-tight md:text-4xl">
+            <p className="micro-label">{product.brand}</p>
+            <h1 className="section-heading mt-3 text-3xl md:text-4xl">
               {product.name}
             </h1>
             <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2">
               <Rating value={product.rating} />
-              <span className="text-sm text-gray-600">
+              <span className="text-sm text-ink-500">
                 {product.rating} out of 5 · {product.reviews} reviews
               </span>
             </div>
           </div>
 
-          <p className="text-lg text-gray-700">{product.blurb}</p>
+          <p className="text-lg text-ink-600">{product.blurb}</p>
 
-          <PriceTag price={product.price} compareAt={product.compareAt} size="lg" />
+          <PriceTag
+            price={product.price}
+            compareAt={product.compareAt}
+            size="lg"
+          />
 
           <div className="flex flex-wrap gap-2">
             {badges.map((key) => (
@@ -193,15 +195,17 @@ export default function Product() {
                 {badgeMeta[key].label}
               </Badge>
             ))}
-            {product.grade ? <Badge tone="gray">Grade {product.grade}</Badge> : null}
+            {product.grade ? (
+              <Badge tone="gray">Grade {product.grade}</Badge>
+            ) : null}
           </div>
 
-          <div className="rounded-xl border border-gray-200 bg-white p-4">
+          <div className="border border-line bg-white p-4">
             <p className="flex items-center gap-2 text-sm font-semibold">
               <span
                 className={
                   product.stock === "out"
-                    ? "size-2 rounded-full bg-gray-400"
+                    ? "size-2 rounded-full bg-ink-400"
                     : product.stock === "low"
                       ? "size-2 rounded-full bg-amber-500"
                       : "size-2 rounded-full bg-green-600"
@@ -210,7 +214,7 @@ export default function Product() {
               />
               {stock.label}
             </p>
-            <p className="mt-1 text-sm text-gray-600">{stock.detail}</p>
+            <p className="mt-1 text-sm text-ink-500">{stock.detail}</p>
           </div>
 
           <div ref={buyRow} className="flex flex-wrap items-center gap-3">
@@ -237,15 +241,21 @@ export default function Product() {
 
           {added ? (
             <p role="status" className="text-sm">
-              <Link to="/cart" className="font-medium text-primary hover:underline">
+              <Link
+                to="/cart"
+                className="font-medium text-primary hover:underline"
+              >
                 View basket and check out →
               </Link>
             </p>
           ) : null}
 
           {product.fittingAvailable ? (
-            <div className="flex items-start gap-3 rounded-xl border border-brand-200 bg-brand-50 p-4">
-              <Icon name="wrench" className="mt-0.5 size-5 shrink-0 text-brand-600" />
+            <div className="flex items-start gap-3 border border-brand-200 bg-muted p-4">
+              <Icon
+                name="wrench"
+                className="mt-0.5 size-5 shrink-0 text-brand-600"
+              />
               <div className="text-sm">
                 <p className="font-semibold text-brand-900">
                   Would rather we fitted it?
@@ -270,7 +280,9 @@ export default function Product() {
         <div className="min-w-0 lg:col-span-2">
           {product.description ? (
             <section>
-              <h2 className="text-2xl font-semibold">Description</h2>
+              <h2 className="section-heading-sm text-xl md:text-2xl">
+                Description
+              </h2>
               <div className="prose-body mt-4">
                 {product.description.map((para) => (
                   <p key={para}>{para}</p>
@@ -281,7 +293,9 @@ export default function Product() {
 
           {product.includes ? (
             <section className="mt-10">
-              <h2 className="text-2xl font-semibold">What is in the kit</h2>
+              <h2 className="section-heading-sm text-xl md:text-2xl">
+                What is in the kit
+              </h2>
               <ul className="mt-4 grid gap-2 sm:grid-cols-2">
                 {product.includes.map((item) => (
                   <li key={item} className="flex items-start gap-2 text-sm">
@@ -298,7 +312,9 @@ export default function Product() {
 
           {product.compatibility ? (
             <section className="mt-10">
-              <h2 className="text-2xl font-semibold">Fits these models</h2>
+              <h2 className="section-heading-sm text-xl md:text-2xl">
+                Fits these models
+              </h2>
               <ul className="mt-4 flex flex-wrap gap-2">
                 {product.compatibility.map((model) => (
                   <li key={model}>
@@ -308,7 +324,7 @@ export default function Product() {
                   </li>
                 ))}
               </ul>
-              <p className="mt-3 text-sm text-gray-600">
+              <p className="mt-3 text-sm text-ink-500">
                 Not sure which model you have? Bring it in and we will check for
                 free, or{" "}
                 <Link to="/repairs" className="text-primary hover:underline">
@@ -320,7 +336,9 @@ export default function Product() {
           ) : null}
 
           <section className="mt-10">
-            <h2 className="text-2xl font-semibold">Questions</h2>
+            <h2 className="section-heading-sm text-xl md:text-2xl">
+              Questions
+            </h2>
             <div className="mt-4">
               <Accordion items={faqs} />
             </div>
@@ -330,18 +348,20 @@ export default function Product() {
         <div className="min-w-0 lg:col-span-1">
           {product.specs ? (
             <section>
-              <h2 className="text-2xl font-semibold">Specifications</h2>
-              <dl className="mt-4 overflow-hidden rounded-xl border border-gray-200 bg-white">
+              <h2 className="section-heading-sm text-xl md:text-2xl">
+                Specifications
+              </h2>
+              <dl className="mt-4 overflow-hidden border border-line bg-white">
                 {product.specs.map((spec, i) => (
                   <div
                     key={spec.label}
                     className={
                       i % 2 === 0
-                        ? "grid grid-cols-2 gap-3 bg-gray-50 px-4 py-3 text-sm"
+                        ? "grid grid-cols-2 gap-3 bg-muted px-4 py-3 text-sm"
                         : "grid grid-cols-2 gap-3 px-4 py-3 text-sm"
                     }
                   >
-                    <dt className="text-gray-600">{spec.label}</dt>
+                    <dt className="text-ink-500">{spec.label}</dt>
                     <dd className="font-medium">{spec.value}</dd>
                   </div>
                 ))}
@@ -351,14 +371,16 @@ export default function Product() {
 
           {pairs.length > 0 ? (
             <section className="mt-10">
-              <h2 className="text-2xl font-semibold">Often bought with</h2>
+              <h2 className="section-heading-sm text-xl md:text-2xl">
+                Often bought with
+              </h2>
               <ul className="mt-4 space-y-3">
                 {pairs.map((item) => (
                   <li
                     key={item.id}
-                    className="flex items-center gap-3 rounded-xl border border-gray-200 bg-white p-3"
+                    className="flex items-center gap-3 border border-line bg-white p-3"
                   >
-                    <span className="size-14 shrink-0 rounded-lg bg-gray-100 p-1.5">
+                    <span className="relative size-14 shrink-0 overflow-hidden bg-ink-50">
                       <ProductImage product={item} />
                     </span>
                     <span className="min-w-0 flex-1">
@@ -368,7 +390,7 @@ export default function Product() {
                       >
                         {item.name}
                       </Link>
-                      <span className="text-sm text-gray-600">
+                      <span className="text-sm text-ink-500">
                         {formatPrice(item.price)}
                       </span>
                     </span>
@@ -397,7 +419,10 @@ export default function Product() {
       ) : null}
 
       <div className="content-boundary pb-16 text-center">
-        <Link to={`/${product.category}`} className={buttonClass("outline", "lg")}>
+        <Link
+          to={`/${product.category}`}
+          className={buttonClass("outline", "lg")}
+        >
           Back to {category?.name ?? "the shop"}
         </Link>
       </div>
@@ -405,14 +430,14 @@ export default function Product() {
       {/* Sticky buy bar. On a page this long the price and the button are
           otherwise a full scroll away by the time you have read the specs. */}
       {showStickyBar && !soldOut ? (
-        <div className="fixed inset-x-0 bottom-0 z-40 border-t border-gray-200 bg-white/95 backdrop-blur">
+        <div className="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-white/95 backdrop-blur">
           <div className="content-boundary flex items-center gap-4 py-3">
-            <span className="hidden size-11 shrink-0 rounded-lg bg-gray-100 p-1.5 sm:block">
+            <span className="relative hidden size-11 shrink-0 overflow-hidden bg-ink-50 sm:block">
               <ProductImage product={product} />
             </span>
             <div className="min-w-0 flex-1">
               <p className="truncate text-sm font-semibold">{product.name}</p>
-              <p className="text-sm text-gray-600">
+              <p className="text-sm text-ink-500">
                 {formatPrice(product.price)}
                 {product.stock === "low" ? (
                   <span className="ml-2 text-amber-700">Low stock</span>

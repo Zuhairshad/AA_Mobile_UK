@@ -32,9 +32,9 @@ export default function RepairServices({ limit, showHeading = true }: Props) {
         <ul className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {services.map((service) => (
             <li key={service.id} id={service.id} className="scroll-mt-32">
-              <article className="flex h-full flex-col gap-3 rounded-xl border border-gray-200 bg-white p-5">
+              <article className="flex h-full flex-col gap-3 border border-line bg-white p-5">
                 <div className="flex items-start justify-between gap-3">
-                  <span className="flex size-11 shrink-0 items-center justify-center rounded-lg bg-brand-50 text-brand-500">
+                  <span className="flex size-11 shrink-0 items-center justify-center bg-muted text-ink-950">
                     <Icon name={service.glyph} className="size-6" />
                   </span>
                   {service.popular ? (
@@ -44,12 +44,12 @@ export default function RepairServices({ limit, showHeading = true }: Props) {
                   ) : null}
                 </div>
 
-                <h3 className="text-lg font-semibold">{service.name}</h3>
-                <p className="text-sm text-gray-600">{service.blurb}</p>
+                <h3 className="section-heading-sm">{service.name}</h3>
+                <p className="text-sm text-ink-500">{service.blurb}</p>
 
                 <dl className="mt-1 space-y-1 text-sm">
                   <div className="flex gap-2">
-                    <dt className="text-gray-500">Price</dt>
+                    <dt className="text-ink-500">Price</dt>
                     <dd className="font-semibold">
                       {service.fromPrice === 0
                         ? "Free"
@@ -57,12 +57,12 @@ export default function RepairServices({ limit, showHeading = true }: Props) {
                     </dd>
                   </div>
                   <div className="flex gap-2">
-                    <dt className="text-gray-500">Turnaround</dt>
+                    <dt className="text-ink-500">Turnaround</dt>
                     <dd>{service.turnaround}</dd>
                   </div>
                 </dl>
 
-                <p className="mt-1 text-xs text-gray-500">
+                <p className="mt-1 text-xs text-ink-500">
                   Covers {service.covers.join(" · ")}
                 </p>
 

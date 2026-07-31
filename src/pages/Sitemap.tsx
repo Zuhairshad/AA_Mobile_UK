@@ -1,6 +1,11 @@
 import { Link } from "react-router-dom"
 import { categories } from "../data/taxonomy"
-import { brandSlug, deviceBrands, devices, devicesByFamily } from "../data/devices"
+import {
+  brandSlug,
+  deviceBrands,
+  devices,
+  devicesByFamily,
+} from "../data/devices"
 import { guides } from "../data/guides"
 import { repairServices } from "../data/services"
 import { products } from "../data/catalogue"
@@ -50,7 +55,7 @@ export default function Sitemap() {
 
       <div className="mt-10 grid gap-10 lg:grid-cols-2">
         <section>
-          <h2 className="text-lg font-semibold">Main pages</h2>
+          <h2 className="section-heading-sm">Main pages</h2>
           <ul className="mt-3 grid grid-cols-2 gap-1 text-sm">
             {staticPages.map((page) => (
               <li key={page.to}>
@@ -68,7 +73,7 @@ export default function Sitemap() {
         </section>
 
         <section>
-          <h2 className="text-lg font-semibold">Repair services</h2>
+          <h2 className="section-heading-sm">Repair services</h2>
           <ul className="mt-3 grid grid-cols-2 gap-1 text-sm">
             {repairServices.map((service) => (
               <li key={service.id}>
@@ -84,7 +89,7 @@ export default function Sitemap() {
         </section>
 
         <section className="lg:col-span-2">
-          <h2 className="text-lg font-semibold">Shop</h2>
+          <h2 className="section-heading-sm">Shop</h2>
           <div className="mt-3 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {categories.map((category) => (
               <div key={category.slug}>
@@ -99,7 +104,7 @@ export default function Sitemap() {
                     <li key={sub.slug}>
                       <Link
                         to={`/${category.slug}/${sub.slug}`}
-                        className="text-gray-700 hover:text-primary hover:underline"
+                        className="text-ink-600 hover:text-primary hover:underline"
                       >
                         {sub.name}
                       </Link>
@@ -112,7 +117,7 @@ export default function Sitemap() {
         </section>
 
         <section className="lg:col-span-2">
-          <h2 className="text-lg font-semibold">Brands</h2>
+          <h2 className="section-heading-sm">Brands</h2>
           <ul className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-sm">
             {deviceBrands.map((brand) => (
               <li key={brand}>
@@ -128,9 +133,7 @@ export default function Sitemap() {
         </section>
 
         <section className="lg:col-span-2">
-          <h2 className="text-lg font-semibold">
-            Devices ({devices.length})
-          </h2>
+          <h2 className="section-heading-sm">Devices ({devices.length})</h2>
           <div className="mt-3 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {families.map((group) => (
               <div key={group.family}>
@@ -140,7 +143,7 @@ export default function Sitemap() {
                     <li key={device.slug}>
                       <Link
                         to={`/device/${device.slug}`}
-                        className="text-gray-700 hover:text-primary hover:underline"
+                        className="text-ink-600 hover:text-primary hover:underline"
                       >
                         {device.name}
                       </Link>
@@ -153,7 +156,7 @@ export default function Sitemap() {
         </section>
 
         <section className="lg:col-span-2">
-          <h2 className="text-lg font-semibold">Guides ({guides.length})</h2>
+          <h2 className="section-heading-sm">Guides ({guides.length})</h2>
           <ul className="mt-3 grid gap-1 text-sm sm:grid-cols-2 lg:grid-cols-3">
             {guides.map((guide) => (
               <li key={guide.slug}>
@@ -169,10 +172,8 @@ export default function Sitemap() {
         </section>
 
         <section className="lg:col-span-2">
-          <h2 className="text-lg font-semibold">
-            Products ({products.length})
-          </h2>
-          <p className="mt-1 text-sm text-gray-600">
+          <h2 className="section-heading-sm">Products ({products.length})</h2>
+          <p className="mt-1 text-sm text-ink-500">
             Every product has its own page. Listed here grouped by category.
           </p>
           <div className="mt-3 grid gap-6 lg:grid-cols-2">
@@ -188,7 +189,7 @@ export default function Sitemap() {
                       <li key={product.id}>
                         <Link
                           to={`/product/${product.id}`}
-                          className="text-gray-700 hover:text-primary hover:underline"
+                          className="text-ink-600 hover:text-primary hover:underline"
                         >
                           {product.name}
                         </Link>

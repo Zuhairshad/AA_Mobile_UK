@@ -11,11 +11,27 @@ import Icon from "../ui/Icon"
  * the social wall copy; swap them for the real accounts before launch.
  */
 const socials = [
-  { name: "Instagram", icon: "instagram", href: "https://www.instagram.com/aamobileuk" },
-  { name: "Facebook", icon: "facebook", href: "https://www.facebook.com/aamobileuk" },
+  {
+    name: "Instagram",
+    icon: "instagram",
+    href: "https://www.instagram.com/aamobileuk",
+  },
+  {
+    name: "Facebook",
+    icon: "facebook",
+    href: "https://www.facebook.com/aamobileuk",
+  },
   { name: "X", icon: "x", href: "https://x.com/aamobileuk" },
-  { name: "YouTube", icon: "youtube", href: "https://www.youtube.com/@aamobileuk" },
-  { name: "TikTok", icon: "tiktok", href: "https://www.tiktok.com/@aamobileuk" },
+  {
+    name: "YouTube",
+    icon: "youtube",
+    href: "https://www.youtube.com/@aamobileuk",
+  },
+  {
+    name: "TikTok",
+    icon: "tiktok",
+    href: "https://www.tiktok.com/@aamobileuk",
+  },
 ] as const
 
 export default function Footer() {
@@ -23,16 +39,16 @@ export default function Footer() {
   const [signedUp, setSignedUp] = useState(false)
 
   return (
-    <footer className="mt-16 bg-gray-950 py-12 text-gray-300">
+    <footer className="bg-dark py-14 text-dark-muted">
       <div className="content-boundary">
         <Link
           to="/"
-          className="mb-10 inline-block text-white"
+          className="mb-12 inline-block text-white"
           aria-label={`${site.name} home`}
         >
           <Logo
             markClassName="bg-white/10"
-            className="[&_span:last-child_span]:text-gray-400"
+            className="[&_span:last-child_span]:text-ink-400"
           />
         </Link>
 
@@ -40,7 +56,7 @@ export default function Footer() {
           <div className="grid flex-1 grid-cols-2 gap-6 lg:grid-cols-3 lg:pr-16">
             {footerColumns.map((column) => (
               <div key={column.title}>
-                <p className="mb-3 text-base font-semibold text-white">
+                <p className="micro-label micro-label-invert mb-4">
                   {column.title}
                 </p>
                 <ul className="space-y-2">
@@ -48,7 +64,7 @@ export default function Footer() {
                     <li key={link.label}>
                       <Link
                         to={link.to}
-                        className="text-sm text-gray-300 transition-colors hover:text-white"
+                        className="text-sm text-dark-muted transition-colors hover:text-white"
                       >
                         {link.label}
                       </Link>
@@ -60,9 +76,10 @@ export default function Footer() {
           </div>
 
           <div className="w-full md:max-w-sm">
-            <p className="text-base font-semibold text-white">Stay in the loop</p>
-            <p className="mt-1 text-sm text-gray-400">
-              Repair guides, new stock and the odd teardown. Once a month, no more.
+            <p className="micro-label micro-label-invert">Stay in the loop</p>
+            <p className="mt-3 text-sm text-dark-muted">
+              Repair guides, new stock and the odd teardown. Once a month, no
+              more.
             </p>
             {signedUp ? (
               <p
@@ -90,9 +107,11 @@ export default function Footer() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="you@example.com"
-                  className="min-w-0 flex-1 rounded-lg border border-gray-700 bg-gray-900 px-3 py-2 !text-base text-white placeholder:text-gray-500 focus:border-brand-400 focus:ring-2 focus:ring-brand-400/40 focus:outline-none"
+                  className="min-w-0 flex-1 border border-white/20 bg-transparent px-3 py-2 !text-base text-white placeholder:text-ink-500 focus:border-brand-400 focus:ring-2 focus:ring-brand-400/40 focus:outline-none"
                 />
-                <Button type="submit">Subscribe</Button>
+                <Button type="submit" variant="invert">
+                  Subscribe
+                </Button>
               </form>
             )}
 
@@ -106,7 +125,7 @@ export default function Footer() {
                   target="_blank"
                   rel="noreferrer noopener"
                   aria-label={`${site.name} on ${social.name}`}
-                  className="flex size-9 items-center justify-center rounded-lg text-gray-400 transition-colors hover:bg-white/10 hover:text-white"
+                  className="flex size-9 items-center justify-center text-dark-muted transition-colors hover:bg-white/10 hover:text-white"
                 >
                   <Icon name={social.icon} />
                 </a>
@@ -115,20 +134,19 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* gray-400 rather than gray-500: on near-black gray-500 measures 4.16:1. */}
-        <div className="flex flex-col gap-4 border-t border-gray-800 pt-6 text-xs text-gray-400 md:flex-row md:items-center md:justify-between">
+        <div className="flex flex-col gap-4 border-t border-white/15 pt-6 md:flex-row md:items-center md:justify-between">
           {/* Deliberately not a well-formed company/VAT number. A plausible one
               here reads as fact and could point at a real registration, so the
               placeholder is left obvious until the real details are supplied. */}
-          <p>
-            © {new Date().getFullYear()} {site.name}. Company no. [COMPANY
-            NUMBER]. VAT [VAT NUMBER].
+          <p className="micro-label micro-label-invert">
+            © {new Date().getFullYear()} {site.name} · Company no. [COMPANY
+            NUMBER] · VAT [VAT NUMBER]
           </p>
           <ul className="flex flex-wrap gap-2">
             {paymentMethods.map((method) => (
               <li
                 key={method}
-                className="rounded border border-gray-800 bg-gray-900 px-2 py-1 text-[11px] text-gray-400"
+                className="micro-label micro-label-invert border border-white/15 px-2 py-1.5"
               >
                 {method}
               </li>

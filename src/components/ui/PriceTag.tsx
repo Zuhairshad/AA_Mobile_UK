@@ -35,9 +35,9 @@ export default function PriceTag({
       </span>
       {discounted ? (
         <>
-          {/* gray-600, not gray-500: on the grey card surface gray-500 measures
-              4.39:1, just under the 4.5 minimum for body text. */}
-          <span className="text-sm text-gray-600 line-through">
+          {/* ink-500 on white measures 5.7:1, clear of the 4.5 minimum for
+              body text — the struck-through original still has to be legible. */}
+          <span className="text-sm text-ink-500 line-through">
             {formatPrice(compareAt)}
           </span>
           <span className="sr-only">reduced from {formatPrice(compareAt)}</span>

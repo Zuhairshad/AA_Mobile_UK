@@ -80,7 +80,8 @@ export default function SearchBox({
     if (e.key === "Enter") {
       e.preventDefault()
       if (hits.length > 0) go(active)
-      else if (query.trim()) navigate(`/search?q=${encodeURIComponent(query.trim())}`)
+      else if (query.trim())
+        navigate(`/search?q=${encodeURIComponent(query.trim())}`)
     }
   }
 
@@ -100,7 +101,7 @@ export default function SearchBox({
         <div className="relative">
           <Icon
             name="search"
-            className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-gray-500"
+            className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-ink-500"
           />
           <input
             ref={input}
@@ -120,15 +121,15 @@ export default function SearchBox({
             autoComplete="off"
             spellCheck={false}
             className={cx(
-              "w-full border border-transparent py-2 pr-12 pl-10 !text-base text-gray-900 placeholder:text-gray-500 focus:outline-none",
+              "w-full border border-transparent py-2 pr-12 pl-10 !text-base text-ink-950 placeholder:text-ink-500 focus:outline-none",
               "focus:border-brand-500 focus:ring-2 focus:ring-brand-500/40",
               variant === "hero"
-                ? "rounded-lg bg-white shadow-lg"
-                : "rounded-full bg-gray-100",
+                ? " bg-white shadow-lg"
+                : "rounded-full bg-muted",
             )}
           />
           {/* Shortcut hint doubles as the affordance for the "/" binding. */}
-          <span className="pointer-events-none absolute top-1/2 right-3 hidden -translate-y-1/2 rounded-full bg-gray-200 px-2 py-0.5 text-xs text-gray-700 md:block">
+          <span className="pointer-events-none absolute top-1/2 right-3 hidden -translate-y-1/2 rounded-full bg-ink-200 px-2 py-0.5 text-xs text-ink-600 md:block">
             /
           </span>
         </div>
@@ -138,15 +139,20 @@ export default function SearchBox({
         <ul
           id={listId}
           role="listbox"
-          className="absolute top-full right-0 left-0 z-50 mt-2 max-h-96 overflow-auto rounded-xl border border-gray-200 bg-white py-1 shadow-xl"
+          className="absolute top-full right-0 left-0 z-50 mt-2 max-h-96 overflow-auto border border-line bg-white py-1 shadow-xl"
         >
           {hits.length === 0 ? (
-            <li className="px-4 py-3 text-sm text-gray-600">
-              Nothing matched “{query.trim()}”. Try a model name, like “iPhone 13”.
+            <li className="px-4 py-3 text-sm text-ink-500">
+              Nothing matched “{query.trim()}”. Try a model name, like “iPhone
+              13”.
             </li>
           ) : (
             hits.map((hit, i) => (
-              <li key={hit.kind === "product" ? hit.product.id : hit.to + hit.kind}>
+              <li
+                key={
+                  hit.kind === "product" ? hit.product.id : hit.to + hit.kind
+                }
+              >
                 <button
                   type="button"
                   role="option"
@@ -155,19 +161,19 @@ export default function SearchBox({
                   onClick={() => go(i)}
                   className={cx(
                     "flex w-full items-center gap-3 px-3 py-2 text-left",
-                    i === active ? "bg-brand-50" : "hover:bg-gray-50",
+                    i === active ? "bg-muted" : "hover:bg-muted",
                   )}
                 >
                   {hit.kind === "product" ? (
                     <>
-                      <span className="size-10 shrink-0 overflow-hidden rounded-md bg-white p-1">
+                      <span className="relative size-10 shrink-0 overflow-hidden bg-ink-50">
                         <ProductImage product={hit.product} />
                       </span>
                       <span className="min-w-0 flex-1">
                         <span className="block truncate text-sm font-medium">
                           {hit.product.name}
                         </span>
-                        <span className="block truncate text-xs text-gray-600">
+                        <span className="block truncate text-xs text-ink-500">
                           {hit.product.brand}
                         </span>
                       </span>
@@ -177,14 +183,16 @@ export default function SearchBox({
                     </>
                   ) : (
                     <>
-                      <span className="flex size-10 shrink-0 items-center justify-center rounded-md bg-brand-50 text-brand-500">
-                        <Icon name={hit.kind === "service" ? "wrench" : "sliders"} />
+                      <span className="flex size-10 shrink-0 items-center justify-center bg-muted text-ink-950">
+                        <Icon
+                          name={hit.kind === "service" ? "wrench" : "sliders"}
+                        />
                       </span>
                       <span className="min-w-0 flex-1">
                         <span className="block truncate text-sm font-medium">
                           {hit.label}
                         </span>
-                        <span className="block truncate text-xs text-gray-600">
+                        <span className="block truncate text-xs text-ink-500">
                           {hit.sub}
                         </span>
                       </span>

@@ -25,7 +25,7 @@ export default function Toaster() {
       {toasts.map((toast) => (
         <div
           key={toast.id}
-          className="animate-toast-in pointer-events-auto flex w-full items-start gap-3 rounded-xl border border-gray-200 bg-white p-4 shadow-lg sm:w-80"
+          className="animate-toast-in pointer-events-auto flex w-full items-start gap-3 border border-line bg-white p-4 shadow-lg sm:w-80"
         >
           <span className="mt-0.5 flex size-6 shrink-0 items-center justify-center rounded-full bg-green-100 text-green-700">
             <Icon name="check" className="size-4" />
@@ -34,7 +34,9 @@ export default function Toaster() {
           <div className="min-w-0 flex-1">
             <p className="text-sm font-semibold">{toast.title}</p>
             {toast.detail ? (
-              <p className="mt-0.5 truncate text-sm text-gray-600">{toast.detail}</p>
+              <p className="mt-0.5 truncate text-sm text-ink-500">
+                {toast.detail}
+              </p>
             ) : null}
             {toast.action ? (
               <Link

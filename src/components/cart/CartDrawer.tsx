@@ -56,10 +56,16 @@ export default function CartDrawer() {
       const first = items[0]
       const last = items[items.length - 1]
       const active = document.activeElement
-      if (e.shiftKey && (active === first || !panel.current?.contains(active))) {
+      if (
+        e.shiftKey &&
+        (active === first || !panel.current?.contains(active))
+      ) {
         e.preventDefault()
         last.focus()
-      } else if (!e.shiftKey && (active === last || !panel.current?.contains(active))) {
+      } else if (
+        !e.shiftKey &&
+        (active === last || !panel.current?.contains(active))
+      ) {
         e.preventDefault()
         first.focus()
       }
@@ -94,11 +100,11 @@ export default function CartDrawer() {
         aria-label="Basket"
         className="absolute inset-y-0 right-0 flex w-full max-w-md flex-col bg-white shadow-2xl"
       >
-        <div className="flex h-16 shrink-0 items-center justify-between border-b border-gray-200 px-4">
-          <h2 className="text-lg font-semibold">
+        <div className="flex h-16 shrink-0 items-center justify-between border-b border-line px-4">
+          <h2 className="section-heading-sm">
             Your basket
             {lines.length > 0 ? (
-              <span className="ml-2 text-sm font-normal text-gray-500">
+              <span className="ml-2 text-sm font-normal text-ink-500">
                 {lines.length} {lines.length === 1 ? "item" : "items"}
               </span>
             ) : null}
@@ -116,11 +122,11 @@ export default function CartDrawer() {
 
         {lines.length === 0 ? (
           <div className="flex flex-1 flex-col items-center justify-center gap-4 p-8 text-center">
-            <span className="flex size-14 items-center justify-center rounded-2xl bg-gray-100 text-gray-500">
+            <span className="flex size-14 items-center justify-center bg-muted text-ink-500">
               <Icon name="cart" className="size-7" />
             </span>
             <p className="font-semibold">Nothing in your basket yet</p>
-            <p className="text-sm text-gray-600">
+            <p className="text-sm text-ink-500">
               Find the part for your model, or book a repair and let us do it.
             </p>
             <div className="mt-2 flex flex-wrap justify-center gap-2">
@@ -142,13 +148,13 @@ export default function CartDrawer() {
           </div>
         ) : (
           <>
-            <ul className="flex-1 divide-y divide-gray-200 overflow-y-auto">
+            <ul className="flex-1 divide-y divide-line overflow-y-auto">
               {lines.map(({ product, qty }) => (
                 <li key={product.id} className="flex gap-3 p-4">
                   <Link
                     to={`/product/${product.id}`}
                     onClick={closeDrawer}
-                    className="size-16 shrink-0 rounded-lg bg-gray-100 p-1.5"
+                    className="relative size-16 shrink-0 overflow-hidden bg-ink-50"
                   >
                     <ProductImage product={product} />
                   </Link>
@@ -161,7 +167,7 @@ export default function CartDrawer() {
                     >
                       {product.name}
                     </Link>
-                    <p className="mt-0.5 text-sm text-gray-600">
+                    <p className="mt-0.5 text-sm text-ink-500">
                       {formatPrice(product.price)}
                     </p>
                     <div className="mt-2 flex items-center gap-2">
@@ -175,7 +181,7 @@ export default function CartDrawer() {
                         type="button"
                         onClick={() => remove(product.id)}
                         aria-label={`Remove ${product.name}`}
-                        className="btn btn-ghost size-8 px-0 text-gray-500 hover:text-red-700"
+                        className="btn btn-ghost size-8 px-0 text-ink-500 hover:text-red-700"
                       >
                         <Icon name="trash" className="size-4" />
                       </button>
@@ -189,13 +195,16 @@ export default function CartDrawer() {
               ))}
             </ul>
 
-            <div className="shrink-0 border-t border-gray-200 p-4">
+            <div className="shrink-0 border-t border-line p-4">
               {toFreeDelivery > 0 ? (
-                <div className="mb-4 rounded-lg bg-brand-50 p-3 text-sm text-brand-900">
-                  <p>Spend {formatPrice(toFreeDelivery)} more for free UK delivery.</p>
+                <div className="mb-4 bg-muted p-3 text-sm text-brand-900">
+                  <p>
+                    Spend {formatPrice(toFreeDelivery)} more for free UK
+                    delivery.
+                  </p>
                   <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-brand-200">
                     <div
-                      className="h-full rounded-full bg-brand-500 transition-[width] duration-300"
+                      className="h-full rounded-full bg-primary transition-[width] duration-300"
                       style={{
                         width: `${Math.min(100, (subtotal / site.freeDeliveryThreshold) * 100)}%`,
                       }}
@@ -211,16 +220,16 @@ export default function CartDrawer() {
 
               <dl className="space-y-1.5 text-sm">
                 <div className="flex justify-between">
-                  <dt className="text-gray-600">Subtotal</dt>
+                  <dt className="text-ink-500">Subtotal</dt>
                   <dd className="font-medium">{formatPrice(subtotal)}</dd>
                 </div>
                 <div className="flex justify-between">
-                  <dt className="text-gray-600">Delivery</dt>
+                  <dt className="text-ink-500">Delivery</dt>
                   <dd className="font-medium">
                     {delivery === 0 ? "Free" : formatPrice(delivery)}
                   </dd>
                 </div>
-                <div className="flex justify-between border-t border-gray-200 pt-2 text-base">
+                <div className="flex justify-between border-t border-line pt-2 text-base">
                   <dt className="font-semibold">Total</dt>
                   <dd className="font-semibold">{formatPrice(total)}</dd>
                 </div>
@@ -236,7 +245,7 @@ export default function CartDrawer() {
               >
                 View full basket
               </Link>
-              <p className="mt-2 text-center text-xs text-gray-500">
+              <p className="mt-2 text-center text-xs text-ink-500">
                 Demo storefront — no payment is taken.
               </p>
             </div>

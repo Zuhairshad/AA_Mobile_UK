@@ -19,7 +19,8 @@ export default function Devices() {
     const q = query.trim().toLowerCase()
     const filtered = devices.filter(
       (d) =>
-        (!brand || d.brand === brand) && (!q || d.name.toLowerCase().includes(q)),
+        (!brand || d.brand === brand) &&
+        (!q || d.name.toLowerCase().includes(q)),
     )
     return devicesByFamily(filtered)
   }, [query, brand])
@@ -28,9 +29,11 @@ export default function Devices() {
 
   return (
     <>
-      <div className="border-b border-gray-200 bg-white">
+      <div className="border-b border-line bg-white">
         <div className="content-boundary py-8 md:py-10">
-          <Breadcrumbs trail={[{ label: "Home", to: "/" }, { label: "Devices" }]} />
+          <Breadcrumbs
+            trail={[{ label: "Home", to: "/" }, { label: "Devices" }]}
+          />
           <h1 className="section-heading mt-4">Find your device</h1>
           <p className="section-lede mt-2">
             {devices.length} models we stock parts for and repair in store. Pick
@@ -44,7 +47,7 @@ export default function Devices() {
             <div className="relative">
               <Icon
                 name="search"
-                className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-gray-500"
+                className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-ink-500"
               />
               <input
                 id="device-filter"
@@ -62,7 +65,10 @@ export default function Devices() {
               type="button"
               onClick={() => setBrand(null)}
               aria-pressed={brand === null}
-              className={cx("btn btn-sm", brand === null ? "btn-primary" : "btn-outline")}
+              className={cx(
+                "btn btn-sm",
+                brand === null ? "btn-primary" : "btn-outline",
+              )}
             >
               All brands
             </button>
@@ -72,7 +78,10 @@ export default function Devices() {
                 type="button"
                 onClick={() => setBrand(b === brand ? null : b)}
                 aria-pressed={b === brand}
-                className={cx("btn btn-sm", b === brand ? "btn-primary" : "btn-outline")}
+                className={cx(
+                  "btn btn-sm",
+                  b === brand ? "btn-primary" : "btn-outline",
+                )}
               >
                 {b}
               </button>
@@ -82,13 +91,13 @@ export default function Devices() {
       </div>
 
       <div className="content-boundary py-10">
-        <p className="text-sm text-gray-600" role="status">
+        <p className="text-sm text-ink-500" role="status">
           {total} {total === 1 ? "model" : "models"}
         </p>
 
         {total === 0 ? (
-          <p className="mt-8 rounded-xl border border-gray-200 bg-white p-8 text-center">
-            No model matched. We service more than we list — {" "}
+          <p className="mt-8 border border-line bg-white p-8 text-center">
+            No model matched. We service more than we list —{" "}
             <Link to="/about" className="text-primary hover:underline">
               ask us
             </Link>{" "}
@@ -98,15 +107,19 @@ export default function Devices() {
           <div className="mt-6 space-y-10">
             {groups.map((group) => (
               <section key={group.family}>
-                <h2 className="text-lg font-semibold">{group.family}</h2>
+                <h2 className="section-heading-sm">{group.family}</h2>
                 <ul className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
                   {group.items.map((device) => {
                     const count = partsForDevice(device).length
                     return (
                       <li key={device.slug}>
                         <article className="group resource-card h-full gap-3">
-                          <span className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-gray-100 text-gray-700 group-hover:bg-brand-50 group-hover:text-brand-500">
-                            <Icon name={device.kind === "tablet" ? "screen" : "phone"} />
+                          <span className="flex size-10 shrink-0 items-center justify-center bg-muted text-ink-600 group-hover:bg-muted group-hover:text-ink-950">
+                            <Icon
+                              name={
+                                device.kind === "tablet" ? "screen" : "phone"
+                              }
+                            />
                           </span>
                           <div className="min-w-0">
                             <h3 className="truncate text-sm font-semibold group-hover:text-primary">
@@ -117,7 +130,7 @@ export default function Devices() {
                                 {device.name}
                               </Link>
                             </h3>
-                            <p className="text-xs text-gray-600">
+                            <p className="text-xs text-ink-500">
                               {device.year} · {count}{" "}
                               {count === 1 ? "part" : "parts"}
                             </p>
@@ -133,9 +146,11 @@ export default function Devices() {
         )}
       </div>
 
-      <section className="border-t border-gray-200 bg-white">
+      <section className="border-t border-line bg-white">
         <div className="content-boundary py-12">
-          <h2 className="text-2xl font-semibold">Browse by brand</h2>
+          <h2 className="section-heading-sm text-xl md:text-2xl">
+            Browse by brand
+          </h2>
           <ul className="mt-4 flex flex-wrap gap-2">
             {deviceBrands.map((b) => (
               <li key={b}>

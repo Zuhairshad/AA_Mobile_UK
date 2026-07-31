@@ -10,14 +10,22 @@ import ProductImage from "../components/product/ProductImage"
 import FeaturedProducts from "../components/sections/FeaturedProducts"
 
 export default function Cart() {
-  const { lines, subtotal, delivery, total, toFreeDelivery, setQty, remove, clear } =
-    useCart()
+  const {
+    lines,
+    subtotal,
+    delivery,
+    total,
+    toFreeDelivery,
+    setQty,
+    remove,
+    clear,
+  } = useCart()
 
   if (lines.length === 0) {
     return (
       <>
         <div className="content-boundary py-20 text-center">
-          <span className="mx-auto flex size-16 items-center justify-center rounded-2xl bg-gray-100 text-gray-500">
+          <span className="mx-auto flex size-16 items-center justify-center bg-muted text-ink-500">
             <Icon name="cart" className="size-8" />
           </span>
           <h1 className="section-heading mt-6">Your basket is empty</h1>
@@ -45,12 +53,12 @@ export default function Cart() {
 
       <div className="mt-8 grid gap-10 lg:grid-cols-3 lg:gap-16">
         <div className="lg:col-span-2">
-          <ul className="divide-y divide-gray-200 overflow-hidden rounded-xl border border-gray-200 bg-white">
+          <ul className="divide-y divide-line overflow-hidden border border-line bg-white">
             {lines.map(({ product, qty }) => (
               <li key={product.id} className="flex flex-wrap gap-4 p-4">
                 <Link
                   to={`/product/${product.id}`}
-                  className="size-20 shrink-0 rounded-lg bg-gray-100 p-2"
+                  className="relative size-20 shrink-0 overflow-hidden bg-ink-50"
                 >
                   <ProductImage product={product} />
                 </Link>
@@ -62,7 +70,7 @@ export default function Cart() {
                   >
                     {product.name}
                   </Link>
-                  <p className="mt-0.5 text-sm text-gray-600">{product.brand}</p>
+                  <p className="mt-0.5 text-sm text-ink-500">{product.brand}</p>
                   {product.stock === "low" ? (
                     <p className="mt-1 text-xs font-medium text-amber-700">
                       Low stock — order soon
@@ -71,7 +79,7 @@ export default function Cart() {
                   <button
                     type="button"
                     onClick={() => remove(product.id)}
-                    className="mt-2 inline-flex items-center gap-1 text-sm text-gray-600 hover:text-red-700"
+                    className="mt-2 inline-flex items-center gap-1 text-sm text-ink-500 hover:text-red-700"
                   >
                     <Icon name="trash" className="size-4" />
                     Remove
@@ -104,28 +112,28 @@ export default function Cart() {
         </div>
 
         <aside className="lg:col-span-1">
-          <div className="rounded-xl border border-gray-200 bg-white p-5">
-            <h2 className="text-lg font-semibold">Order summary</h2>
+          <div className="border border-line bg-white p-5">
+            <h2 className="section-heading-sm">Order summary</h2>
 
             <dl className="mt-4 space-y-2 text-sm">
               <div className="flex justify-between">
-                <dt className="text-gray-600">Subtotal</dt>
+                <dt className="text-ink-500">Subtotal</dt>
                 <dd className="font-medium">{formatPrice(subtotal)}</dd>
               </div>
               <div className="flex justify-between">
-                <dt className="text-gray-600">Delivery</dt>
+                <dt className="text-ink-500">Delivery</dt>
                 <dd className="font-medium">
                   {delivery === 0 ? "Free" : formatPrice(delivery)}
                 </dd>
               </div>
-              <div className="flex justify-between border-t border-gray-200 pt-3 text-base">
+              <div className="flex justify-between border-t border-line pt-3 text-base">
                 <dt className="font-semibold">Total</dt>
                 <dd className="font-semibold">{formatPrice(total)}</dd>
               </div>
             </dl>
 
             {toFreeDelivery > 0 ? (
-              <div className="mt-4 rounded-lg bg-brand-50 p-3 text-sm text-brand-900">
+              <div className="mt-4 bg-muted p-3 text-sm text-brand-900">
                 <p>
                   Spend {formatPrice(toFreeDelivery)} more for free UK delivery.
                 </p>
@@ -135,7 +143,7 @@ export default function Cart() {
                   role="presentation"
                 >
                   <div
-                    className="h-full rounded-full bg-brand-500"
+                    className="h-full rounded-full bg-primary"
                     style={{
                       width: `${Math.min(100, (subtotal / site.freeDeliveryThreshold) * 100)}%`,
                     }}
@@ -152,7 +160,7 @@ export default function Cart() {
             <Button size="lg" className="mt-5 w-full">
               Checkout
             </Button>
-            <p className="mt-2 text-center text-xs text-gray-500">
+            <p className="mt-2 text-center text-xs text-ink-500">
               This is a demo storefront — no payment is taken.
             </p>
           </div>
@@ -160,10 +168,13 @@ export default function Cart() {
           <ul className="mt-6 space-y-3">
             {valueProps.map((prop) => (
               <li key={prop.title} className="flex items-start gap-3 text-sm">
-                <Icon name={prop.glyph} className="mt-0.5 size-5 text-brand-500" />
+                <Icon
+                  name={prop.glyph}
+                  className="mt-0.5 size-5 text-ink-950"
+                />
                 <span>
                   <span className="block font-medium">{prop.title}</span>
-                  <span className="block text-gray-600">{prop.body}</span>
+                  <span className="block text-ink-500">{prop.body}</span>
                 </span>
               </li>
             ))}

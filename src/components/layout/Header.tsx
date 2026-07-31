@@ -50,8 +50,8 @@ export default function Header() {
   }, [menuOpen])
 
   return (
-    <header className="sticky top-0 z-40 border-b border-gray-200 bg-white/95 backdrop-blur">
-      <p className="bg-brand-500 py-2 text-center text-xs font-medium text-white sm:text-sm">
+    <header className="sticky top-0 z-40 border-b border-line bg-white/95 backdrop-blur">
+      <p className="micro-label bg-ink-950 py-2.5 text-center text-white">
         {site.promo}
       </p>
 
@@ -88,8 +88,8 @@ export default function Header() {
                     aria-haspopup="true"
                     onClick={() => setOpenMenu(open ? null : menu.label)}
                     className={cx(
-                      "btn btn-ghost btn-md",
-                      open && "bg-gray-100 text-primary",
+                      "btn btn-ghost btn-md font-mono",
+                      open && "bg-ink-100",
                     )}
                   >
                     {menu.label}
@@ -103,17 +103,17 @@ export default function Header() {
                   </button>
 
                   {open ? (
-                    <ul className="absolute top-full left-0 z-50 w-90 overflow-hidden rounded-xl border border-gray-200 bg-white p-2 shadow-xl">
+                    <ul className="absolute top-full left-0 z-50 w-90 overflow-hidden border border-line bg-white p-2 shadow-lg">
                       {menu.items.map((item) => (
                         <li key={item.to + item.label}>
                           <Link
                             to={item.to}
-                            className="block rounded-lg px-3 py-2.5 hover:bg-brand-50"
+                            className="block px-3 py-2.5 hover:bg-ink-50"
                           >
                             <span className="block text-sm font-semibold">
                               {item.label}
                             </span>
-                            <span className="mt-0.5 block text-xs text-gray-600">
+                            <span className="mt-0.5 block text-xs text-ink-500">
                               {item.description}
                             </span>
                           </Link>
@@ -135,11 +135,13 @@ export default function Header() {
           type="button"
           onClick={openDrawer}
           className="btn btn-ghost btn-icon relative ml-auto lg:ml-0"
-          aria-label={count > 0 ? `Open basket, ${count} items` : "Open basket, empty"}
+          aria-label={
+            count > 0 ? `Open basket, ${count} items` : "Open basket, empty"
+          }
         >
           <Icon name="cart" />
           {count > 0 ? (
-            <span className="absolute -top-0.5 -right-0.5 flex size-5 items-center justify-center rounded-full bg-brand-500 text-[10px] font-semibold text-white">
+            <span className="absolute -top-0.5 -right-0.5 flex size-5 items-center justify-center rounded-full bg-primary text-[10px] font-semibold text-white">
               {count > 99 ? "99+" : count}
             </span>
           ) : null}
@@ -160,8 +162,8 @@ export default function Header() {
             onClick={() => setMenuOpen(false)}
           />
           <div className="absolute inset-y-0 left-0 flex w-80 max-w-[85vw] flex-col overflow-y-auto bg-white">
-            <div className="flex h-16 items-center justify-between border-b border-gray-200 px-4">
-              <span className="font-semibold">Menu</span>
+            <div className="flex h-16 items-center justify-between border-b border-line px-4">
+              <span className="micro-label text-ink-950">Menu</span>
               <button
                 type="button"
                 className="btn btn-ghost btn-icon"
@@ -174,9 +176,7 @@ export default function Header() {
             <nav className="flex-1 px-2 py-4" aria-label="Mobile">
               {navMenus.map((menu) => (
                 <div key={menu.label} className="mb-5">
-                  <p className="px-3 pb-1 text-xs font-semibold tracking-wide text-gray-500 uppercase">
-                    {menu.label}
-                  </p>
+                  <p className="micro-label px-3 pb-2">{menu.label}</p>
                   <ul>
                     {menu.items.map((item) => (
                       <li key={item.to + item.label}>
@@ -184,10 +184,8 @@ export default function Header() {
                           to={item.to}
                           className={({ isActive }) =>
                             cx(
-                              "block rounded-lg px-3 py-2.5 text-sm font-medium",
-                              isActive
-                                ? "bg-brand-50 text-primary"
-                                : "hover:bg-gray-100",
+                              "block px-3 py-2.5 text-sm font-medium",
+                              isActive ? "bg-ink-100" : "hover:bg-ink-50",
                             )
                           }
                         >
@@ -200,7 +198,7 @@ export default function Header() {
               ))}
               <Link
                 to="/about"
-                className="block rounded-lg px-3 py-2.5 text-sm font-medium hover:bg-gray-100"
+                className="block px-3 py-2.5 text-sm font-medium hover:bg-ink-50"
               >
                 About us
               </Link>

@@ -9,7 +9,7 @@ import { buttonClass } from "../components/ui/Button"
 export default function Guides() {
   return (
     <>
-      <div className="border-b border-gray-200 bg-white">
+      <div className="border-b border-line bg-white">
         <div className="content-boundary py-8 md:py-10">
           <Breadcrumbs
             trail={[{ label: "Home", to: "/" }, { label: "Repair guides" }]}
@@ -34,21 +34,24 @@ export default function Guides() {
                     <Badge tone={difficultyTone[guide.difficulty]} size="sm">
                       {guide.difficulty}
                     </Badge>
-                    <span className="flex items-center gap-1 text-xs text-gray-500">
+                    <span className="flex items-center gap-1 text-xs text-ink-500">
                       <Icon name="clock" className="size-3.5" />
                       {guide.time}
                     </span>
                   </div>
 
                   <h2 className="text-lg font-semibold group-hover:text-primary">
-                    <Link to={`/guide/${guide.slug}`} className="stretched-link">
+                    <Link
+                      to={`/guide/${guide.slug}`}
+                      className="stretched-link"
+                    >
                       {guide.title}
                     </Link>
                   </h2>
 
-                  <p className="text-sm text-gray-600">{guide.summary}</p>
+                  <p className="text-sm text-ink-500">{guide.summary}</p>
 
-                  <p className="mt-auto flex flex-wrap gap-x-3 text-xs text-gray-500">
+                  <p className="mt-auto flex flex-wrap gap-x-3 text-xs text-ink-500">
                     <span>{guide.steps.length} steps</span>
                     <span>{partKindLabels[guide.partKind]}</span>
                     <span>
@@ -62,9 +65,11 @@ export default function Guides() {
         </ul>
       </div>
 
-      <section className="border-t border-gray-200 bg-brand-50">
+      <section className="border-t border-line bg-muted">
         <div className="content-boundary py-12 text-center">
-          <h2 className="text-2xl font-semibold">Not sure which model you have?</h2>
+          <h2 className="section-heading-sm text-xl md:text-2xl">
+            Not sure which model you have?
+          </h2>
           <p className="prose-body mx-auto mt-3 max-w-xl">
             Ordering the wrong part is the commonest mistake people make. Two
             minutes checking saves a return.

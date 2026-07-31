@@ -4,9 +4,13 @@ import { cx } from "../../lib/cx"
 export type ButtonVariant =
   | "primary"
   | "secondary"
+  | "accent"
   | "outline"
   | "ghost"
   | "link"
+  /** For use on the dark band, where outline and ghost disappear. */
+  | "invert"
+  | "outline-invert"
 export type ButtonSize = "xs" | "sm" | "md" | "lg" | "icon"
 
 /**
@@ -34,6 +38,10 @@ export default function Button({
   ...rest
 }: Props) {
   return (
-    <button type={type} className={buttonClass(variant, size, className)} {...rest} />
+    <button
+      type={type}
+      className={buttonClass(variant, size, className)}
+      {...rest}
+    />
   )
 }

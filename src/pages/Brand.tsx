@@ -22,7 +22,10 @@ export default function Brand() {
 
   const brand = brandDevices[0].brand
   const groups = devicesByFamily(brandDevices)
-  const partCount = brandDevices.reduce((sum, d) => sum + partsForDevice(d).length, 0)
+  const partCount = brandDevices.reduce(
+    (sum, d) => sum + partsForDevice(d).length,
+    0,
+  )
 
   // Handsets of this brand we sell outright.
   const handsets = products.filter(
@@ -38,7 +41,7 @@ export default function Brand() {
 
   return (
     <>
-      <div className="border-b border-gray-200 bg-white">
+      <div className="border-b border-line bg-white">
         <div className="content-boundary py-8 md:py-10">
           <Breadcrumbs
             trail={[
@@ -71,15 +74,17 @@ export default function Brand() {
         <div className="space-y-10">
           {groups.map((group) => (
             <section key={group.family}>
-              <h2 className="text-lg font-semibold">{group.family}</h2>
+              <h2 className="section-heading-sm">{group.family}</h2>
               <ul className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
                 {group.items.map((device) => {
                   const count = partsForDevice(device).length
                   return (
                     <li key={device.slug}>
                       <article className="group resource-card h-full gap-3">
-                        <span className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-gray-100 text-gray-700 group-hover:bg-brand-50 group-hover:text-brand-500">
-                          <Icon name={device.kind === "tablet" ? "screen" : "phone"} />
+                        <span className="flex size-10 shrink-0 items-center justify-center bg-muted text-ink-600 group-hover:bg-muted group-hover:text-ink-950">
+                          <Icon
+                            name={device.kind === "tablet" ? "screen" : "phone"}
+                          />
                         </span>
                         <div className="min-w-0">
                           <h3 className="truncate text-sm font-semibold group-hover:text-primary">
@@ -90,8 +95,9 @@ export default function Brand() {
                               {device.name}
                             </Link>
                           </h3>
-                          <p className="text-xs text-gray-600">
-                            {device.year} · {count} {count === 1 ? "part" : "parts"}
+                          <p className="text-xs text-ink-500">
+                            {device.year} · {count}{" "}
+                            {count === 1 ? "part" : "parts"}
                           </p>
                         </div>
                       </article>
@@ -105,9 +111,11 @@ export default function Brand() {
       </div>
 
       {handsets.length > 0 ? (
-        <section className="section-y bg-gray-100">
+        <section className="section-y bg-muted">
           <div className="content-boundary">
-            <h2 className="text-2xl font-semibold">{brand} handsets we sell</h2>
+            <h2 className="section-heading-sm text-xl md:text-2xl">
+              {brand} handsets we sell
+            </h2>
             <div className="mt-6">
               <ProductGrid products={handsets} />
             </div>
@@ -115,9 +123,11 @@ export default function Brand() {
         </section>
       ) : null}
 
-      <section className="border-t border-gray-200 bg-white">
+      <section className="border-t border-line bg-white">
         <div className="content-boundary py-12">
-          <h2 className="text-2xl font-semibold">Other brands</h2>
+          <h2 className="section-heading-sm text-xl md:text-2xl">
+            Other brands
+          </h2>
           <ul className="mt-4 flex flex-wrap gap-2">
             {deviceBrands
               .filter((b) => b !== brand)

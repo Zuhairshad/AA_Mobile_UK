@@ -16,7 +16,7 @@ export default function QuantityStepper({
   label = "Quantity",
 }: Props) {
   return (
-    <div className="inline-flex items-center rounded-lg border border-line bg-white">
+    <div className="inline-flex items-center border border-line bg-white">
       <button
         type="button"
         className="btn btn-ghost btn-icon rounded-r-none"

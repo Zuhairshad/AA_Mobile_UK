@@ -35,18 +35,20 @@ export default function Repairs() {
 
   return (
     <>
-      <section className="bg-gradient-to-br from-brand-700 via-brand-800 to-brand-950">
+      <section className="bg-dark">
         <div className="content-boundary py-16 text-center md:py-20">
-          <h1 className="font-display text-4xl font-bold tracking-tight text-white md:text-6xl">
+          <h1 className="section-heading text-dark-foreground">
             Repairs while you wait
           </h1>
-          <p className="mx-auto mt-4 max-w-2xl text-lg text-brand-100 md:text-xl">
+          <p className="mx-auto mt-4 max-w-2xl text-lg text-dark-muted md:text-xl">
             Free diagnostic, fixed price before we start, twelve months on the
             work. Most screens and batteries are done in under an hour.
           </p>
           <dl className="mx-auto mt-10 grid max-w-2xl grid-cols-3 gap-6 text-white">
             <div>
-              <dd className="font-mono text-2xl font-bold md:text-3xl">45 min</dd>
+              <dd className="font-mono text-2xl font-bold md:text-3xl">
+                45 min
+              </dd>
               <dt className="text-sm text-brand-200">Typical screen repair</dt>
             </div>
             <div>
@@ -54,7 +56,9 @@ export default function Repairs() {
               <dt className="text-sm text-brand-200">Diagnostic, always</dt>
             </div>
             <div>
-              <dd className="font-mono text-2xl font-bold md:text-3xl">12 mo</dd>
+              <dd className="font-mono text-2xl font-bold md:text-3xl">
+                12 mo
+              </dd>
               <dt className="text-sm text-brand-200">Guarantee</dt>
             </div>
           </dl>
@@ -70,22 +74,19 @@ export default function Repairs() {
           <h2 className="section-heading mb-10 text-center">How it works</h2>
           <ol className="grid gap-6 md:grid-cols-3">
             {bookingSteps.map((step, i) => (
-              <li
-                key={step.title}
-                className="rounded-xl border border-gray-200 bg-white p-6"
-              >
-                <span className="flex size-9 items-center justify-center rounded-full bg-brand-500 font-mono text-sm font-bold text-white">
+              <li key={step.title} className="border border-line bg-white p-6">
+                <span className="flex size-9 items-center justify-center rounded-full bg-ink-950 font-mono text-sm font-bold text-white">
                   {i + 1}
                 </span>
-                <h3 className="mt-4 text-lg font-semibold">{step.title}</h3>
-                <p className="mt-2 text-sm text-gray-600">{step.body}</p>
+                <h3 className="section-heading-sm mt-4">{step.title}</h3>
+                <p className="mt-2 text-sm text-ink-500">{step.body}</p>
               </li>
             ))}
           </ol>
         </div>
       </section>
 
-      <section id="book" className="section-y scroll-mt-32 bg-gray-100">
+      <section id="book" className="section-y scroll-mt-32 bg-muted">
         <div className="content-boundary max-w-2xl">
           <h2 className="section-heading text-center">Book a repair</h2>
           <p className="section-lede mt-3 text-center">
@@ -95,7 +96,7 @@ export default function Repairs() {
 
           {submitted ? (
             <div
-              className="mt-8 rounded-xl border border-green-200 bg-green-50 p-6 text-center"
+              className="mt-8 border border-green-200 bg-green-50 p-6 text-center"
               role="status"
             >
               <Icon name="check" className="mx-auto size-8 text-green-700" />
@@ -103,9 +104,9 @@ export default function Repairs() {
                 Booking request received
               </p>
               <p className="mt-2 text-sm text-green-800">
-                We will confirm your slot and the price by email within a couple of
-                hours during shop hours. Nothing is charged until the repair is
-                agreed.
+                We will confirm your slot and the price by email within a couple
+                of hours during shop hours. Nothing is charged until the repair
+                is agreed.
               </p>
               <Button
                 variant="outline"
@@ -117,7 +118,7 @@ export default function Repairs() {
             </div>
           ) : (
             <form
-              className="mt-8 rounded-xl border border-gray-200 bg-white p-6"
+              className="mt-8 border border-line bg-white p-6"
               onSubmit={(e) => {
                 e.preventDefault()
                 setSubmitted(true)
@@ -176,7 +177,7 @@ export default function Repairs() {
               <Button type="submit" size="lg" className="mt-5 w-full">
                 Request a slot
               </Button>
-              <p className="mt-3 text-center text-xs text-gray-500">
+              <p className="mt-3 text-center text-xs text-ink-500">
                 This is a demo storefront — the form does not send anything.
               </p>
             </form>

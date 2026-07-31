@@ -39,9 +39,13 @@ export default function Device() {
 
   // If we also sell this handset, link the listing and quote a trade-in.
   const forSale = products.find(
-    (p) => p.category === "phones" && p.name === device.name.replace(/^Samsung |^Google /, ""),
+    (p) =>
+      p.category === "phones" &&
+      p.name === device.name.replace(/^Samsung |^Google /, ""),
   )
-  const tradeIn = forSale ? Math.round((forSale.price * 0.45) / 5) * 5 : undefined
+  const tradeIn = forSale
+    ? Math.round((forSale.price * 0.45) / 5) * 5
+    : undefined
 
   const siblings = devices
     .filter((d) => d.family === device.family && d.slug !== device.slug)
@@ -49,7 +53,7 @@ export default function Device() {
 
   return (
     <>
-      <div className="border-b border-gray-200 bg-white">
+      <div className="border-b border-line bg-white">
         <div className="content-boundary py-8 md:py-10">
           <Breadcrumbs
             trail={[
@@ -72,14 +76,16 @@ export default function Device() {
             <Badge tone="gray">
               {device.panel === "oled" ? "OLED display" : "LCD display"}
             </Badge>
-            <Badge tone="gray">{device.kind === "tablet" ? "Tablet" : "Phone"}</Badge>
+            <Badge tone="gray">
+              {device.kind === "tablet" ? "Tablet" : "Phone"}
+            </Badge>
             <Badge tone="brand" icon="shield">
               12-month guarantee
             </Badge>
           </div>
 
           {device.notes ? (
-            <p className="mt-5 flex max-w-3xl items-start gap-2 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
+            <p className="mt-5 flex max-w-3xl items-start gap-2 border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
               <Icon name="sparkle" className="mt-0.5 size-4 shrink-0" />
               <span>{device.notes}</span>
             </p>
@@ -90,18 +96,18 @@ export default function Device() {
       {/* Repair pricing table: the answer most visitors actually came for. */}
       <section className="section-y">
         <div className="content-boundary">
-          <h2 className="text-2xl font-semibold">
+          <h2 className="section-heading-sm text-xl md:text-2xl">
             {device.name} repair prices
           </h2>
           <p className="prose-body mt-2 max-w-3xl text-sm">
-            Fitted prices include the part, the labour and the guarantee. Buy the
-            part on its own if you would rather do it yourself — the diagnostic is
-            free either way.
+            Fitted prices include the part, the labour and the guarantee. Buy
+            the part on its own if you would rather do it yourself — the
+            diagnostic is free either way.
           </p>
 
-          <div className="mt-6 overflow-x-auto rounded-xl border border-gray-200 bg-white">
+          <div className="mt-6 overflow-x-auto border border-line bg-white">
             <table className="w-full min-w-160 text-sm">
-              <thead className="bg-gray-50 text-left">
+              <thead className="bg-muted text-left">
                 <tr>
                   <th scope="col" className="px-4 py-3 font-semibold">
                     Repair
@@ -118,12 +124,15 @@ export default function Device() {
                   <th scope="col" className="px-4 py-3" />
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-200">
+              <tbody className="divide-y divide-line">
                 {device.parts.map((kind) => {
                   const part = productById.get(partId(device, kind))
                   return (
                     <tr key={kind}>
-                      <th scope="row" className="px-4 py-3 text-left font-medium">
+                      <th
+                        scope="row"
+                        className="px-4 py-3 text-left font-medium"
+                      >
                         {partKindLabels[kind]}
                       </th>
                       <td className="px-4 py-3">
@@ -132,7 +141,9 @@ export default function Device() {
                       <td className="px-4 py-3 font-semibold">
                         {formatPrice(repairPrice(device, kind))}
                       </td>
-                      <td className="px-4 py-3 text-gray-600">{turnaround[kind]}</td>
+                      <td className="px-4 py-3 text-ink-500">
+                        {turnaround[kind]}
+                      </td>
                       <td className="px-4 py-3 text-right">
                         {part ? (
                           <Link
@@ -163,18 +174,21 @@ export default function Device() {
         </div>
       </section>
 
-      <section className="section-y bg-gray-100">
+      <section className="section-y bg-muted">
         <div className="content-boundary">
-          <h2 className="text-2xl font-semibold">
+          <h2 className="section-heading-sm text-xl md:text-2xl">
             What usually goes wrong with the {device.name}
           </h2>
           <ul className="mt-4 grid gap-3 md:grid-cols-3">
             {device.commonFaults.map((fault) => (
               <li
                 key={fault}
-                className="flex items-start gap-2 rounded-xl border border-gray-200 bg-white p-4 text-sm"
+                className="flex items-start gap-2 border border-line bg-white p-4 text-sm"
               >
-                <Icon name="wrench" className="mt-0.5 size-4 shrink-0 text-brand-500" />
+                <Icon
+                  name="wrench"
+                  className="mt-0.5 size-4 shrink-0 text-ink-950"
+                />
                 {fault}
               </li>
             ))}
@@ -185,12 +199,12 @@ export default function Device() {
       {parts.length > 0 ? (
         <section className="section-y">
           <div className="content-boundary">
-            <h2 className="text-2xl font-semibold">
+            <h2 className="section-heading-sm text-xl md:text-2xl">
               Parts that fit the {device.name}
             </h2>
             <p className="prose-body mt-2 text-sm">
-              {parts.length} {parts.length === 1 ? "part" : "parts"}, each tested
-              before dispatch.
+              {parts.length} {parts.length === 1 ? "part" : "parts"}, each
+              tested before dispatch.
             </p>
             <div className="mt-6">
               <ProductGrid products={parts} />
@@ -200,9 +214,9 @@ export default function Device() {
       ) : null}
 
       {guides.length > 0 ? (
-        <section className="section-y bg-gray-100">
+        <section className="section-y bg-muted">
           <div className="content-boundary">
-            <h2 className="text-2xl font-semibold">
+            <h2 className="section-heading-sm text-xl md:text-2xl">
               Guides for the {device.name}
             </h2>
             <ul className="mt-6 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -213,17 +227,20 @@ export default function Device() {
                       <Badge tone={difficultyTone[guide.difficulty]} size="sm">
                         {guide.difficulty}
                       </Badge>
-                      <span className="flex items-center gap-1 text-xs text-gray-500">
+                      <span className="flex items-center gap-1 text-xs text-ink-500">
                         <Icon name="clock" className="size-3.5" />
                         {guide.time}
                       </span>
                     </div>
                     <h3 className="font-semibold group-hover:text-primary">
-                      <Link to={`/guide/${guide.slug}`} className="stretched-link">
+                      <Link
+                        to={`/guide/${guide.slug}`}
+                        className="stretched-link"
+                      >
                         {guide.title}
                       </Link>
                     </h3>
-                    <p className="line-clamp-3 text-sm text-gray-600">
+                    <p className="line-clamp-3 text-sm text-ink-500">
                       {guide.summary}
                     </p>
                   </article>
@@ -237,7 +254,9 @@ export default function Device() {
       {siblings.length > 0 ? (
         <section className="section-y">
           <div className="content-boundary">
-            <h2 className="text-2xl font-semibold">Other {device.family} models</h2>
+            <h2 className="section-heading-sm text-xl md:text-2xl">
+              Other {device.family} models
+            </h2>
             <ul className="mt-5 flex flex-wrap gap-2">
               {siblings.map((sibling) => (
                 <li key={sibling.slug}>

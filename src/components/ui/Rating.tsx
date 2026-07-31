@@ -23,7 +23,7 @@ export default function Rating({ value, reviews, className }: Props) {
         role="img"
         aria-label={`Rated ${value} out of 5 stars`}
       >
-        <div className="flex text-gray-300">
+        <div className="flex text-ink-300">
           {Array.from({ length: 5 }, (_, i) => (
             <Icon key={i} name="starSolid" className="size-4" />
           ))}
@@ -38,7 +38,7 @@ export default function Rating({ value, reviews, className }: Props) {
         </div>
       </div>
       {reviews !== undefined ? (
-        <span className="text-sm leading-none text-gray-600">
+        <span className="text-sm leading-none text-ink-500">
           {formatCount(reviews)}
         </span>
       ) : null}

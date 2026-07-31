@@ -52,16 +52,16 @@ const faqs = [
 export default function About() {
   return (
     <>
-      <section className="bg-gradient-to-br from-brand-700 via-brand-800 to-brand-950">
+      <section className="bg-dark">
         <div className="content-boundary py-16 text-center md:py-20">
-          <h1 className="font-display text-4xl font-bold tracking-tight text-white md:text-6xl">
+          <h1 className="section-heading text-dark-foreground">
             A repair shop that sells you the part
           </h1>
-          <p className="mx-auto mt-4 max-w-2xl text-lg text-brand-100 md:text-xl">
-            We started on a market stall in 2015 fixing screens for a tenner. The
-            principle has not changed: tell people the truth about what is wrong,
-            charge a fair price, and sell them the part if they would rather do it
-            themselves.
+          <p className="mx-auto mt-4 max-w-2xl text-lg text-dark-muted md:text-xl">
+            We started on a market stall in 2015 fixing screens for a tenner.
+            The principle has not changed: tell people the truth about what is
+            wrong, charge a fair price, and sell them the part if they would
+            rather do it themselves.
           </p>
         </div>
       </section>
@@ -73,42 +73,43 @@ export default function About() {
           <h2 className="section-heading">How we got here</h2>
           <div className="prose-body mt-6">
             <p>
-              AA Mobile began because the two of us kept being quoted more to fix a
-              phone than the phone was worth. That is still the industry's default
-              answer, and it is still usually wrong — a four-year-old handset with a
-              fresh battery and a new screen is a perfectly good phone.
+              AA Mobile began because the two of us kept being quoted more to
+              fix a phone than the phone was worth. That is still the industry's
+              default answer, and it is still usually wrong — a four-year-old
+              handset with a fresh battery and a new screen is a perfectly good
+              phone.
             </p>
             <p>
-              So we do three things under one roof. We fix phones, quickly and for a
-              price agreed before we start. We sell the exact parts and tools we use
-              on the bench, at the price we pay for them, because a customer who
-              wants to do it themselves is not a lost sale. And we buy phones back
-              in any condition, because the worst outcome for everyone is a working
-              device in a drawer.
+              So we do three things under one roof. We fix phones, quickly and
+              for a price agreed before we start. We sell the exact parts and
+              tools we use on the bench, at the price we pay for them, because a
+              customer who wants to do it themselves is not a lost sale. And we
+              buy phones back in any condition, because the worst outcome for
+              everyone is a working device in a drawer.
             </p>
             <p>
-              We have completed {stats[0].value} repairs since then. We still turn
-              work away when a repair is not worth doing, and we still tell you when
-              a cheaper aftermarket part is the sensible choice.
+              We have completed {stats[0].value} repairs since then. We still
+              turn work away when a repair is not worth doing, and we still tell
+              you when a cheaper aftermarket part is the sensible choice.
             </p>
           </div>
         </div>
       </section>
 
-      <section className="section-y bg-gray-100">
+      <section className="section-y bg-muted">
         <div className="content-boundary">
           <h2 className="section-heading mb-10 text-center">The small print</h2>
           <ul className="grid gap-5 md:grid-cols-2">
             {policies.map((policy) => (
               <li
                 key={policy.title}
-                className="rounded-xl border border-gray-200 bg-white p-6"
+                className="border border-line bg-white p-6"
               >
-                <span className="flex size-11 items-center justify-center rounded-lg bg-brand-50 text-brand-500">
+                <span className="flex size-11 items-center justify-center bg-muted text-ink-950">
                   <Icon name={policy.glyph} className="size-6" />
                 </span>
-                <h3 className="mt-4 text-lg font-semibold">{policy.title}</h3>
-                <p className="mt-2 text-sm text-gray-700">{policy.body}</p>
+                <h3 className="section-heading-sm mt-4">{policy.title}</h3>
+                <p className="mt-2 text-sm text-ink-600">{policy.body}</p>
               </li>
             ))}
           </ul>
@@ -122,30 +123,30 @@ export default function About() {
         </div>
       </section>
 
-      <section className="section-y bg-brand-50">
+      <section className="section-y bg-muted">
         <div className="content-boundary text-center">
           <h2 className="section-heading">Come and see us</h2>
           <p className="section-lede mx-auto mt-4 max-w-xl">
-            Birmingham city centre, Monday to Saturday, 9am to 6pm. Free diagnostic
-            whether or not you go ahead.
+            Birmingham city centre, Monday to Saturday, 9am to 6pm. Free
+            diagnostic whether or not you go ahead.
           </p>
           <dl className="mx-auto mt-8 grid max-w-2xl gap-6 sm:grid-cols-3">
             <div>
-              <dt className="flex items-center justify-center gap-2 text-sm text-gray-600">
+              <dt className="flex items-center justify-center gap-2 text-sm text-ink-500">
                 <Icon name="mapPin" className="size-4" />
                 Shop
               </dt>
               <dd className="mt-1 text-sm font-medium">Birmingham B2</dd>
             </div>
             <div>
-              <dt className="flex items-center justify-center gap-2 text-sm text-gray-600">
+              <dt className="flex items-center justify-center gap-2 text-sm text-ink-500">
                 <Icon name="clock" className="size-4" />
                 Hours
               </dt>
               <dd className="mt-1 text-sm font-medium">Mon – Sat, 9 – 6</dd>
             </div>
             <div>
-              <dt className="flex items-center justify-center gap-2 text-sm text-gray-600">
+              <dt className="flex items-center justify-center gap-2 text-sm text-ink-500">
                 <Icon name="mail" className="size-4" />
                 Email
               </dt>

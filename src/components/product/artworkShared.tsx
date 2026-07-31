@@ -1,4 +1,4 @@
-import type { ReactNode } from "react"
+import { useLayoutEffect, useRef, useState, type ReactNode } from "react"
 import { cx } from "../../lib/cx"
 
 /**
@@ -76,7 +76,18 @@ export function ArtworkPaintServers() {
   )
 }
 
-/** Square canvas every illustration is drawn on. */
+/** Margin left around a drawing, as a fraction of its longest side. */
+const ARTWORK_MARGIN = 0.06
+
+/**
+ * Floor on the square canvas side.
+ *
+ * Without it a small drawing zooms far more than a large one, so a speaker and a
+ * screen end up at wildly different optical scales side by side in a grid. The
+ * floor caps the zoom at 240/175 ≈ 1.4x and keeps the set consistent.
+ */
+const ARTWORK_MIN_SIDE = 175
+
 export function ArtworkSvg({
   className,
   children,
@@ -84,9 +95,46 @@ export function ArtworkSvg({
   className?: string
   children: ReactNode
 }) {
+  const ref = useRef<SVGSVGElement>(null)
+  const [box, setBox] = useState<string>()
+
+  /**
+   * Tighten the viewBox to what was actually drawn.
+   *
+   * The drawings are composed on a 240x240 canvas but none of them fills it —
+   * a charging port occupies 178x52, a screen 96x203 — so rendering the raw
+   * canvas left every illustration floating in a third of its frame. The bounds
+   * differ per drawing and per seeded variant, so they are measured rather than
+   * tabulated: a baked table would be one artwork edit away from being wrong.
+   *
+   * The box stays square and centred on the drawing rather than hugging it. A
+   * box that hugged the bounds would stretch a wide flat part to the full frame
+   * width while a tall one stayed narrow, so the grid would read as a set of
+   * unrelated zoom levels.
+   *
+   * useLayoutEffect, so the box is set before paint and the artwork never
+   * visibly jumps.
+   */
+  useLayoutEffect(() => {
+    const svg = ref.current
+    if (!svg) return
+    const bb = svg.getBBox()
+    if (!bb.width || !bb.height) return
+    const side =
+      Math.max(bb.width, bb.height, ARTWORK_MIN_SIDE) * (1 + ARTWORK_MARGIN * 2)
+    const midX = bb.x + bb.width / 2
+    const midY = bb.y + bb.height / 2
+    setBox(
+      [midX - side / 2, midY - side / 2, side, side]
+        .map((n) => Math.round(n * 100) / 100)
+        .join(" "),
+    )
+  }, [children])
+
   return (
     <svg
-      viewBox="0 0 240 240"
+      ref={ref}
+      viewBox={box ?? "0 0 240 240"}
       className={cx("h-full w-full", className)}
       aria-hidden="true"
       focusable="false"

@@ -61,7 +61,7 @@ export default function Logo({ markOnly, className, markClassName }: Props) {
     <span className={cx("flex items-center gap-2.5", className)}>
       <span
         className={cx(
-          "flex size-9 shrink-0 items-center justify-center rounded-lg bg-brand-500 text-white",
+          "flex size-9 shrink-0 items-center justify-center bg-ink-950 text-white",
           markClassName,
         )}
       >
@@ -70,7 +70,7 @@ export default function Logo({ markOnly, className, markClassName }: Props) {
       {!markOnly ? (
         <span className="font-display text-lg leading-none font-bold tracking-tight">
           AA Mobile
-          <span className="mt-0.5 block text-[11px] font-medium tracking-[0.14em] text-gray-500 uppercase">
+          <span className="mt-0.5 block text-[11px] font-medium tracking-[0.14em] text-ink-500 uppercase">
             Repairs &amp; Parts
           </span>
         </span>

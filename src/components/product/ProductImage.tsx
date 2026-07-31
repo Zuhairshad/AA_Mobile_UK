@@ -55,7 +55,7 @@ export default function ProductImage({ product, className, priority }: Props) {
     const tint = product.photo ? photoTints[product.photo] : undefined
     return (
       <div
-        className={cx("h-full w-full overflow-hidden rounded-md", className)}
+        className={cx("absolute inset-0 overflow-hidden", className)}
         style={tint ? { backgroundColor: tint } : undefined}
       >
         <img
@@ -78,7 +78,10 @@ export default function ProductImage({ product, className, priority }: Props) {
 
     return (
       <div
-        className={cx("flex h-full w-full items-center justify-center", className)}
+        className={cx(
+          "absolute inset-0 flex items-center justify-center p-6",
+          className,
+        )}
         role="img"
         aria-label={product.name}
       >
@@ -91,7 +94,10 @@ export default function ProductImage({ product, className, priority }: Props) {
   if (toolKind) {
     return (
       <div
-        className={cx("flex h-full w-full items-center justify-center", className)}
+        className={cx(
+          "absolute inset-0 flex items-center justify-center p-6",
+          className,
+        )}
         role="img"
         aria-label={product.name}
       >
@@ -104,7 +110,7 @@ export default function ProductImage({ product, className, priority }: Props) {
   return (
     <div
       className={cx(
-        "flex h-full w-full items-center justify-center rounded-md bg-gradient-to-br from-brand-50 to-brand-100",
+        "absolute inset-0 flex items-center justify-center bg-ink-100",
         className,
       )}
       role="img"
@@ -112,7 +118,7 @@ export default function ProductImage({ product, className, priority }: Props) {
     >
       <Icon
         name={product.glyph ?? "toolkit"}
-        className="h-1/2 w-1/2 max-h-28 max-w-28 text-brand-400"
+        className="h-1/2 w-1/2 max-h-28 max-w-28 text-ink-400"
       />
     </div>
   )
