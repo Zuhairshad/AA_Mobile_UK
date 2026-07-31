@@ -117,9 +117,12 @@ export default function Footer() {
 
         {/* gray-400 rather than gray-500: on near-black gray-500 measures 4.16:1. */}
         <div className="flex flex-col gap-4 border-t border-gray-800 pt-6 text-xs text-gray-400 md:flex-row md:items-center md:justify-between">
+          {/* Deliberately not a well-formed company/VAT number. A plausible one
+              here reads as fact and could point at a real registration, so the
+              placeholder is left obvious until the real details are supplied. */}
           <p>
-            © {new Date().getFullYear()} {site.name}. Company no. 09284471. VAT
-            GB 284 9917 03.
+            © {new Date().getFullYear()} {site.name}. Company no. [COMPANY
+            NUMBER]. VAT [VAT NUMBER].
           </p>
           <ul className="flex flex-wrap gap-2">
             {paymentMethods.map((method) => (

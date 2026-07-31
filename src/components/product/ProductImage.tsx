@@ -1,4 +1,5 @@
 import { productPhotos } from "../../data/images"
+import { photoTints } from "../../data/photoTints"
 import type { Product } from "../../data/catalogue"
 import type { PartKind } from "../../data/devices"
 import { cx } from "../../lib/cx"
@@ -43,14 +44,28 @@ export default function ProductImage({ product, className, priority }: Props) {
   const src = product.photo ? productPhotos[product.photo] : undefined
 
   if (src) {
+    /**
+     * Photographs sit on a tile tinted to their own edge colour. Most of our
+     * shots are lifestyle images with their own backdrop, and letterboxing one
+     * inside a white well shows two nested backgrounds — the thing that made a
+     * mixed grid look unfinished. Matching the tile merges photo and tile into a
+     * single block, the way an illustration sits on its own field, and unlike a
+     * cover-crop it cannot cut the product out of frame.
+     */
+    const tint = product.photo ? photoTints[product.photo] : undefined
     return (
-      <img
-        src={src}
-        alt={product.name}
-        loading={priority ? "eager" : "lazy"}
-        decoding="async"
-        className={cx("h-full w-full object-contain", className)}
-      />
+      <div
+        className={cx("h-full w-full overflow-hidden rounded-md", className)}
+        style={tint ? { backgroundColor: tint } : undefined}
+      >
+        <img
+          src={src}
+          alt={product.name}
+          loading={priority ? "eager" : "lazy"}
+          decoding="async"
+          className="h-full w-full object-contain"
+        />
+      </div>
     )
   }
 

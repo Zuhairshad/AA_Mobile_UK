@@ -42,6 +42,8 @@ const faqs = [
     a: "Yes, and not just in principle. We publish part prices openly, we sell the same components we fit, and we will service a device you have already opened yourself. Locked-down hardware is bad for our customers and bad for our trade.",
   },
   {
+    // 0121 496 0xxx is Ofcom's reserved range for fictional use, so this cannot
+    // ring a real subscriber. Replace with the shop's number, not a made-up one.
     q: "How do I get in touch?",
     a: "Email hello@aamobile.co.uk, call 0121 496 0142, or come in. We answer email within a couple of hours during shop hours.",
   },
