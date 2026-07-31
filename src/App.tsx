@@ -1,5 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom"
 import { CartProvider } from "./lib/cart"
+import { ToastProvider } from "./lib/toast"
 import Layout from "./components/layout/Layout"
 import About from "./pages/About"
 import Brand from "./pages/Brand"
@@ -21,7 +22,8 @@ import Sitemap from "./pages/Sitemap"
 export default function App() {
   return (
     <BrowserRouter>
-      <CartProvider>
+      <ToastProvider>
+        <CartProvider>
         <Routes>
           <Route element={<Layout />}>
             <Route index element={<Home />} />
@@ -53,7 +55,8 @@ export default function App() {
             <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>
-      </CartProvider>
+        </CartProvider>
+      </ToastProvider>
     </BrowserRouter>
   )
 }

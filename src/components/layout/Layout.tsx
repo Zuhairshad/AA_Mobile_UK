@@ -2,6 +2,8 @@ import { useEffect } from "react"
 import { Outlet, useLocation } from "react-router-dom"
 import Header from "./Header"
 import Footer from "./Footer"
+import CartDrawer from "../cart/CartDrawer"
+import Toaster from "../ui/Toaster"
 
 export default function Layout() {
   const { pathname, hash } = useLocation()
@@ -25,6 +27,8 @@ export default function Layout() {
         <Outlet />
       </main>
       <Footer />
+      <CartDrawer />
+      <Toaster />
     </div>
   )
 }

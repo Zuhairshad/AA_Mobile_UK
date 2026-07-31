@@ -9,22 +9,22 @@ import SearchBox from "./SearchBox"
 
 export default function Header() {
   const [openMenu, setOpenMenu] = useState<string | null>(null)
-  const [drawerOpen, setDrawerOpen] = useState(false)
-  const { count } = useCart()
+  const [menuOpen, setMenuOpen] = useState(false)
+  const { count, openDrawer } = useCart()
   const location = useLocation()
   const nav = useRef<HTMLElement>(null)
 
   // Any navigation closes whatever was open.
   useEffect(() => {
     setOpenMenu(null)
-    setDrawerOpen(false)
+    setMenuOpen(false)
   }, [location.pathname, location.hash])
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         setOpenMenu(null)
-        setDrawerOpen(false)
+        setMenuOpen(false)
       }
     }
     document.addEventListener("keydown", onKey)
@@ -42,11 +42,11 @@ export default function Header() {
 
   // Prevent the page scrolling behind the mobile drawer.
   useEffect(() => {
-    document.body.style.overflow = drawerOpen ? "hidden" : ""
+    document.body.style.overflow = menuOpen ? "hidden" : ""
     return () => {
       document.body.style.overflow = ""
     }
-  }, [drawerOpen])
+  }, [menuOpen])
 
   return (
     <header className="sticky top-0 z-40 border-b border-gray-200 bg-white/95 backdrop-blur">
@@ -59,8 +59,8 @@ export default function Header() {
           type="button"
           className="btn btn-ghost btn-icon lg:hidden"
           aria-label="Open navigation menu"
-          aria-expanded={drawerOpen}
-          onClick={() => setDrawerOpen(true)}
+          aria-expanded={menuOpen}
+          onClick={() => setMenuOpen(true)}
         >
           <Icon name="menu" />
         </button>
@@ -139,10 +139,11 @@ export default function Header() {
           <SearchBox />
         </div>
 
-        <Link
-          to="/cart"
+        <button
+          type="button"
+          onClick={openDrawer}
           className="btn btn-ghost btn-icon relative ml-auto lg:ml-0"
-          aria-label={count > 0 ? `Basket, ${count} items` : "Basket, empty"}
+          aria-label={count > 0 ? `Open basket, ${count} items` : "Open basket, empty"}
         >
           <Icon name="cart" />
           {count > 0 ? (
@@ -150,7 +151,7 @@ export default function Header() {
               {count > 99 ? "99+" : count}
             </span>
           ) : null}
-        </Link>
+        </button>
       </div>
 
       {/* Mobile: search sits on its own row so it gets full width. */}
@@ -158,13 +159,13 @@ export default function Header() {
         <SearchBox placeholder="Search phones, parts and tools" />
       </div>
 
-      {drawerOpen ? (
+      {menuOpen ? (
         <div className="fixed inset-0 z-50 lg:hidden">
           <button
             type="button"
             className="absolute inset-0 bg-black/50"
             aria-label="Close navigation menu"
-            onClick={() => setDrawerOpen(false)}
+            onClick={() => setMenuOpen(false)}
           />
           <div className="absolute inset-y-0 left-0 flex w-80 max-w-[85vw] flex-col overflow-y-auto bg-white">
             <div className="flex h-16 items-center justify-between border-b border-gray-200 px-4">
@@ -173,7 +174,7 @@ export default function Header() {
                 type="button"
                 className="btn btn-ghost btn-icon"
                 aria-label="Close navigation menu"
-                onClick={() => setDrawerOpen(false)}
+                onClick={() => setMenuOpen(false)}
               >
                 <Icon name="close" />
               </button>

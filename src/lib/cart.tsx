@@ -21,6 +21,10 @@ type StoredLine = { id: string; qty: number }
 
 type CartValue = {
   lines: CartLine[]
+  /** Drawer visibility lives with the cart: everything that opens it is a cart action. */
+  drawerOpen: boolean
+  openDrawer: () => void
+  closeDrawer: () => void
   count: number
   subtotal: number
   delivery: number
@@ -57,6 +61,7 @@ function read(): StoredLine[] {
 
 export function CartProvider({ children }: { children: ReactNode }) {
   const [stored, setStored] = useState<StoredLine[]>(read)
+  const [drawerOpen, setDrawerOpen] = useState(false)
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(stored))
@@ -88,6 +93,8 @@ export function CartProvider({ children }: { children: ReactNode }) {
   }, [])
 
   const clear = useCallback(() => setStored([]), [])
+  const openDrawer = useCallback(() => setDrawerOpen(true), [])
+  const closeDrawer = useCallback(() => setDrawerOpen(false), [])
 
   const value = useMemo<CartValue>(() => {
     const lines = stored
@@ -108,12 +115,15 @@ export function CartProvider({ children }: { children: ReactNode }) {
       delivery,
       total: subtotal + delivery,
       toFreeDelivery: free ? 0 : site.freeDeliveryThreshold - subtotal,
+      drawerOpen,
+      openDrawer,
+      closeDrawer,
       add,
       setQty,
       remove,
       clear,
     }
-  }, [stored, add, setQty, remove, clear])
+  }, [stored, drawerOpen, openDrawer, closeDrawer, add, setQty, remove, clear])
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>
 }

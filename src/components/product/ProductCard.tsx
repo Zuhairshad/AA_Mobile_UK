@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom"
 import { badgeMeta, badgesFor, type Product } from "../../data/catalogue"
 import { useCart } from "../../lib/cart"
+import { useToast } from "../../lib/toast"
 import { cx } from "../../lib/cx"
 import Badge from "../ui/Badge"
 import Button from "../ui/Button"
@@ -17,6 +18,7 @@ type Props = {
 
 export default function ProductCard({ product, fixedWidth, priority }: Props) {
   const { add } = useCart()
+  const { push } = useToast()
   const badges = badgesFor(product)
   const lead = badges[0]
   const soldOut = product.stock === "out"
@@ -53,7 +55,16 @@ export default function ProductCard({ product, fixedWidth, priority }: Props) {
           variant={soldOut ? "outline" : "primary"}
           size="sm"
           disabled={soldOut}
-          onClick={() => add(product.id)}
+          onClick={() => {
+            add(product.id)
+            // A toast rather than opening the drawer: adding from a listing
+            // shouldn't cover the grid you are still working through.
+            push({
+              title: "Added to basket",
+              detail: product.name,
+              action: { label: "View basket", to: "/cart" },
+            })
+          }}
           className="relative z-10"
         >
           {soldOut ? "Out of stock" : "Add to basket"}

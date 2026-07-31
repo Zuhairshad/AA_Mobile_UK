@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Link, useParams } from "react-router-dom"
 import {
   badgeMeta,
@@ -10,6 +10,8 @@ import {
 import { categoryBySlug, subcategoryName } from "../data/taxonomy"
 import { formatPrice } from "../lib/format"
 import { useCart } from "../lib/cart"
+import { useToast } from "../lib/toast"
+import { recentlyViewed, recordView } from "../lib/recentlyViewed"
 import Accordion from "../components/ui/Accordion"
 import Badge from "../components/ui/Badge"
 import Breadcrumbs from "../components/ui/Breadcrumbs"
@@ -43,9 +45,53 @@ const stockCopy = {
 export default function Product() {
   const { id } = useParams<{ id: string }>()
   const product = id ? productById.get(id) : undefined
-  const { add } = useCart()
+  const { add, openDrawer } = useCart()
+  const { push } = useToast()
   const [qty, setQty] = useState(1)
   const [added, setAdded] = useState(false)
+  const [showStickyBar, setShowStickyBar] = useState(false)
+  const buyRow = useRef<HTMLDivElement>(null)
+
+  // Reset the quantity when navigating between products, otherwise a "3" from
+  // the last item silently carries over to the next one.
+  useEffect(() => {
+    setQty(1)
+    setAdded(false)
+  }, [id])
+
+  useEffect(() => {
+    if (id) recordView(id)
+  }, [id])
+
+  /**
+   * Sticky buy bar appears once the real one has scrolled up behind the header.
+   *
+   * Sampled on scroll rather than with an IntersectionObserver on purpose: an
+   * observer only reports threshold *crossings*, and at the moment of crossing
+   * the row is still just below the viewport top, so a "has it gone past yet"
+   * test evaluated in the callback is always false and never re-runs.
+   */
+  useEffect(() => {
+    let frame = 0
+    const measure = () => {
+      frame = 0
+      const el = buyRow.current
+      if (!el) return
+      setShowStickyBar(el.getBoundingClientRect().bottom < 72)
+    }
+    const onScroll = () => {
+      if (frame) return
+      frame = requestAnimationFrame(measure)
+    }
+    measure()
+    window.addEventListener("scroll", onScroll, { passive: true })
+    window.addEventListener("resize", onScroll)
+    return () => {
+      if (frame) cancelAnimationFrame(frame)
+      window.removeEventListener("scroll", onScroll)
+      window.removeEventListener("resize", onScroll)
+    }
+  }, [id])
 
   if (!product) return <NotFound />
 
@@ -77,9 +123,16 @@ export default function Product() {
         },
   ]
 
+  const recent = recentlyViewed(product.id)
+
   const addToCart = () => {
     add(product.id, qty)
     setAdded(true)
+    push({
+      title: qty > 1 ? `${qty} added to basket` : "Added to basket",
+      detail: product.name,
+      action: { label: "View basket", to: "/cart" },
+    })
     window.setTimeout(() => setAdded(false), 2500)
   }
 
@@ -160,7 +213,7 @@ export default function Product() {
             <p className="mt-1 text-sm text-gray-600">{stock.detail}</p>
           </div>
 
-          <div className="flex flex-wrap items-center gap-3">
+          <div ref={buyRow} className="flex flex-wrap items-center gap-3">
             <QuantityStepper value={qty} onChange={setQty} />
             <Button
               size="lg"
@@ -339,11 +392,47 @@ export default function Product() {
         <FeaturedProducts heading="You might also need" products={related} />
       ) : null}
 
+      {recent.length > 0 ? (
+        <FeaturedProducts heading="Recently viewed" products={recent} />
+      ) : null}
+
       <div className="content-boundary pb-16 text-center">
         <Link to={`/${product.category}`} className={buttonClass("outline", "lg")}>
           Back to {category?.name ?? "the shop"}
         </Link>
       </div>
+
+      {/* Sticky buy bar. On a page this long the price and the button are
+          otherwise a full scroll away by the time you have read the specs. */}
+      {showStickyBar && !soldOut ? (
+        <div className="fixed inset-x-0 bottom-0 z-40 border-t border-gray-200 bg-white/95 backdrop-blur">
+          <div className="content-boundary flex items-center gap-4 py-3">
+            <span className="hidden size-11 shrink-0 rounded-lg bg-gray-100 p-1.5 sm:block">
+              <ProductImage product={product} />
+            </span>
+            <div className="min-w-0 flex-1">
+              <p className="truncate text-sm font-semibold">{product.name}</p>
+              <p className="text-sm text-gray-600">
+                {formatPrice(product.price)}
+                {product.stock === "low" ? (
+                  <span className="ml-2 text-amber-700">Low stock</span>
+                ) : null}
+              </p>
+            </div>
+            <div className="hidden sm:block">
+              <QuantityStepper value={qty} onChange={setQty} />
+            </div>
+            <Button
+              onClick={() => {
+                addToCart()
+                openDrawer()
+              }}
+            >
+              Add · {formatPrice(product.price * qty)}
+            </Button>
+          </div>
+        </div>
+      ) : null}
     </>
   )
 }
