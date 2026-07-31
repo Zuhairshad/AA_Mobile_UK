@@ -1,8 +1,6 @@
-import { useState } from "react"
 import { Link } from "react-router-dom"
 import { footerColumns, paymentMethods, site } from "../../data/content"
 import Logo from "./Logo"
-import Button from "../ui/Button"
 import Icon from "../ui/Icon"
 
 /**
@@ -49,9 +47,6 @@ const barLinksSecondary = [
 ]
 
 export default function Footer() {
-  const [email, setEmail] = useState("")
-  const [signedUp, setSignedUp] = useState(false)
-
   return (
     <footer className="bg-dark pt-14 text-dark-muted">
       <div className="content-boundary">
@@ -89,62 +84,24 @@ export default function Footer() {
             ))}
           </div>
 
-          <div className="w-full md:max-w-sm">
-            <p className="micro-label micro-label-invert">Stay in the loop</p>
-            <p className="mt-3 text-sm text-dark-muted">
-              Repair guides, new stock and the odd teardown. Once a month, no
-              more.
-            </p>
-            {signedUp ? (
-              <p
-                className="mt-4 flex items-center gap-2 text-sm text-green-400"
-                role="status"
+          {/* The newsletter signup is gone. It set a local flag and showed a
+              confirmation — it never subscribed anyone, so it was a form that
+              lied about what it did. It comes back when there is a list behind
+              it. The socials keep their 36px hit areas; a bare 20px icon is
+              under the 24px minimum and hard to hit on a phone. */}
+          <div className="flex flex-wrap gap-1 md:items-start">
+            {socials.map((social) => (
+              <a
+                key={social.name}
+                href={social.href}
+                target="_blank"
+                rel="noreferrer noopener"
+                aria-label={`${site.name} on ${social.name}`}
+                className="flex size-9 items-center justify-center text-dark-muted transition-colors hover:bg-white/10 hover:text-white"
               >
-                <Icon name="check" className="size-4" />
-                Thanks — check your inbox to confirm.
-              </p>
-            ) : (
-              <form
-                className="mt-4 flex gap-2"
-                onSubmit={(e) => {
-                  e.preventDefault()
-                  setSignedUp(true)
-                }}
-              >
-                <label className="sr-only" htmlFor="newsletter-email">
-                  Email address
-                </label>
-                <input
-                  id="newsletter-email"
-                  type="email"
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="you@example.com"
-                  className="min-w-0 flex-1 border border-white/20 bg-transparent px-3 py-2 !text-base text-white placeholder:text-ink-500 focus:border-brand-400 focus:ring-2 focus:ring-brand-400/40 focus:outline-none"
-                />
-                <Button type="submit" variant="invert">
-                  Subscribe
-                </Button>
-              </form>
-            )}
-
-            {/* size-9 rather than the bare 20px icon: a 20x20 target is below
-                the 24x24 minimum and hard to hit on a phone. */}
-            <div className="mt-6 flex flex-wrap gap-1">
-              {socials.map((social) => (
-                <a
-                  key={social.name}
-                  href={social.href}
-                  target="_blank"
-                  rel="noreferrer noopener"
-                  aria-label={`${site.name} on ${social.name}`}
-                  className="flex size-9 items-center justify-center text-dark-muted transition-colors hover:bg-white/10 hover:text-white"
-                >
-                  <Icon name={social.icon} />
-                </a>
-              ))}
-            </div>
+                <Icon name={social.icon} />
+              </a>
+            ))}
           </div>
         </div>
 

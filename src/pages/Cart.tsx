@@ -157,11 +157,20 @@ export default function Cart() {
               </p>
             )}
 
-            <Button size="lg" className="mt-5 w-full">
-              Checkout
+            {/* Disabled rather than live-but-inert. There is no checkout route,
+                no payment provider and no backend, so a button that looks like
+                the primary action of the whole site and silently does nothing is
+                worse than one that says why. */}
+            <Button size="lg" className="mt-5 w-full" disabled>
+              Checkout unavailable
             </Button>
-            <p className="mt-2 text-center text-xs text-ink-500">
-              This is a demo storefront — no payment is taken.
+            <p className="mt-3 text-center text-xs text-ink-500">
+              This storefront has no payment processing yet, so orders cannot be
+              placed. Call the shop to order, or{" "}
+              <Link to="/repairs#book" className="text-primary hover:underline">
+                book a repair
+              </Link>
+              .
             </p>
           </div>
 

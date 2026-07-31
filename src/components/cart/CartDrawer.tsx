@@ -235,8 +235,9 @@ export default function CartDrawer() {
                 </div>
               </dl>
 
-              <Button size="lg" className="mt-4 w-full">
-                Checkout
+              {/* See Cart.tsx: there is no checkout to reach. */}
+              <Button size="lg" className="mt-4 w-full" disabled>
+                Checkout unavailable
               </Button>
               <Link
                 to="/cart"
@@ -246,7 +247,7 @@ export default function CartDrawer() {
                 View full basket
               </Link>
               <p className="mt-2 text-center text-xs text-ink-500">
-                Demo storefront — no payment is taken.
+                No payment processing yet — orders cannot be placed.
               </p>
             </div>
           </>

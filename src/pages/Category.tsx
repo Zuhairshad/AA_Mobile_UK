@@ -202,13 +202,12 @@ export default function Category() {
       </div>
 
       <div className="content-boundary py-8">
-        <div className="flex gap-8">
-          <aside className="hidden w-64 shrink-0 lg:block">
-            <h2 className="micro-label mb-4">Filter</h2>
-            {sidebar}
-          </aside>
-
-          <div className="min-w-0 flex-1">
+        {/* No sidebar. A permanent 256px filter column is the single biggest
+            departure from the reference's collection layout, and on a shop the
+            filters still have to be one click away — so they live in a drawer at
+            every width rather than being cut. */}
+        <div>
+          <div className="min-w-0">
             <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
               <p className="micro-label" role="status">
                 {formatCount(results.length)}{" "}
@@ -220,7 +219,6 @@ export default function Category() {
                 <Button
                   variant="outline"
                   size="sm"
-                  className="lg:hidden"
                   onClick={() => setFiltersOpen(true)}
                 >
                   <Icon name="sliders" className="size-4" />
@@ -373,16 +371,16 @@ export default function Category() {
       </section>
 
       {filtersOpen ? (
-        <div className="fixed inset-0 z-50 lg:hidden">
+        <div className="fixed inset-0 z-50">
           <button
             type="button"
-            className="absolute inset-0 bg-black/50"
+            className="absolute inset-0 bg-ink-950/50"
             aria-label="Close filters"
             onClick={() => setFiltersOpen(false)}
           />
-          <div className="absolute inset-y-0 right-0 flex w-80 max-w-[85vw] flex-col bg-white">
+          <div className="absolute inset-y-0 right-0 flex w-88 max-w-[90vw] flex-col bg-white">
             <div className="flex h-16 shrink-0 items-center justify-between border-b border-line px-4">
-              <span className="font-semibold">Filter</span>
+              <span className="micro-label text-ink-950">Filter</span>
               <button
                 type="button"
                 className="btn btn-ghost btn-icon"

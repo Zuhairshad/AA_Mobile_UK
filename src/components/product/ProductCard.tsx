@@ -5,7 +5,6 @@ import { useCart } from "../../lib/cart"
 import { useToast } from "../../lib/toast"
 import { cx } from "../../lib/cx"
 import Badge from "../ui/Badge"
-import Button from "../ui/Button"
 import PriceTag from "../ui/PriceTag"
 import Rating from "../ui/Rating"
 import ProductImage from "./ProductImage"
@@ -97,19 +96,25 @@ export default function ProductCard({
           <p className="mt-1 line-clamp-2 text-sm text-ink-500">{product.blurb}</p>
         ) : null}
 
-        <Rating value={product.rating} reviews={product.reviews} />
+        {/* Rating only on the promoted card. A row of stars under every tile
+            gave three ornaments per cell competing with the image, and the
+            reference's collection cards carry a label, a title and a date and
+            nothing else. The full figure is still on the product page. */}
+        {wide ? <Rating value={product.rating} reviews={product.reviews} /> : null}
 
-        <div className="mt-auto flex flex-col gap-3 pt-1">
+        <div className="mt-auto flex flex-col items-start gap-2 pt-1">
           <PriceTag
             price={product.price}
             compareAt={product.compareAt}
             size={wide ? "lg" : "md"}
           />
 
-          {/* Sits above the stretched link so it stays clickable. */}
-          <Button
-            variant={soldOut ? "outline" : "primary"}
-            size="sm"
+          {/* A quiet mono action rather than a full-width black slab. Twelve
+              filled pills down a grid drew the eye before any product did.
+              Still a real always-visible button, not a hover-only affordance —
+              those are unreachable by keyboard and touch. */}
+          <button
+            type="button"
             disabled={soldOut}
             onClick={() => {
               add(product.id)
@@ -121,10 +126,11 @@ export default function ProductCard({
                 action: { label: "View basket", to: "/cart" },
               })
             }}
-            className="relative z-10 w-full"
+            className="micro-label relative z-10 -mx-1 flex items-center gap-1.5 px-1 py-2 text-ink-950 transition-colors hover:text-primary disabled:pointer-events-none disabled:text-ink-500"
           >
             {soldOut ? "Out of stock" : "Add to basket"}
-          </Button>
+            {soldOut ? null : <span aria-hidden="true">+</span>}
+          </button>
         </div>
       </div>
     </article>

@@ -74,9 +74,7 @@ export default function FacetSidebar({
 
           return (
             <fieldset key={group.key} className="border-0 p-0">
-              <legend className="mb-2 text-sm font-semibold">
-                {group.label}
-              </legend>
+              <legend className="micro-label mb-3">{group.label}</legend>
               <ul className="space-y-1">
                 {shown.map((option) => (
                   <li key={option.value}>
