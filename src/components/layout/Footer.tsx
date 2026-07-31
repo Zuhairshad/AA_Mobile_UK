@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { Link } from "react-router-dom"
 import { footerColumns, paymentMethods, site } from "../../data/content"
+import Logo from "./Logo"
 import Button from "../ui/Button"
 import Icon from "../ui/Icon"
 
@@ -19,6 +20,17 @@ export default function Footer() {
   return (
     <footer className="mt-16 bg-gray-950 py-12 text-gray-300">
       <div className="content-boundary">
+        <Link
+          to="/"
+          className="mb-10 inline-block text-white"
+          aria-label={`${site.name} home`}
+        >
+          <Logo
+            markClassName="bg-white/10"
+            className="[&_span:last-child_span]:text-gray-400"
+          />
+        </Link>
+
         <div className="flex flex-col gap-10 pb-10 md:flex-row md:justify-between">
           <div className="grid flex-1 grid-cols-2 gap-6 lg:grid-cols-3 lg:pr-16">
             {footerColumns.map((column) => (

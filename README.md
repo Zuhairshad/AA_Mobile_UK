@@ -29,6 +29,14 @@ utility strings repeated across components: `btn` + `btn-{variant}` +
 `btn-{size}`, `badge-{tone}`, `product-card`, `resource-card`, `field`,
 `content-boundary`, `section-y`, `section-heading`.
 
+**Typefaces** are self-hosted via `@fontsource`, so the page makes no external
+font requests: Space Grotesk for headings, prices and the wordmark (its tabular
+figures keep price columns aligned), Inter for everything else. The `.figure`
+class applies the display face plus `tabular-nums` to any number.
+
+The brand mark lives in `components/layout/Logo.tsx`, drawn with `currentColor`
+so one mark serves the light header and the dark footer.
+
 Two patterns worth knowing:
 
 - **`stretched-link`** — an `::after` overlay makes a whole card clickable from
@@ -126,6 +134,24 @@ matches devices by brand, family or kind rather than listing models, so the
 roster and the guides stay in step. Each carries difficulty, time, per-step
 safety warnings, and the tool product ids it needs — the guide page turns those
 into an "add all tools" button.
+
+## Commerce behaviour
+
+- The header basket opens a **slide-over drawer**; `/cart` remains a real route
+  for deep links. Adding from a listing should not cost you your place in the
+  grid.
+- Quick-adds from a listing confirm with a **toast**, not by opening the drawer
+  over the grid. Toasts are suppressed while the drawer is open — the drawer is
+  the better confirmation, and the stack would otherwise cover its Checkout
+  button.
+- Product pages show a **sticky buy bar** once the real one scrolls behind the
+  header. It samples on scroll behind a `requestAnimationFrame` rather than
+  using an IntersectionObserver: an observer only reports threshold *crossings*,
+  and at the moment of crossing the row is still just below the viewport top, so
+  a "has it gone past yet" test in the callback is false at the only moment it
+  is ever evaluated.
+- **Recently viewed** persists to `localStorage`, excludes the item on screen,
+  and drops ids no longer in the catalogue.
 
 ## Notes
 

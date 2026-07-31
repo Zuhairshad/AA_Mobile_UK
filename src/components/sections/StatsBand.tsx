@@ -12,7 +12,7 @@ export default function StatsBand() {
               <dt className="order-2 text-center text-sm text-brand-700">
                 {stat.label}
               </dt>
-              <dd className="order-1 m-0 text-center font-mono text-3xl font-bold text-brand-500 md:text-4xl">
+              <dd className="figure order-1 m-0 text-center text-3xl font-bold text-brand-500 md:text-4xl">
                 {stat.value}
               </dd>
             </div>

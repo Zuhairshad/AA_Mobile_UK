@@ -1,5 +1,11 @@
 @import "tailwindcss";
 
+/* Self-hosted via @fontsource so the page makes no external font requests and
+   nothing depends on a third-party CDN staying up. */
+@import "@fontsource-variable/inter/wght.css";
+@import "@fontsource/space-grotesk/latin-500.css";
+@import "@fontsource/space-grotesk/latin-700.css";
+
 /* ---------------------------------------------------------------------------
    Design tokens.
 
@@ -32,9 +38,20 @@
   --color-primary-foreground: #ffffff;
   --color-line: #d1d5dc;
 
+  /* Accent picked up from the copper of the polyimide ribbon in the part
+     artwork, so the illustrations and the UI share a palette. Used sparingly —
+     it marks things, it does not decorate. */
+  --color-accent: #b9762c;
+  --color-accent-soft: #f6ecdd;
+
   --font-sans:
-    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial,
-    "Helvetica Neue", sans-serif;
+    "Inter Variable", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Helvetica, Arial, sans-serif;
+  /* Display face for headings, prices and the wordmark. Space Grotesk has the
+     slightly technical cast that suits a repair shop, and tabular figures. */
+  --font-display:
+    "Space Grotesk", "Inter Variable", -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
   --font-mono:
     ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
     monospace;
@@ -84,7 +101,14 @@
 
   /* One heading style, reused everywhere. */
   .section-heading {
-    @apply text-3xl font-semibold tracking-tight md:text-5xl;
+    @apply font-display text-3xl font-bold tracking-tight md:text-5xl;
+  }
+
+  /* Prices and counters: display face for its tabular figures, so columns of
+     numbers line up and a price does not reflow as the digits change. */
+  .figure {
+    font-family: var(--font-display);
+    font-variant-numeric: tabular-nums;
   }
 
   .section-lede {
@@ -186,6 +210,12 @@
     --badge-bg: var(--color-amber-200);
     --badge-fg: var(--color-amber-900);
     --badge-icon: var(--color-amber-700);
+  }
+
+  .badge-accent {
+    --badge-bg: var(--color-accent-soft);
+    --badge-fg: #6b3f12;
+    --badge-icon: var(--color-accent);
   }
 
   .badge-red {

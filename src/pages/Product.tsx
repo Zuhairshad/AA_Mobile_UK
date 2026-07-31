@@ -168,7 +168,7 @@ export default function Product() {
         <div className="flex flex-col gap-5">
           <div>
             <p className="text-sm font-medium text-gray-500">{product.brand}</p>
-            <h1 className="mt-1 text-3xl font-semibold tracking-tight md:text-4xl">
+            <h1 className="font-display mt-1 text-3xl font-bold tracking-tight md:text-4xl">
               {product.name}
             </h1>
             <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2">

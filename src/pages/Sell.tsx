@@ -90,7 +90,7 @@ export default function Sell() {
     <>
       <section className="bg-gradient-to-br from-brand-700 via-brand-800 to-brand-950">
         <div className="content-boundary py-16 text-center md:py-20">
-          <h1 className="text-4xl font-semibold tracking-tight text-white md:text-6xl">
+          <h1 className="font-display text-4xl font-bold tracking-tight text-white md:text-6xl">
             Sell us the phone in your drawer
           </h1>
           <p className="mx-auto mt-4 max-w-2xl text-lg text-brand-100 md:text-xl">

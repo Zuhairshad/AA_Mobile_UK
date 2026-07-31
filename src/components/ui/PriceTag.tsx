@@ -26,7 +26,7 @@ export default function PriceTag({
     <div className={cx("flex items-baseline gap-2", className)}>
       <span
         className={cx(
-          "font-semibold leading-tight",
+          "figure font-semibold leading-tight",
           sizes[size],
           discounted && "text-red-700",
         )}

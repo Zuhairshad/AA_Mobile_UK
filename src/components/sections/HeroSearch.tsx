@@ -23,7 +23,7 @@ export default function HeroSearch() {
 
         <div className="content-boundary relative py-20 text-center md:py-24 lg:text-left">
           <div className="max-w-2xl lg:max-w-xl">
-            <h1 className="text-4xl font-semibold tracking-tight text-white md:text-6xl">
+            <h1 className="font-display text-4xl font-bold tracking-tight text-white md:text-6xl">
               What are you fixing?
             </h1>
             <p className="mt-3 text-lg font-medium text-brand-100 md:text-xl">

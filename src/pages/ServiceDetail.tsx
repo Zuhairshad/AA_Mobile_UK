@@ -68,7 +68,7 @@ export default function ServiceDetail() {
               { label: service.name },
             ]}
           />
-          <h1 className="mt-4 text-4xl font-semibold tracking-tight text-white md:text-5xl">
+          <h1 className="font-display mt-4 text-4xl font-bold tracking-tight text-white md:text-5xl">
             {service.name}
           </h1>
           <p className="mt-4 max-w-2xl text-lg text-brand-100 md:text-xl">

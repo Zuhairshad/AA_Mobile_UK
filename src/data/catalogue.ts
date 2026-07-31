@@ -56,7 +56,7 @@ export const badgeMeta: Record<
   { label: string; tone: BadgeTone; icon?: IconName }
 > = {
   guarantee: { label: "12-month guarantee", tone: "brand", icon: "shield" },
-  bestseller: { label: "Bestseller", tone: "amber", icon: "sparkle" },
+  bestseller: { label: "Bestseller", tone: "accent", icon: "sparkle" },
   sale: { label: "Sale", tone: "red" },
   refurbished: { label: "Refurbished", tone: "green", icon: "recycle" },
   newIn: { label: "New in", tone: "brand" },

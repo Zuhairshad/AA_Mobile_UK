@@ -5,6 +5,7 @@ import { site } from "../../data/content"
 import { useCart } from "../../lib/cart"
 import { cx } from "../../lib/cx"
 import Icon from "../ui/Icon"
+import Logo from "./Logo"
 import SearchBox from "./SearchBox"
 
 export default function Header() {
@@ -65,18 +66,9 @@ export default function Header() {
           <Icon name="menu" />
         </button>
 
-        <Link
-          to="/"
-          className="flex shrink-0 items-center gap-2"
-          aria-label={`${site.name} home`}
-        >
-          <span className="flex size-9 items-center justify-center rounded-lg bg-brand-500 text-sm font-bold text-white">
-            AA
-          </span>
-          <span className="hidden text-base leading-none font-semibold sm:block">
-            Mobile
-            <span className="block text-xs font-normal text-gray-500">UK</span>
-          </span>
+        <Link to="/" className="shrink-0" aria-label={`${site.name} home`}>
+          <Logo className="hidden sm:flex" />
+          <Logo markOnly className="sm:hidden" />
         </Link>
 
         <nav ref={nav} className="hidden lg:block" aria-label="Main">
