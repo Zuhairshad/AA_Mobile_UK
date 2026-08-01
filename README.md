@@ -1,27 +1,189 @@
 # AA Mobile UK
 
-A responsive mobile phone shop front end, styled after the "Curation" product-directory
-layout (dark theme, hero + subscribe, category tabs, product grid) and populated with
-mobile phone products.
+Storefront for a UK phone shop that does three things under one roof: sells
+handsets, sells the repair parts and tools it uses on the bench, and books
+repairs. Catalogue-first architecture modelled on the iFixit store.
 
-Built with React, TypeScript, and Vite.
+Built with React 19, TypeScript, Vite and Tailwind CSS v4.
 
 ## Development
 
 ```bash
 npm install
-npm run dev
+npm run dev      # dev server
+npm run build    # tsc -b && vite build
+npm run lint     # oxlint
+npm run audit    # UI audit (needs a running preview: BASE=http://127.0.0.1:4173)
+npm run preview  # serve the production build
 ```
 
-## Build
+## Design system
 
-```bash
-npm run build
-```
+`src/index.css` holds the whole token layer. One brand scale (`--color-brand-50`
+… `--color-brand-950`) drives everything, with semantic aliases on top —
+`background`, `foreground`, `card`, `muted`, `primary`, `line`. Components
+reference a brand step or an alias, never a raw hex, so a rebrand is a single
+edit.
+
+Component primitives are real CSS classes in the same file rather than long
+utility strings repeated across components: `btn` + `btn-{variant}` +
+`btn-{size}`, `badge-{tone}`, `product-card`, `resource-card`, `field`,
+`content-boundary`, `section-y`, `section-heading`.
+
+**Typefaces** are self-hosted via `@fontsource`, so the page makes no external
+font requests: Space Grotesk for headings, prices and the wordmark (its tabular
+figures keep price columns aligned), Inter for everything else. The `.figure`
+class applies the display face plus `tabular-nums` to any number.
+
+The brand mark lives in `components/layout/Logo.tsx`, drawn with `currentColor`
+so one mark serves the light header and the dark footer.
+
+Two patterns worth knowing:
+
+- **`stretched-link`** — an `::after` overlay makes a whole card clickable from
+  a single anchor, so there is no nested-interactive accessibility problem.
+- **`bleed-x`** — a carousel viewport that runs to the window edges while its
+  items stay aligned to the page gutter. No carousel library.
+
+## Pages
+
+575 routes, all generated from data rather than hand-built. `/sitemap` lists
+every one and is generated from the same source, so an orphaned page type shows
+up there immediately.
+
+| Route | Count | What it is |
+| --- | --- | --- |
+| `/` | 1 | Home |
+| `/:category` | 4 | Phones, parts, tools, accessories |
+| `/:category/:subcategory` | 19 | Canonical page per part type |
+| `/product/:id` | 443 | One per product |
+| `/device/:slug` | 73 | Every part, repair price and guide for one model |
+| `/devices`, `/brand/:slug` | 8 | Device index and per-brand pages |
+| `/guide/:slug`, `/guides` | 15 | Repair guides |
+| `/repairs`, `/repairs/:service` | 7 | Repairs hub and a page per service |
+| `/sell`, `/about`, `/cart`, `/search`, `/sitemap` | 5 | Everything else |
 
 ## Structure
 
-- `src/data/products.ts` — phone product catalogue (brand, category, price)
-- `src/components/PhoneIllustration.tsx` — parametric SVG phone renders used as product images
-- `src/components/` — Header (search + nav), Hero (subscribe form), CategoryTabs, ProductGrid/ProductCard, Footer
-- Responsive breakpoints: 3-column grid on desktop, 2-column on tablet (≤1024px), 1-column on mobile (≤640px)
+```
+src/
+  data/          devices, parts (derived), catalogue, taxonomy, guides,
+                 services, page copy, nav
+  lib/           cart (localStorage), faceting, search, formatting
+  components/
+    ui/          Button, Badge, Icon, Rating, PriceTag, Carousel, Accordion, …
+    layout/      Header (menubar + instant search), Footer, Layout
+    sections/    the landing-page section types
+    product/     ProductCard, ProductGrid, ProductImage, FacetSidebar
+  pages/         Home, Category, Product, Device, Devices, Brand, Guide,
+                 Guides, Repairs, ServiceDetail, Sell, About, Cart, Search,
+                 Sitemap, NotFound
+```
+
+### Devices drive the catalogue
+
+`src/data/devices.ts` holds 73 real models. Model names and release years come
+from the public iFixit device taxonomy
+(`https://www.ifixit.com/api/2.0/categories`), filtered to the ranges a UK
+high-street shop actually sees — those are facts. All descriptive copy, guides
+and pricing are our own; none of iFixit's text or photography is reproduced.
+
+`src/data/parts.ts` then derives the 401-part catalogue from that roster. A
+shop's parts list is the cross product of "devices we service" and "things that
+break on them", so writing it by hand guarantees the two drift apart. Each
+device declares which parts exist for it, and price follows from part kind,
+panel type, tier and age:
+
+```
+part price  = base(kind, panel) x tier x (1 + (year - 2019) x 0.13)
+fitted price = part price + bench labour(kind)
+```
+
+Add a device to the roster and it gains parts, a device page, repair prices,
+guides and search entries with no further edits. Ratings, review counts, stock
+state and clearance discounts come from a deterministic hash of the product id,
+so they are stable across reloads instead of reshuffling on every render.
+
+### Catalogue
+
+`src/data/catalogue.ts` is one `Product` model across four branches — phones,
+parts, tools, accessories — keyed by `category` and faceted on `subcategory`,
+`brand`, `compatibility`, `condition` and price band. Parts arrive from
+`parts.ts` as described above; phones, tools and accessories are written out
+individually because they do not share a shape.
+
+Products we have photography for use it. Parts and tools fall back to a drawn
+SVG glyph (`ProductImage`), so a listing of mixed stock still reads as one
+deliberate set instead of a wall of grey placeholders.
+
+### Faceted listing
+
+One `Category` page serves all four branches. Filter state lives entirely in the
+URL (`/parts?type=screens&fits=iPhone+13&sort=price-asc`), so any filtered view
+is linkable and shareable.
+
+Facet counts are computed against the set filtered by every *other* facet, so
+selecting one option leaves its siblings showing real counts rather than
+collapsing them to zero. Selected options are always rendered, even when a group
+would otherwise be collapsed or hidden — a filter you cannot see is a filter you
+cannot remove.
+
+### Guides
+
+`src/data/guides.ts` holds 14 guides written from our own bench process. A guide
+matches devices by brand, family or kind rather than listing models, so the
+roster and the guides stay in step. Each carries difficulty, time, per-step
+safety warnings, and the tool product ids it needs — the guide page turns those
+into an "add all tools" button.
+
+## Commerce behaviour
+
+- The header basket opens a **slide-over drawer**; `/cart` remains a real route
+  for deep links. Adding from a listing should not cost you your place in the
+  grid.
+- Quick-adds from a listing confirm with a **toast**, not by opening the drawer
+  over the grid. Toasts are suppressed while the drawer is open — the drawer is
+  the better confirmation, and the stack would otherwise cover its Checkout
+  button.
+- Product pages show a **sticky buy bar** once the real one scrolls behind the
+  header. It samples on scroll behind a `requestAnimationFrame` rather than
+  using an IntersectionObserver: an observer only reports threshold *crossings*,
+  and at the moment of crossing the row is still just below the viewport top, so
+  a "has it gone past yet" test in the callback is false at the only moment it
+  is ever evaluated.
+- **Recently viewed** persists to `localStorage`, excludes the item on screen,
+  and drops ids no longer in the catalogue.
+
+## UI audit
+
+`scripts/audit-ui.mjs` drives Chromium over representative routes at 320/768/1440
+and exits non-zero on findings. It covers duplicate ids, heading-level skips,
+controls with no accessible name, unlabelled fields, colour contrast, target
+sizes, horizontal overflow, dead hrefs, and keyboard behaviour — skip link, focus
+visibility, and whether focus can escape the modal drawer.
+
+```bash
+npm run build && npm run preview        # in one shell
+BASE=http://127.0.0.1:4173 npm run audit
+```
+
+Two deliberate refusals to guess, both of which produced large numbers of false
+positives before they were fixed:
+
+- Colours are resolved through a canvas rather than a regex. Tailwind v4 emits
+  `oklch()`, which an `rgb()` pattern misses silently — the check then walks past
+  the real background and measures against the body colour instead. That alone
+  produced 120 phantom contrast failures.
+- Text sitting on a gradient or a photo is skipped rather than measured against
+  an invented backdrop. Those cases are checked by sampling real pixels from a
+  screenshot instead.
+
+## Notes
+
+Cart state persists to `localStorage` and drops any line whose product no longer
+exists in the catalogue. Checkout, the repair booking form and the trade-in quote
+are front-end only — nothing is submitted and no payment is taken.
+
+Product prices, ratings, review counts, the press quotes and the company and VAT
+numbers in the footer are placeholders. Replace them with real figures before
+this is used commercially.

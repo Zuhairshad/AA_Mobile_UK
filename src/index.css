@@ -1,45 +1,518 @@
-:root {
-  --bg: #000;
-  --card-bg: #131313;
-  --card-border: #232323;
-  --text: #fff;
-  --text-dim: #8a8a8a;
-  --text-faint: #616161;
-  --accent: #ff5b1e;
-  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+@import "tailwindcss";
 
-  font: 16px/145% var(--sans);
-  color: var(--text);
-  background: var(--bg);
-  color-scheme: dark;
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+/* Self-hosted via @fontsource so the page makes no external font requests and
+   nothing depends on a third-party CDN staying up.
+
+   Geist for everything, JetBrains Mono for the micro-labels. Geist has the
+   geometric, slightly mechanical cast that suits a repair shop, holds up at
+   900 weight for the display sizes, and ships tabular figures for prices. */
+@import "@fontsource-variable/geist/wght.css";
+@import "@fontsource-variable/jetbrains-mono/wght.css";
+
+/* ---------------------------------------------------------------------------
+   Design tokens.
+
+   The storefront is monochrome with one accent. Black is the interactive
+   colour — buttons are black pills — and electric blue marks links, figures
+   and nothing else. Colour in the page comes from the products, not the
+   chrome, which is what stops fourteen stacked sections reading as fourteen
+   unrelated sites.
+
+   Components never reference raw hex values; they use a scale step or one of
+   the semantic aliases below, so a rebrand is a single edit here.
+   --------------------------------------------------------------------------- */
+
+@theme {
+  /* Ink: the monochrome spine of the whole design. */
+  --color-ink-50: #f9f9f9;
+  --color-ink-100: #f0f0f0;
+  --color-ink-200: #e4e4e4;
+  --color-ink-300: #c4c4c4;
+  --color-ink-400: #9a9a9a;
+  --color-ink-500: #6a6a6a;
+  --color-ink-600: #4a4a4a;
+  --color-ink-700: #2f2f2f;
+  --color-ink-800: #1c1c1c;
+  --color-ink-900: #101010;
+  --color-ink-950: #010101;
+
+  /* The accent ramp. One hue, electric blue, so a focus ring, a link and a
+     headline figure are visibly the same colour. */
+  --color-brand-50: #eef0fe;
+  --color-brand-100: #dcdffd;
+  --color-brand-200: #bcc2fb;
+  --color-brand-300: #929bf7;
+  --color-brand-400: #6572f4;
+  --color-brand-500: #2d3af0;
+  --color-brand-600: #1f2ad4;
+  --color-brand-700: #1a22a8;
+  --color-brand-800: #171e84;
+  --color-brand-900: #151a66;
+  --color-brand-950: #0d1040;
+
+  /* Semantic aliases. `foreground` is text on `background`, `primary` is the
+     accent, `ink` is the interactive black. */
+  --color-background: #ffffff;
+  --color-foreground: #010101;
+  --color-card: #ffffff;
+  --color-muted: #f9f9f9;
+  --color-muted-foreground: #6a6a6a;
+  --color-line: #e4e4e4;
+  --color-primary: var(--color-brand-500);
+  --color-primary-foreground: #ffffff;
+  --color-accent: var(--color-brand-500);
+
+  /* The dark band. Cards inside it go pure black so they separate from the
+     band without a border. */
+  --color-dark: #101010;
+  --color-dark-card: #000000;
+  --color-dark-foreground: #f0f0f0;
+  --color-dark-muted: #c4c4c4;
+
+  --font-sans:
+    "Geist Variable", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Helvetica, Arial, sans-serif;
+  --font-display:
+    "Geist Variable", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono:
+    "JetBrains Mono Variable", ui-monospace, SFMono-Regular, Menlo, Monaco,
+    Consolas, "Liberation Mono", monospace;
+
+  /* Two shadow steps only, and both are nearly invisible — this design
+     separates things with hairlines and flat fields, not elevation. */
+  --shadow-rest: 0 1px 2px rgb(1 1 1 / 0.04);
+  --shadow-lift: 0 8px 24px -8px rgb(1 1 1 / 0.14);
+
+  --ease-out-soft: cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
-* {
-  box-sizing: border-box;
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    overflow-x: hidden;
+    /* Geist is drawn tight; the whole design leans on negative tracking. */
+    letter-spacing: -0.011em;
+  }
+
+  /* Every focusable element gets the same accent ring. */
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-brand-500;
+  }
 }
 
-body {
-  margin: 0;
-  overflow-x: hidden;
+/* ---------------------------------------------------------------------------
+   Component primitives.
+
+   Kept as real CSS classes rather than long utility strings repeated across
+   files, so the React components stay readable and a variant change lands in
+   one place.
+   --------------------------------------------------------------------------- */
+
+@layer components {
+  /* Page gutter. Every full-width section wraps its content in this. */
+  .content-boundary {
+    @apply mx-auto w-full max-w-7xl px-4 md:px-6 lg:px-8;
+  }
+
+  /* Uniform vertical rhythm for landing/marketing sections. */
+  .section-y {
+    @apply py-14 md:py-20;
+  }
+
+  /* --- Type ------------------------------------------------------------- */
+
+  /* One display style, reused everywhere: uppercase, heavy, tight. The
+     negative tracking is the single most recognisable thing about this
+     design — without it the weight just reads as shouting. */
+  .section-heading {
+    @apply font-display text-3xl leading-[1.05] font-extrabold uppercase
+      md:text-5xl;
+    letter-spacing: -0.04em;
+  }
+
+  .section-heading-sm {
+    @apply font-display text-xl leading-[1.1] font-extrabold uppercase
+      md:text-2xl;
+    letter-spacing: -0.03em;
+  }
+
+  /* The mono micro-label that sits above a heading, on a card, or beside a
+     figure. It is what makes the page feel drawn rather than typed. */
+  .micro-label {
+    @apply font-mono text-[11px] leading-none font-medium uppercase
+      text-ink-500;
+    letter-spacing: 0.1em;
+  }
+
+  .micro-label-invert {
+    @apply text-ink-300;
+  }
+
+  .section-lede {
+    @apply max-w-prose text-base text-ink-500 md:text-lg;
+  }
+
+  /* Prices and counters: tabular figures so columns of numbers line up and a
+     price does not reflow as the digits change. */
+  .figure {
+    font-family: var(--font-display);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.03em;
+  }
+
+  /* --- Rails ------------------------------------------------------------ */
+
+  /* The hairline rules bounding the content column, with tick marks down
+     them. Purely decorative, so it is aria-hidden at the markup level and
+     drawn with gradients rather than elements. */
+  .rails {
+    @apply relative;
+  }
+
+  .rails::before,
+  .rails::after {
+    @apply pointer-events-none absolute inset-y-0 hidden w-px content-[''] lg:block;
+    background-image: linear-gradient(
+      to bottom,
+      var(--color-line),
+      var(--color-line)
+    );
+  }
+
+  .rails::before {
+    left: 0;
+  }
+
+  .rails::after {
+    right: 0;
+  }
+
+  /* Ticks: a repeating gradient on an inset element, so no extra DOM. */
+  .rail-ticks {
+    @apply pointer-events-none absolute inset-y-0 left-0 hidden w-2 lg:block;
+    background-image: repeating-linear-gradient(
+      to bottom,
+      var(--color-line) 0,
+      var(--color-line) 1px,
+      transparent 1px,
+      transparent 64px
+    );
+  }
+
+  /* --- Button ----------------------------------------------------------- */
+
+  /* Pills, uppercase, mono-ish tracking. One shape for every action on the
+     site so a button is always recognisable as a button. */
+  .btn {
+    @apply inline-flex shrink-0 items-center justify-center gap-2 rounded-full
+      font-bold whitespace-nowrap uppercase select-none;
+    letter-spacing: 0.04em;
+    transition:
+      background-color 150ms var(--ease-out-soft),
+      border-color 150ms var(--ease-out-soft),
+      color 150ms var(--ease-out-soft),
+      box-shadow 150ms var(--ease-out-soft),
+      transform 80ms var(--ease-out-soft);
+  }
+
+  .btn:disabled {
+    @apply pointer-events-none opacity-40;
+  }
+
+  .btn:active {
+    @apply scale-[0.98];
+  }
+
+  /* Black, not blue. Blue is reserved for links and figures. */
+  .btn-primary {
+    @apply bg-ink-900 text-white hover:bg-ink-950;
+  }
+
+  .btn-secondary {
+    @apply bg-ink-100 text-ink-950 hover:bg-ink-200;
+  }
+
+  .btn-accent {
+    @apply bg-primary text-primary-foreground hover:bg-brand-600;
+  }
+
+  .btn-outline {
+    @apply border border-ink-200 bg-white text-foreground hover:border-ink-400;
+  }
+
+  .btn-ghost {
+    @apply text-foreground hover:bg-ink-100;
+  }
+
+  /* On a dark band the outline button has to invert or it disappears. */
+  .btn-invert {
+    @apply bg-white text-ink-950 hover:bg-ink-100;
+  }
+
+  .btn-outline-invert {
+    @apply border border-white/25 text-white hover:border-white/60;
+  }
+
+  .btn-link {
+    @apply text-primary normal-case underline-offset-4 hover:underline;
+    letter-spacing: -0.011em;
+  }
+
+  .btn-xs {
+    @apply h-7 px-3 text-[10px];
+  }
+
+  .btn-sm {
+    @apply h-9 gap-1.5 px-4 text-[11px];
+  }
+
+  .btn-md {
+    @apply h-10 px-5 text-[11px];
+  }
+
+  .btn-lg {
+    @apply h-12 px-7 text-xs;
+  }
+
+  .btn-icon {
+    @apply h-10 w-10 px-0;
+  }
+
+  /* --- Badge ------------------------------------------------------------ */
+
+  /* Badges are mono uppercase tags, not coloured lozenges. Only stock state
+     and a sale get colour; everything else is ink on a flat field. */
+  .badge {
+    @apply inline-flex w-fit shrink-0 items-center gap-1 rounded-sm font-mono
+      font-medium whitespace-nowrap uppercase;
+    letter-spacing: 0.06em;
+    background-color: var(--badge-bg);
+    color: var(--badge-fg);
+  }
+
+  .badge > svg {
+    color: var(--badge-icon);
+  }
+
+  .badge-brand {
+    --badge-bg: var(--color-brand-50);
+    --badge-fg: var(--color-brand-800);
+    --badge-icon: var(--color-brand-500);
+  }
+
+  .badge-gray {
+    --badge-bg: var(--color-ink-100);
+    --badge-fg: var(--color-ink-800);
+    --badge-icon: var(--color-ink-500);
+  }
+
+  .badge-green {
+    --badge-bg: #e3f5e9;
+    --badge-fg: #14532d;
+    --badge-icon: #15803d;
+  }
+
+  .badge-amber {
+    --badge-bg: #fdf0d5;
+    --badge-fg: #713f12;
+    --badge-icon: #b45309;
+  }
+
+  /* Bestsellers: ink on a flat field, so the accent stays rare. */
+  .badge-accent {
+    --badge-bg: var(--color-ink-950);
+    --badge-fg: #ffffff;
+    --badge-icon: #ffffff;
+  }
+
+  .badge-red {
+    --badge-bg: #fde8e8;
+    --badge-fg: #7f1d1d;
+    --badge-icon: #b91c1c;
+  }
+
+  .badge-sm {
+    @apply gap-0.5 px-1.5 py-1 text-[9px];
+  }
+
+  .badge-md {
+    @apply px-2 py-1 text-[10px];
+  }
+
+  .badge-lg {
+    @apply px-2 py-1.5 text-[11px];
+  }
+
+  /* --- Product card ----------------------------------------------------- */
+
+  /* No card chrome at all: the image IS the card. It fills its cell
+     edge-to-edge at a large aspect, and the name and price sit below it flush
+     left. A padded white well inside a grey card made every image small and
+     showed two nested backgrounds; this shows one field per product.
+     Pair with Tailwind's `group` marker on the element itself — `group` is not
+     a utility and cannot be applied here. */
+  .product-card {
+    @apply relative flex h-full flex-col gap-3;
+  }
+
+  /* The image frame. Square by default; `aspect-[4/5]` etc. overrides it. */
+  .product-card-well {
+    @apply relative aspect-square w-full overflow-hidden bg-ink-50;
+  }
+
+  .product-card-well > * {
+    transition: transform 400ms var(--ease-out-soft);
+  }
+
+  .product-card:hover .product-card-well > * {
+    transform: scale(1.03);
+  }
+
+  /* The card's link is stretched across the whole card, so the focus ring has
+     to be drawn on the card — a ring around the title text alone leaves a
+     keyboard user unable to see what is selected. */
+  .product-card:has(a:focus-visible) {
+    @apply outline-2 outline-offset-4 outline-brand-500;
+  }
+
+  .product-card:has(a:focus-visible) .stretched-link:focus-visible {
+    @apply outline-none;
+  }
+
+  /* Stretched link: the whole card is the click target but there is only one
+     anchor, so no nested-interactive accessibility problem. */
+  .stretched-link::after {
+    @apply absolute inset-0 content-[''];
+  }
+
+  /* --- Media frame ------------------------------------------------------ */
+
+  /* A generous, square-cornered image field used for feature cards, category
+     tiles and the PDP. Deliberately large: the previous design letterboxed
+     photography into small wells, which is what made products unreadable. */
+  .media-frame {
+    @apply relative w-full overflow-hidden bg-ink-50;
+  }
+
+  .media-frame-dark {
+    @apply bg-dark-card;
+  }
+
+  /* Caption sitting over the bottom of a dark feature image. Not
+     pointer-events-none: the card's stretched link lives in here. */
+  .media-caption {
+    @apply absolute inset-x-0 bottom-0 flex flex-col gap-1 p-6 md:p-8;
+  }
+
+  /* --- Resource card ---------------------------------------------------- */
+
+  /* Hairline-separated row, no shadow, no radius. */
+  .resource-card {
+    @apply relative flex items-center gap-4 border border-line bg-white p-4;
+    transition:
+      border-color 180ms var(--ease-out-soft),
+      background-color 180ms var(--ease-out-soft);
+  }
+
+  .resource-card:hover {
+    @apply border-ink-400 bg-ink-50;
+  }
+
+  .resource-card:has(a:focus-visible) {
+    @apply outline-2 outline-offset-2 outline-brand-500;
+  }
+
+  .resource-card:has(a:focus-visible) .stretched-link:focus-visible {
+    @apply outline-none;
+  }
+
+  .resource-card-lg {
+    @apply p-5;
+  }
+
+  /* --- Form ------------------------------------------------------------- */
+  /* !text-base stops iOS Safari zooming the viewport on focus. */
+  .field {
+    @apply w-full border border-ink-200 bg-white px-3 py-2 !text-base
+      text-ink-950 placeholder:text-ink-400 focus:border-brand-500
+      focus:ring-2 focus:ring-brand-500/30 focus:outline-none;
+  }
+
+  .field-label {
+    @apply mb-1.5 block font-mono text-[11px] font-medium uppercase
+      text-ink-600;
+    letter-spacing: 0.08em;
+  }
+
+  /* --- Prose ------------------------------------------------------------ */
+  .prose-body {
+    @apply text-ink-600;
+  }
+
+  .prose-body p + p {
+    @apply mt-4;
+  }
+
+  .prose-body ul {
+    @apply mt-3 list-disc space-y-1 pl-5;
+  }
+
+  .prose-body a {
+    @apply text-primary hover:underline;
+  }
 }
 
-h1,
-p,
-button,
-input {
-  margin: 0;
-  font-family: inherit;
+@layer components {
+  /* Anyone who has asked for less motion gets the states without the movement:
+     colour still changes, nothing translates or scales. */
+  @media (prefers-reduced-motion: reduce) {
+    .product-card-well > *,
+    .resource-card,
+    .btn {
+      transition-duration: 1ms;
+    }
+
+    .product-card:hover .product-card-well > * {
+      transform: none;
+    }
+  }
 }
 
-button {
-  cursor: pointer;
+@utility animate-toast-in {
+  animation: toast-in 220ms var(--ease-out-soft) both;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  @keyframes toast-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+}
+
+@layer utilities {
+  /* Full-bleed carousel viewport that still aligns its first item to the page
+     gutter — no JS carousel needed. */
+  .bleed-x {
+    margin-inline: calc(50% - 50vw);
+    padding-inline: calc(50vw - 50%);
+  }
 }
