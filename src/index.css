@@ -368,15 +368,10 @@
     @apply relative w-full overflow-hidden bg-ink-50;
   }
 
-  .media-frame-dark {
-    @apply bg-dark-card;
-  }
-
-  /* Caption sitting over the bottom of a dark feature image. Not
-     pointer-events-none: the card's stretched link lives in here. */
-  .media-caption {
-    @apply absolute inset-x-0 bottom-0 flex flex-col gap-1 p-6 md:p-8;
-  }
+  /* No .media-caption or .media-frame-dark any more: captions laid over the
+     bottom of an image needed a scrim dark enough for white type, which meant
+     spending the bottom of the picture on a backdrop. Captions now sit in flow
+     under the image, on a solid field. */
 
   /* --- Resource card ---------------------------------------------------- */
 

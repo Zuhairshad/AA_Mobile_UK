@@ -121,7 +121,7 @@ const collect = () => {
     return (hi + 0.05) / (lo + 0.05)
   }
 
-  const f = { duplicateIds: [], headings: [], noName: [], unlabelled: [], contrast: [], tapTargets: [], overflow: [], deadSpace: [], offViewport: [], placeholderHref: [], imgNoAlt: [] }
+  const f = { duplicateIds: [], headings: [], noName: [], unlabelled: [], contrast: [], tapTargets: [], overflow: [], deadSpace: [], offViewport: [], placeholderHref: [], imgNoAlt: [], collapsedArtwork: [] }
 
   // --- duplicate ids --------------------------------------------------------
   const byId = new Map()
@@ -176,6 +176,48 @@ const collect = () => {
   for (const img of document.querySelectorAll('img')) {
     if (!vis(img)) continue
     if (!img.hasAttribute('alt')) f.imgNoAlt.push({ src: (img.currentSrc || img.src).slice(-40) })
+  }
+
+  /**
+   * --- collapsed artwork frames --------------------------------------------
+   *
+   * The drawings are square SVGs that scale to the shorter side of their frame,
+   * so a frame that is short, or much wider than it is tall, renders a small
+   * picture in a large empty field. The repair cards on the home page had both
+   * problems at once: the image was absolutely positioned to `bottom-24` inside a
+   * fixed-aspect card, which left it 118px of height on a phone (a 70px drawing,
+   * with the caption text landing on top of it) and 478px inside a 1376px-wide
+   * frame on a laptop. Fixed pixel insets cannot know how tall the card is.
+   *
+   * Measured as painted area over available area, so it scales with the
+   * viewport: a 92px drawing in a 92px cell on a 320px phone is as good as the
+   * cell allows and is not a finding, while a 70px drawing in a 332px-wide strip
+   * is. The SVG element's own box is not the answer — it stretches to its
+   * container and letterboxes the drawing inside itself, which is exactly how
+   * the broken cards measured full-size while looking empty. The painted extent
+   * has to be derived from the viewBox.
+   */
+  for (const holder of document.querySelectorAll('[role="img"]')) {
+    if (!vis(holder)) continue
+    const art = holder.querySelector('svg')
+    if (!art) continue
+    const vb = art.viewBox?.baseVal
+    if (!vb || !vb.width || !vb.height) continue
+    // preserveAspectRatio="none" stretches to fill, so nothing is letterboxed.
+    if ((art.getAttribute('preserveAspectRatio') || '').includes('none')) continue
+    const el = art.getBoundingClientRect()
+    if (el.width < 1 || el.height < 1) continue
+    const scale = Math.min(el.width / vb.width, el.height / vb.height)
+    const painted = { w: vb.width * scale, h: vb.height * scale }
+    const fill = (painted.w * painted.h) / (el.width * el.height)
+    if (fill < 0.45) {
+      f.collapsedArtwork.push({
+        label: (holder.getAttribute('aria-label') || '').slice(0, 30),
+        frame: `${Math.round(el.width)}x${Math.round(el.height)}`,
+        painted: `${Math.round(painted.w)}x${Math.round(painted.h)}`,
+        fill: +fill.toFixed(2),
+      })
+    }
   }
 
   // --- contrast on visible leaf text ---------------------------------------
