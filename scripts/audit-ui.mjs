@@ -9,7 +9,8 @@ import { chromium } from 'playwright'
  * skips, controls with no accessible name, unlabelled fields, colour contrast,
  * target sizes, horizontal overflow, dead scroll space below the footer, dead
  * hrefs, and keyboard behaviour
- * (skip link, focus visibility, modal focus trap). Exits non-zero on findings.
+ * (skip link, focus visibility, modal focus trap, full-screen overlays really
+ * covering the viewport). Exits non-zero on findings.
  *
  * Exempted from contrast: text inside an aria-hidden subtree that conveys no
  * information — currently only the measuring rails' tick numbers, which are a
@@ -350,6 +351,43 @@ for (let i = 0; i < 12; i++) {
 }
 kb.focusEscapesOpenDrawer = escaped
 
+/**
+ * Full-screen overlays must actually cover the viewport.
+ *
+ * `position: fixed` is resolved against the nearest ancestor that establishes a
+ * containing block for fixed descendants — which `transform`, `filter` and
+ * `backdrop-filter` all do. The sticky header carries `backdrop-filter`, so the
+ * mobile menu and search sheet, both `inset-0` inside it, were being clipped to
+ * the header's 106px box and rendering as small panels over the page. Nothing in
+ * the CSS or the markup looks wrong; only the measured rect shows it.
+ */
+kb.overlaysCoverViewport = []
+{
+  const mobile = await browser.newPage({ viewport: { width: 412, height: 915 } })
+  await mobile.goto(`${BASE}/phones`, { waitUntil: 'networkidle' })
+  const overlays = [
+    { name: 'mobile menu', open: p => p.getByRole('button', { name: 'Open navigation menu' }).click() },
+    { name: 'search sheet', open: p => p.keyboard.press('/') },
+  ]
+  for (const o of overlays) {
+    await o.open(mobile).catch(() => {})
+    await mobile.waitForTimeout(400)
+    const r = await mobile.evaluate(() => {
+      const el = [...document.querySelectorAll('.fixed')]
+        .find(e => getComputedStyle(e).position === 'fixed' && e.getBoundingClientRect().width > 0)
+      const b = el?.getBoundingClientRect()
+      return b ? { w: Math.round(b.width), h: Math.round(b.height), vw: innerWidth, vh: innerHeight } : null
+    })
+    if (!r) kb.overlaysCoverViewport.push({ overlay: o.name, problem: 'no fixed overlay found' })
+    else if (r.w < r.vw - 2 || r.h < r.vh - 2) {
+      kb.overlaysCoverViewport.push({ overlay: o.name, ...r, problem: 'clipped — check for a containing block on an ancestor' })
+    }
+    await mobile.keyboard.press('Escape')
+    await mobile.waitForTimeout(250)
+  }
+  await mobile.close()
+}
+
 fs.writeFileSync(`${OUT}/ui-audit.json`, JSON.stringify({ report, kb }, null, 1))
 
 console.log('=== KEYBOARD ===')
@@ -373,6 +411,7 @@ const kbFails =
   (kb.skipLinkMovesFocus ? 0 : 1) +
   kb.focusableWithoutVisibleRing.length +
   (kb.drawerFocusInside ? 0 : 1) +
-  (kb.focusEscapesOpenDrawer ? 1 : 0)
+  (kb.focusEscapesOpenDrawer ? 1 : 0) +
+  kb.overlaysCoverViewport.length
 console.log(`\n${total} layout/a11y findings, ${kbFails} keyboard findings`)
 process.exitCode = total + kbFails > 0 ? 1 : 0
