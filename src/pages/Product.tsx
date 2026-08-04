@@ -177,18 +177,26 @@ export default function Product() {
         />
       </div>
 
-      {/* Wide banner image with the name laid over it, then the mono
+      {/* Wide banner image, a black caption slab under it, then the mono
           label/value meta strip — the reference template's detail-page opening.
           A square image in a half-width column was a shop layout wearing the
-          design's clothes; this is the design's own composition. */}
+          design's clothes; this is the design's own composition.
+
+          The name sits in the slab rather than over the picture. It was over the
+          picture, on a gradient scrim, and the scrim had to be dark enough for
+          white type — so the bottom half of every product faded into black. A
+          solid band keeps the type legible without touching the photograph. */}
       <div className="content-boundary pt-4">
-        <div className="media-frame relative aspect-[4/3] md:aspect-[21/9]">
-          <ProductImage product={product} priority />
-          <div
-            className="absolute inset-0 bg-gradient-to-t from-ink-950/90 via-ink-950/65 to-transparent"
-            aria-hidden="true"
-          />
-          <div className="absolute inset-x-0 bottom-0 p-6 md:p-10">
+        {/* Slab beside the image on desktop, under it on mobile. A full-width
+            21/9 banner put a 590px band of empty grey either side of a centred
+            product and pushed the price below the fold; this spends the same
+            width on the name instead. */}
+        <div className="md:grid md:grid-cols-[2fr_1fr]">
+          <div className="media-frame aspect-[4/3] md:aspect-[16/10]">
+            <ProductImage product={product} priority />
+          </div>
+
+          <div className="flex flex-col justify-end bg-ink-950 px-6 py-6 md:px-8 md:py-8">
             <p className="micro-label text-white">
               {product.brand}
               {subName ? ` // ${subName}` : ""}

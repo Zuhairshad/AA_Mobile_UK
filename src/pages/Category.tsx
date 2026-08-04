@@ -165,7 +165,11 @@ export default function Category() {
               </p>
               <h1 className="section-heading mt-3">{heading}</h1>
             </div>
-            <p className="section-lede max-w-md text-sm lg:text-right">
+            {/* Left-aligned even in the right-hand slot. Flush-right body copy
+                puts the ragged edge on the side the eye returns to, and on the
+                wider column it sat far enough from the heading that the two
+                stopped reading as one header. */}
+            <p className="section-lede max-w-md text-sm">
               {sub ? lede : category.intro}
             </p>
           </div>
@@ -268,10 +272,7 @@ export default function Category() {
                 </Button>
               </div>
             ) : (
-              <ProductGrid
-                products={pageItems}
-                feature={safePage === 1 && selectedCount === 0}
-              />
+              <ProductGrid products={pageItems} />
             )}
 
             {pageCount > 1 ? (
