@@ -1,6 +1,7 @@
 import type { IconName } from "../components/ui/Icon"
 import type { BadgeTone } from "../components/ui/Badge"
 import type { CategorySlug } from "./taxonomy"
+import type { PartKind } from "./devices"
 import { generatedParts } from "./parts"
 
 export type Stock = "in" | "low" | "out"
@@ -27,6 +28,8 @@ export type Product = {
   compatibility?: string[]
   /** Photo basename in src/assets/products. Falls back to `glyph` when absent. */
   photo?: string
+  /** Set on generated parts: which model and component this is, for photo lookup. */
+  partOf?: { device: string; kind: PartKind }
   glyph?: IconName
   blurb: string
   description?: string[]
