@@ -185,6 +185,10 @@ function makePart(device: Device, kind: PartKind): Product {
     name: `${device.name} ${label}`,
     category: "parts",
     subcategory: subcategoryFor[kind],
+    // Carried explicitly rather than parsed back out of the id: `partOf` is what
+    // resolves a photograph for this exact model and part, and splitting
+    // "iphone-13-rear-camera" on hyphens guesses at where the kind starts.
+    partOf: { device: device.slug, kind },
     brand: supplierFor(device),
     price,
     compareAt,

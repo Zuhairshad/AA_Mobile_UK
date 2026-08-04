@@ -1,4 +1,5 @@
 import { productPhotos } from "../../data/images"
+import { partPhotoFor, toolPhotoFor } from "../../data/partPhotos"
 import { photoTints } from "../../data/photoTints"
 import type { Product } from "../../data/catalogue"
 import type { PartKind } from "../../data/devices"
@@ -69,6 +70,28 @@ export default function ProductImage({ product, className, priority }: Props) {
     )
   }
 
+  /**
+   * A photograph of the part itself, where we have one. These are shot on white,
+   * so the tile goes white too — on the ink-50 tile the photo's edge showed as a
+   * faint rectangle, which is the nested-background problem again in miniature.
+   */
+  if (product.partOf) {
+    const photo = partPhotoFor(product.partOf.device, product.partOf.kind)
+    if (photo) {
+      return (
+        <div className={cx("absolute inset-0 overflow-hidden bg-white", className)}>
+          <img
+            src={photo.src}
+            alt={product.name}
+            loading={priority ? "eager" : "lazy"}
+            decoding="async"
+            className="h-full w-full object-contain"
+          />
+        </div>
+      )
+    }
+  }
+
   if (product.category === "parts") {
     // Front cameras live in the same subcategory as rear ones; the name is the
     // only thing that distinguishes them.
@@ -86,6 +109,21 @@ export default function ProductImage({ product, className, priority }: Props) {
         aria-label={product.name}
       >
         <PartArtwork kind={kind} seed={seedFrom(product.id)} />
+      </div>
+    )
+  }
+
+  const toolPhoto = product.category === "tools" ? toolPhotoFor(product.id) : undefined
+  if (toolPhoto) {
+    return (
+      <div className={cx("absolute inset-0 overflow-hidden bg-white", className)}>
+        <img
+          src={toolPhoto}
+          alt={product.name}
+          loading={priority ? "eager" : "lazy"}
+          decoding="async"
+          className="h-full w-full object-contain"
+        />
       </div>
     )
   }

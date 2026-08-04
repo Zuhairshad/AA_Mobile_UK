@@ -25,3 +25,6 @@ dist-ssr
 
 # Audit report written by `npm run audit`
 ui-audit.json
+
+# Cached iFixit API responses for scripts/fetch-ifixit-photos.mjs.
+.cache/

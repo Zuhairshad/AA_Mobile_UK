@@ -22,6 +22,7 @@ import QuantityStepper from "../components/ui/QuantityStepper"
 import Rating from "../components/ui/Rating"
 import FeaturedProducts from "../components/sections/FeaturedProducts"
 import ProductImage from "../components/product/ProductImage"
+import { partPhotoFor } from "../data/partPhotos"
 import NotFound from "./NotFound"
 
 const stockCopy = {
@@ -98,6 +99,9 @@ export default function Product() {
 
   const category = categoryBySlug.get(product.category)
   const subName = subcategoryName(product.category, product.subcategory)
+  const photoMatch = product.partOf
+    ? partPhotoFor(product.partOf.device, product.partOf.kind)?.match
+    : undefined
   const stock = stockCopy[product.stock]
   const soldOut = product.stock === "out"
   const badges = badgesFor(product)
@@ -192,8 +196,21 @@ export default function Product() {
             product and pushed the price below the fold; this spends the same
             width on the name instead. */}
         <div className="md:grid md:grid-cols-[2fr_1fr]">
-          <div className="media-frame aspect-[4/3] md:aspect-[16/10]">
-            <ProductImage product={product} priority />
+          <div className="relative">
+            <div className="media-frame aspect-[4/3] md:aspect-[16/10]">
+              <ProductImage product={product} priority />
+            </div>
+
+            {/* Said out loud when the photograph is of the same component from a
+                near neighbour rather than this exact model. A battery or a
+                charging flex is the same object across a maker's range, but the
+                customer should not have to work out that the picture is a
+                stand-in. */}
+            {photoMatch && photoMatch !== "exact" ? (
+              <p className="micro-label absolute bottom-3 left-3 bg-white/85 px-2 py-1.5">
+                Representative image
+              </p>
+            ) : null}
           </div>
 
           <div className="flex flex-col justify-end bg-ink-950 px-6 py-6 md:px-8 md:py-8">
