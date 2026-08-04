@@ -20,8 +20,8 @@ type Props = {
  *
  * A carousel of fixed-width cards capped how large any image could get and hid
  * most of the row off-screen; worse, when a rail held only two items the arrows
- * were still drawn with nothing to scroll. Three columns on desktop gives each
- * product roughly twice the image area, and a short row simply looks short.
+ * were still drawn with nothing to scroll. A plain grid lets each image take the
+ * full cell width, and a short row simply looks short.
  */
 export default function FeaturedProducts({
   heading,
@@ -45,9 +45,15 @@ export default function FeaturedProducts({
           lede={lede}
         />
 
-        <div className="grid grid-cols-2 gap-x-4 gap-y-10 lg:grid-cols-3">
-          {products.slice(0, 6).map((product, i) => (
-            <ProductCard key={product.id} product={product} priority={i < 3} />
+        {/* Four across from xl, matching the listing grid and the category
+            tiles — three column counts on one page made the same square card
+            look like three different components. Items 7 and 8 exist only at
+            that width; at three columns they would hang off the last row. */}
+        <div className="grid grid-cols-2 gap-x-4 gap-y-10 lg:grid-cols-3 xl:grid-cols-4">
+          {products.slice(0, 8).map((product, i) => (
+            <div key={product.id} className={i > 5 ? "hidden xl:block" : ""}>
+              <ProductCard product={product} priority={i < 4} />
+            </div>
           ))}
         </div>
 

@@ -3,38 +3,30 @@ import ProductCard from "./ProductCard"
 
 type Props = {
   products: Product[]
-  /**
-   * Give the first item the full row width, as the reference template's
-   * collection pages do. Off for filtered or deep-paged views, where promoting
-   * whatever happens to sort first is arbitrary.
-   */
-  feature?: boolean
 }
 
 /**
  * Tight gutters and no card chrome, so the images sit almost against each other
  * and the grid reads as one block of imagery rather than a tray of floating
  * tiles.
+ *
+ * A fourth column from xl: the content column is 100rem wide, and without it a
+ * 1440 laptop showed three 455px tiles per row — the extra width went into
+ * inflating each photograph rather than into showing more of the catalogue. Four
+ * across still renders a larger image than the old padded card did at three.
+ *
+ * Every cell is the same size. Promoting the first product to a full-width band
+ * gave one item half the fold and left the space beside it empty, which is the
+ * opposite of what a 401-product listing needs from its first screen.
  */
-export default function ProductGrid({ products, feature }: Props) {
-  const [lead, ...rest] = products
-  // Below four items a promoted lead leaves a visibly short row underneath,
-  // which is the sort of half-built grid this rebuild is meant to remove.
-  const showFeature = Boolean(feature) && products.length > 3
-
+export default function ProductGrid({ products }: Props) {
   return (
-    <div className="flex flex-col gap-10">
-      {showFeature && lead ? (
-        <ProductCard product={lead} priority aspect="wide" />
-      ) : null}
-
-      <ul className="grid grid-cols-2 gap-x-2 gap-y-10 md:grid-cols-3">
-        {(showFeature ? rest : products).map((product, i) => (
-          <li key={product.id}>
-            <ProductCard product={product} priority={!showFeature && i < 3} />
-          </li>
-        ))}
-      </ul>
-    </div>
+    <ul className="grid grid-cols-2 gap-x-2 gap-y-10 md:grid-cols-3 xl:grid-cols-4">
+      {products.map((product, i) => (
+        <li key={product.id}>
+          <ProductCard product={product} priority={i < 4} />
+        </li>
+      ))}
+    </ul>
   )
 }
