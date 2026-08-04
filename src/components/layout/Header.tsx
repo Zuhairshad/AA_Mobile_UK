@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react"
+import { createPortal } from "react-dom"
 import { Link, NavLink, useLocation } from "react-router-dom"
 import { navMenus } from "../../data/nav"
 import { site } from "../../data/content"
@@ -178,7 +179,11 @@ export default function Header() {
 
           <Link
             to="/repairs#book"
-            className={buttonClass("primary", "md", "ml-1 hidden md:inline-flex")}
+            className={buttonClass(
+              "primary",
+              "md",
+              "ml-1 hidden md:inline-flex",
+            )}
           >
             Book a repair
           </Link>
@@ -188,94 +193,104 @@ export default function Header() {
       {/* Search sheet. Opening it on demand is what frees the centre of the bar
           for the nav; the "/" shortcut opens it too, so the keycap on the
           button is a real affordance rather than decoration. */}
-      {searchOpen ? (
-        <div className="fixed inset-0 z-50">
-          <button
-            type="button"
-            className="absolute inset-0 bg-ink-950/40"
-            aria-label="Close search"
-            onClick={() => setSearchOpen(false)}
-          />
-          <div className="absolute inset-x-0 top-0 border-b border-line bg-white">
-            <div className="content-boundary flex items-center gap-3 py-4">
-              <div className="min-w-0 flex-1">
-                <SearchBox variant="hero" autoFocus />
-              </div>
+      {/* Portalled to the body. The header sets `backdrop-filter`, which makes
+          it a containing block for fixed-position descendants — `inset-0` inside
+          it resolves to the header's own box, not the viewport, so both of these
+          overlays rendered as small clipped panels. */}
+      {searchOpen
+        ? createPortal(
+            <div className="fixed inset-0 z-50">
               <button
                 type="button"
-                className="btn btn-ghost btn-icon"
+                className="absolute inset-0 bg-ink-950/40"
                 aria-label="Close search"
                 onClick={() => setSearchOpen(false)}
-              >
-                <Icon name="close" />
-              </button>
-            </div>
-          </div>
-        </div>
-      ) : null}
+              />
+              <div className="absolute inset-x-0 top-0 border-b border-line bg-white">
+                <div className="content-boundary flex items-center gap-3 py-4">
+                  <div className="min-w-0 flex-1">
+                    <SearchBox variant="hero" autoFocus />
+                  </div>
+                  <button
+                    type="button"
+                    className="btn btn-ghost btn-icon"
+                    aria-label="Close search"
+                    onClick={() => setSearchOpen(false)}
+                  >
+                    <Icon name="close" />
+                  </button>
+                </div>
+              </div>
+            </div>,
+            document.body,
+          )
+        : null}
 
-      {menuOpen ? (
-        <div className="fixed inset-0 z-50 lg:hidden">
-          <button
-            type="button"
-            className="absolute inset-0 bg-ink-950/50"
-            aria-label="Close navigation menu"
-            onClick={() => setMenuOpen(false)}
-          />
-          <div className="absolute inset-y-0 left-0 flex w-80 max-w-[85vw] flex-col overflow-y-auto bg-white">
-            <div className="flex h-16 items-center justify-between border-b border-line px-4">
-              <span className="micro-label text-ink-950">Menu</span>
+      {menuOpen
+        ? createPortal(
+            <div className="fixed inset-0 z-50 lg:hidden">
               <button
                 type="button"
-                className="btn btn-ghost btn-icon"
+                className="absolute inset-0 bg-ink-950/50"
                 aria-label="Close navigation menu"
                 onClick={() => setMenuOpen(false)}
-              >
-                <Icon name="close" />
-              </button>
-            </div>
-            <nav className="flex-1 px-2 py-4" aria-label="Mobile">
-              {navMenus.map((menu) => (
-                <div key={menu.label} className="mb-5">
-                  <p className="micro-label px-3 pb-2">{menu.label}</p>
-                  <ul>
-                    {menu.items.map((item) => (
-                      <li key={item.to + item.label}>
-                        <NavLink
-                          to={item.to}
-                          className={({ isActive }) =>
-                            cx(
-                              "block px-3 py-2.5 text-sm font-medium",
-                              isActive ? "bg-ink-100" : "hover:bg-ink-50",
-                            )
-                          }
-                        >
-                          {item.label}
-                        </NavLink>
-                      </li>
-                    ))}
-                  </ul>
+              />
+              <div className="absolute inset-y-0 left-0 flex w-80 max-w-[85vw] flex-col overflow-y-auto bg-white">
+                <div className="flex h-16 items-center justify-between border-b border-line px-4">
+                  <span className="micro-label text-ink-950">Menu</span>
+                  <button
+                    type="button"
+                    className="btn btn-ghost btn-icon"
+                    aria-label="Close navigation menu"
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    <Icon name="close" />
+                  </button>
                 </div>
-              ))}
-              <Link
-                to="/about"
-                className="block px-3 py-2.5 text-sm font-medium hover:bg-ink-50"
-              >
-                About us
-              </Link>
-            </nav>
-            {/* The header CTA is md-and-up only, so it lives here on a phone. */}
-            <div className="border-t border-line p-4">
-              <Link
-                to="/repairs#book"
-                className={buttonClass("primary", "lg", "w-full")}
-              >
-                Book a repair
-              </Link>
-            </div>
-          </div>
-        </div>
-      ) : null}
+                <nav className="flex-1 px-2 py-4" aria-label="Mobile">
+                  {navMenus.map((menu) => (
+                    <div key={menu.label} className="mb-5">
+                      <p className="micro-label px-3 pb-2">{menu.label}</p>
+                      <ul>
+                        {menu.items.map((item) => (
+                          <li key={item.to + item.label}>
+                            <NavLink
+                              to={item.to}
+                              className={({ isActive }) =>
+                                cx(
+                                  "block px-3 py-2.5 text-sm font-medium",
+                                  isActive ? "bg-ink-100" : "hover:bg-ink-50",
+                                )
+                              }
+                            >
+                              {item.label}
+                            </NavLink>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+                  <Link
+                    to="/about"
+                    className="block px-3 py-2.5 text-sm font-medium hover:bg-ink-50"
+                  >
+                    About us
+                  </Link>
+                </nav>
+                {/* The header CTA is md-and-up only, so it lives here on a phone. */}
+                <div className="border-t border-line p-4">
+                  <Link
+                    to="/repairs#book"
+                    className={buttonClass("primary", "lg", "w-full")}
+                  >
+                    Book a repair
+                  </Link>
+                </div>
+              </div>
+            </div>,
+            document.body,
+          )
+        : null}
     </header>
   )
 }
