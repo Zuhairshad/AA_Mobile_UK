@@ -7,7 +7,8 @@ import { chromium } from 'playwright'
  *
  * Checks representative routes at 320/768/1440 for duplicate ids, heading-level
  * skips, controls with no accessible name, unlabelled fields, colour contrast,
- * target sizes, horizontal overflow, dead hrefs, and keyboard behaviour
+ * target sizes, horizontal overflow, dead scroll space below the footer, dead
+ * hrefs, and keyboard behaviour
  * (skip link, focus visibility, modal focus trap). Exits non-zero on findings.
  *
  * Exempted from contrast: text inside an aria-hidden subtree that conveys no
@@ -118,7 +119,7 @@ const collect = () => {
     return (hi + 0.05) / (lo + 0.05)
   }
 
-  const f = { duplicateIds: [], headings: [], noName: [], unlabelled: [], contrast: [], tapTargets: [], overflow: [], offViewport: [], placeholderHref: [], imgNoAlt: [] }
+  const f = { duplicateIds: [], headings: [], noName: [], unlabelled: [], contrast: [], tapTargets: [], overflow: [], deadSpace: [], offViewport: [], placeholderHref: [], imgNoAlt: [] }
 
   // --- duplicate ids --------------------------------------------------------
   const byId = new Map()
@@ -228,6 +229,32 @@ const collect = () => {
       if (seenTargets.has(key)) continue
       seenTargets.add(key)
       f.tapTargets.push({ tag: el.tagName, size: `${Math.round(r.width)}x${Math.round(r.height)}`, label: name(el).slice(0, 30), cls: String(el.className).slice(0, 40) })
+    }
+  }
+
+  // --- dead vertical space below the footer ---------------------------------
+  /**
+   * Scrollable page left under the footer. Decorative overlays are the usual
+   * cause: an absolutely positioned box contributes to scrollHeight, so anything
+   * sized from a measurement of the document feeds back into its own height and
+   * ratchets upward, leaving thousands of pixels of empty scroll after a
+   * client-side navigation from a tall page to a short one.
+   */
+  const footEl = document.querySelector('footer')
+  if (footEl) {
+    const footBottom = footEl.getBoundingClientRect().bottom + window.scrollY
+    const dead = document.documentElement.scrollHeight - footBottom
+    if (dead > 4) {
+      const culprits = []
+      for (const el of document.querySelectorAll('body *')) {
+        const r = el.getBoundingClientRect()
+        if (!r.width && !r.height) continue
+        if (r.bottom + window.scrollY > footBottom + 1) {
+          culprits.push({ tag: el.tagName, cls: String(el.className).slice(0, 50), bottom: Math.round(r.bottom + window.scrollY) })
+          if (culprits.length > 3) break
+        }
+      }
+      f.deadSpace.push({ pixels: Math.round(dead), footerBottom: Math.round(footBottom), culprits })
     }
   }
 

@@ -23,8 +23,25 @@ export default function Rails({ height }: { height: number }) {
   return (
     <div
       aria-hidden="true"
-      className="pointer-events-none absolute inset-x-0 top-0 -z-10 hidden lg:block"
-      style={{ height }}
+      /**
+       * inset-0, not an explicit measured height. Sizing this element from a
+       * measurement of the document was a ratchet: an absolutely positioned box
+       * contributes to scrollHeight, so the rails were part of the number they
+       * were sized by and the height could only ever grow. Navigating from a
+       * tall page to a short one left thousands of pixels of dead scroll below
+       * the footer until a reload cleared the state.
+       *
+       * Taking the length from the page wrapper instead means the rails cannot
+       * influence it. `height` now only decides how many ticks to draw.
+       */
+      /**
+       * overflow-hidden so nothing decorative can extend the page. The last tick
+       * label sits on a 48px multiple and is shifted up by half its own height,
+       * so its box could end a pixel or two past the content and scrollHeight
+       * rounded that up into real scrollable space. Clipping is the general fix;
+       * trimming the tick count would only have patched this one case.
+       */
+      className="pointer-events-none absolute inset-0 -z-10 hidden overflow-hidden lg:block"
     >
       <div className="content-boundary relative h-full">
         {/* The two bounding rules. */}
