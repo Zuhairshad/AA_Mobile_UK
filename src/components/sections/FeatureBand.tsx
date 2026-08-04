@@ -107,8 +107,12 @@ function ServiceCard({ service }: { service: (typeof repairServices)[number] }) 
         </p>
       </div>
 
+      {/* Drawn, not photographed. The photographs are shot on white and this card
+          is black, so a photo arrives as a bright panel between the black header
+          and the black caption — three bands of alternating tone instead of one
+          object. The drawings carry no background and sit on the card. */}
       <div className="relative aspect-[4/3] w-full">
-        {face ? <ProductImage product={face} /> : null}
+        {face ? <ProductImage product={face} drawn /> : null}
       </div>
 
       <div className="mt-auto flex flex-col gap-2 px-6 pb-6">

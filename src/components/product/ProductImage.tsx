@@ -14,6 +14,16 @@ type Props = {
   className?: string
   /** Rendered above the fold — skips lazy loading. */
   priority?: boolean
+  /**
+   * Force the drawing even where a photograph exists.
+   *
+   * For dark surfaces. Every product photograph we hold is shot on white, so on a
+   * black card it lands as a bright panel with hard edges — on the repair cards
+   * that meant a white block between the black header and the black caption, three
+   * bands of alternating tone where there should be one object. The drawings have
+   * no background of their own and sit on any colour.
+   */
+  drawn?: boolean
 }
 
 /** Which drawing to use, from the subcategory the part sits in. */
@@ -41,8 +51,13 @@ function seedFrom(id: string): number {
  * we do not photograph; a glyph for anything else. A listing of mixed stock
  * still reads as one deliberate set.
  */
-export default function ProductImage({ product, className, priority }: Props) {
-  const src = product.photo ? productPhotos[product.photo] : undefined
+export default function ProductImage({
+  product,
+  className,
+  priority,
+  drawn,
+}: Props) {
+  const src = !drawn && product.photo ? productPhotos[product.photo] : undefined
 
   if (src) {
     /**
@@ -75,7 +90,7 @@ export default function ProductImage({ product, className, priority }: Props) {
    * so the tile goes white too — on the ink-50 tile the photo's edge showed as a
    * faint rectangle, which is the nested-background problem again in miniature.
    */
-  if (product.partOf) {
+  if (product.partOf && !drawn) {
     const photo = partPhotoFor(product.partOf.device, product.partOf.kind)
     if (photo) {
       return (
