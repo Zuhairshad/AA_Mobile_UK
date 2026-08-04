@@ -1,5 +1,5 @@
 import { productPhotos } from "../../data/images"
-import { partPhotoFor, toolPhotoFor } from "../../data/partPhotos"
+import { partPhotoFor } from "../../data/partPhotos"
 import { photoTints } from "../../data/photoTints"
 import type { Product } from "../../data/catalogue"
 import type { PartKind } from "../../data/devices"
@@ -113,21 +113,9 @@ export default function ProductImage({ product, className, priority }: Props) {
     )
   }
 
-  const toolPhoto = product.category === "tools" ? toolPhotoFor(product.id) : undefined
-  if (toolPhoto) {
-    return (
-      <div className={cx("absolute inset-0 overflow-hidden bg-white", className)}>
-        <img
-          src={toolPhoto}
-          alt={product.name}
-          loading={priority ? "eager" : "lazy"}
-          decoding="async"
-          className="h-full w-full object-contain"
-        />
-      </div>
-    )
-  }
-
+  // Tools are drawn, not photographed. Every tool photograph available to us is
+  // of somebody else's product, so a listing for our own kit would be showing a
+  // different item — a problem cropping the logo out would hide rather than fix.
   const toolKind = toolArtworkFor[product.id]
   if (toolKind) {
     return (

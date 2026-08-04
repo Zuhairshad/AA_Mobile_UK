@@ -54,6 +54,23 @@ const KIND_PATTERNS = [
   { kind: 'speaker', re: /loudspeaker|earpiece speaker|\bspeaker\b/i, not: /adhesive|mesh|grille/i },
 ]
 
+/**
+ * Products to refuse, because the photograph carries iFixit's own branding.
+ *
+ * Their own-brand replacement batteries have "iFixit" printed on the cell, so the
+ * picture shows their product rather than whatever the shop stocks. Every other
+ * part they list — screens, cameras, flex boards, back covers — is an OEM or
+ * aftermarket component with no mark on it, which is why this is a narrow rule
+ * and not a whole-catalogue problem.
+ *
+ * Established by running tesseract over all 191 images for the wordmark and then
+ * looking at contact sheets of every one for logo-only cases. OCR alone missed
+ * two Samsung cells where the mark is small; the URL alone would have been enough
+ * for all of them, so that is what the rule keys on. Anything excluded here falls
+ * back to an unbranded photo of the same component or to the drawing.
+ */
+const OWN_BRAND = /replacement-battery|\/ifixit-/
+
 /** Guides worth opening, most likely to yield a part first. */
 const GUIDE_PATTERNS = [
   /screen|display/i,
@@ -199,6 +216,7 @@ async function harvest(device) {
     for (const part of detail?.parts || []) {
       const kind = kindOf(part.text || '')
       if (!kind || !wanted.has(kind)) continue
+      if (OWN_BRAND.test(part.url || '')) continue
       const hash = hashOf(part.thumbnail || '')
       if (!hash) continue
       found.set(`${device.slug}|${kind}`, {
@@ -326,62 +344,20 @@ const manifest = {
     ]),
   ),
 }
-// --- tools -------------------------------------------------------------------
-
-/**
- * Our fourteen tools, against the store product that is actually the same object.
+/*
+ * No tool photography.
  *
- * Written out by hand rather than matched on names, because the names do not
- * match: their 64-bit set is a "Mako Driver Kit" and their heat pad is an
- * "iOpener". Candidates are tried in order and the first page that loads wins;
- * anything with no honest equivalent is left off and keeps its drawing. A guessed
- * URL that 404s costs one request and is skipped, so listing a second choice is
- * free.
+ * There was a stage here that matched our fourteen tools to their store
+ * equivalents — Pro Tech Toolkit for the bench kit, iOpener for the heat pad, and
+ * so on. It is gone, and the tools keep their drawings.
+ *
+ * The reason is not the logo, though several are visibly branded. It is that
+ * every one of those photographs is of an iFixit product, so a listing selling
+ * "Bench Pro Toolkit" illustrated with their Pro Tech Toolkit is showing a
+ * different item to the one in the box. Parts are OEM components that any
+ * supplier ships; a tool kit is somebody's product. Cropping the logo out would
+ * hide the problem rather than fix it.
  */
-const TOOL_MAP = {
-  'bench-pro-toolkit': ['pro-tech-toolkit'],
-  'essential-repair-toolkit': ['essential-electronics-toolkit', 'moray-driver-kit'],
-  'precision-driver-64': ['mako-driver-kit-64-precision-bits'],
-  'precision-driver-24': ['minnow-driver-kit-20-precision-bits', 'moray-driver-kit'],
-  'pentalobe-driver': ['p2-pentalobe-screwdriver-iphone'],
-  'opening-pick-set': ['ifixit-opening-picks-set-of-6'],
-  'suction-handle': ['suction-handle'],
-  'metal-spudger': ['metal-spudger'],
-  'heat-pad': ['iopener'],
-  'adhesive-strips': ['tesa-61395-tape'],
-  'isopropyl-wipes': ['lint-free-clean-room-wipes'],
-  'esd-wrist-strap': ['anti-static-wrist-strap', 'portable-anti-static-mat'],
-  // Screen Fix Kit / Battery Fix Kit have no generic equivalent — theirs are
-  // per-device — so they keep their drawings.
-}
-
-console.log(`\nResolving ${Object.keys(TOOL_MAP).length} tools…`)
-const toolPhotos = {}
-for (const [id, slugs] of Object.entries(TOOL_MAP)) {
-  for (const slug of slugs) {
-    const url = `https://www.ifixit.com/products/${slug}`
-    const v = await bareVariant(url)
-    if (!v) continue
-    const imgId = idFor(v.url)
-    const dest = path.join(OUT_DIR, `${imgId}.jpg`)
-    if (!fs.existsSync(dest)) {
-      const sized = v.url.includes('cdn.shopify.com')
-        ? v.url.replace(/([?&])width=\d+/, '$1width=600') +
-          (/[?&]width=/.test(v.url) ? '' : (v.url.includes('?') ? '&' : '?') + 'width=600')
-        : v.url
-      const res = await fetch(sized, {
-        headers: { 'user-agent': 'aa-mobile-uk-asset-fetch/1.0 (+storefront imagery)' },
-      })
-      if (!res.ok) continue
-      fs.writeFileSync(dest, Buffer.from(await res.arrayBuffer()))
-    }
-    toolPhotos[id] = imgId
-    manifest.images[imgId] = { name: slug, product: url, variant: v.variant, source: v.url }
-    break
-  }
-}
-console.log(`${Object.keys(toolPhotos).length}/${Object.keys(TOOL_MAP).length} tools matched`)
-manifest.byToolId = toolPhotos
 
 /**
  * Drop images nothing references, so switching variants does not leave the
