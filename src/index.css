@@ -84,6 +84,13 @@
   --shadow-lift: 0 8px 24px -8px rgb(1 1 1 / 0.14);
 
   --ease-out-soft: cubic-bezier(0.22, 0.61, 0.36, 1);
+
+  /* The one place the site's content width is decided. 100rem rather than
+     Tailwind's max-w-7xl (80rem): on a 1440 laptop that is the difference
+     between a 1216px column with 112px of empty margin either side and one that
+     actually fills the screen. Product grids and photographs get the extra
+     width; prose blocks keep their own narrower max-w for line length. */
+  --container-page: 100rem;
 }
 
 @layer base {
@@ -113,9 +120,11 @@
    --------------------------------------------------------------------------- */
 
 @layer components {
-  /* Page gutter. Every full-width section wraps its content in this. */
+  /* Page gutter. Every full-width section wraps its content in this. The
+     gutters stay modest because nothing lives in them any more — they are
+     breathing room, not a column reserved for decoration. */
   .content-boundary {
-    @apply mx-auto w-full max-w-7xl px-4 md:px-6 lg:px-8;
+    @apply mx-auto w-full max-w-page px-4 md:px-6 lg:px-8;
   }
 
   /* Uniform vertical rhythm for landing/marketing sections. */
@@ -162,45 +171,6 @@
     font-family: var(--font-display);
     font-variant-numeric: tabular-nums;
     letter-spacing: -0.03em;
-  }
-
-  /* --- Rails ------------------------------------------------------------ */
-
-  /* The hairline rules bounding the content column, with tick marks down
-     them. Purely decorative, so it is aria-hidden at the markup level and
-     drawn with gradients rather than elements. */
-  .rails {
-    @apply relative;
-  }
-
-  .rails::before,
-  .rails::after {
-    @apply pointer-events-none absolute inset-y-0 hidden w-px content-[''] lg:block;
-    background-image: linear-gradient(
-      to bottom,
-      var(--color-line),
-      var(--color-line)
-    );
-  }
-
-  .rails::before {
-    left: 0;
-  }
-
-  .rails::after {
-    right: 0;
-  }
-
-  /* Ticks: a repeating gradient on an inset element, so no extra DOM. */
-  .rail-ticks {
-    @apply pointer-events-none absolute inset-y-0 left-0 hidden w-2 lg:block;
-    background-image: repeating-linear-gradient(
-      to bottom,
-      var(--color-line) 0,
-      var(--color-line) 1px,
-      transparent 1px,
-      transparent 64px
-    );
   }
 
   /* --- Button ----------------------------------------------------------- */
@@ -449,8 +419,11 @@
   }
 
   /* --- Prose ------------------------------------------------------------ */
+  /* Body copy carries its own measure. The content column is 100rem wide now,
+     and a guide step spanning two thirds of that is a 130-character line — the
+     width belongs to grids and photographs, not to paragraphs. */
   .prose-body {
-    @apply text-ink-600;
+    @apply max-w-[68ch] text-ink-600;
   }
 
   .prose-body p + p {

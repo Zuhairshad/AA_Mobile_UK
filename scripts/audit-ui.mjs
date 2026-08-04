@@ -14,9 +14,9 @@ import { chromium } from 'playwright'
  * Exits non-zero on findings.
  *
  * Exempted from contrast: text inside an aria-hidden subtree that conveys no
- * information — currently only the measuring rails' tick numbers, which are a
- * drafting artefact. WCAG 1.4.3 exempts decorative text; everything a user can
- * actually read is still measured.
+ * information, such as a decorative glyph beside a real label. WCAG 1.4.3
+ * exempts decorative text; everything a user can actually read is still
+ * measured.
  *
  * Two things it deliberately does NOT guess at: colours are resolved through a
  * canvas because Tailwind v4 emits oklch() that a regex will silently miss, and
@@ -184,9 +184,9 @@ const collect = () => {
     if (el.children.length || !vis(el)) continue
     const text = el.textContent?.trim()
     if (!text) continue
-    // Decorative text is exempt under WCAG 1.4.3. The only such text on the site
-    // is the measuring rails' tick numbers, which sit in an aria-hidden subtree
-    // and carry no information a user needs.
+    // Decorative text is exempt under WCAG 1.4.3: glyphs in an aria-hidden
+    // subtree (the "+" beside an add-to-basket, the star shapes in a rating)
+    // carry no information a user needs, and the real label is measured.
     if (el.closest('[aria-hidden="true"]')) continue
     const cs = getComputedStyle(el)
     let fg = parse(cs.color)
@@ -392,7 +392,7 @@ kb.deadSpaceAfterInteraction = []
     await page2.goto(`${BASE}/sitemap`, { waitUntil: 'networkidle' })
     await page2.waitForTimeout(300)
   }
-  // Resizes across the lg breakpoint, where the rails appear and disappear.
+  // Resizes across the lg breakpoint, where the layout changes column counts.
   for (const [w, h] of [[1440, 900], [1023, 800], [1024, 800], [390, 844]]) {
     await page2.setViewportSize({ width: w, height: h })
     await page2.waitForTimeout(500)
