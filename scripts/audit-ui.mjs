@@ -10,7 +10,8 @@ import { chromium } from 'playwright'
  * target sizes, horizontal overflow, dead scroll space below the footer, dead
  * hrefs, and keyboard behaviour
  * (skip link, focus visibility, modal focus trap, full-screen overlays really
- * covering the viewport). Exits non-zero on findings.
+ * covering the viewport, dead scroll space after navigation and resize).
+ * Exits non-zero on findings.
  *
  * Exempted from contrast: text inside an aria-hidden subtree that conveys no
  * information — currently only the measuring rails' tick numbers, which are a
@@ -361,6 +362,46 @@ kb.focusEscapesOpenDrawer = escaped
  * the header's 106px box and rendering as small panels over the page. Nothing in
  * the CSS or the markup looks wrong; only the measured rect shows it.
  */
+/**
+ * Dead scroll space after a client-side navigation and after a resize.
+ *
+ * The per-route deadSpace check only ever sees a fresh page load, and the bug it
+ * was written for needed neither: it needed a tall page followed by a short one
+ * in the same document, or a resize. The pre-fix build measured 5,906px on
+ * /sitemap -> /cart and 8,110px on a resize while every fresh load read clean,
+ * which is why it reached a reviewer.
+ */
+kb.deadSpaceAfterInteraction = []
+{
+  const page2 = await browser.newPage({ viewport: { width: 1024, height: 768 } })
+  const dead = () => page2.evaluate(() => {
+    const f = document.querySelector('footer')
+    if (!f) return 0
+    return document.documentElement.scrollHeight - Math.round(f.getBoundingClientRect().bottom + window.scrollY)
+  })
+  // Tallest page in the site, then the shortest thing linked from it.
+  await page2.goto(`${BASE}/sitemap`, { waitUntil: 'networkidle' })
+  await page2.waitForTimeout(600)
+  for (const to of ['/cart', '/guides', '/about']) {
+    const link = page2.locator(`a[href="${to}"]`).first()
+    if (await link.count() === 0) continue
+    await link.click().catch(() => {})
+    await page2.waitForTimeout(600)
+    const v = await dead()
+    if (v > 4) kb.deadSpaceAfterInteraction.push({ after: `navigate to ${to}`, pixels: v })
+    await page2.goto(`${BASE}/sitemap`, { waitUntil: 'networkidle' })
+    await page2.waitForTimeout(300)
+  }
+  // Resizes across the lg breakpoint, where the rails appear and disappear.
+  for (const [w, h] of [[1440, 900], [1023, 800], [1024, 800], [390, 844]]) {
+    await page2.setViewportSize({ width: w, height: h })
+    await page2.waitForTimeout(500)
+    const v = await dead()
+    if (v > 4) kb.deadSpaceAfterInteraction.push({ after: `resize to ${w}x${h}`, pixels: v })
+  }
+  await page2.close()
+}
+
 kb.overlaysCoverViewport = []
 {
   const mobile = await browser.newPage({ viewport: { width: 412, height: 915 } })
@@ -412,6 +453,7 @@ const kbFails =
   kb.focusableWithoutVisibleRing.length +
   (kb.drawerFocusInside ? 0 : 1) +
   (kb.focusEscapesOpenDrawer ? 1 : 0) +
-  kb.overlaysCoverViewport.length
+  kb.overlaysCoverViewport.length +
+  kb.deadSpaceAfterInteraction.length
 console.log(`\n${total} layout/a11y findings, ${kbFails} keyboard findings`)
 process.exitCode = total + kbFails > 0 ? 1 : 0
