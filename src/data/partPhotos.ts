@@ -97,15 +97,3 @@ export function partPhotoFor(
   }
   return undefined
 }
-
-/**
- * Photograph for one of the tools, by product id.
- *
- * Two of the fourteen have no entry — the screen and battery fix kits, because
- * theirs are made up per device and there is no generic one to photograph — and
- * those keep their drawings.
- */
-export function toolPhotoFor(id: string): string | undefined {
-  const hash = (manifest.byToolId as Record<string, string>)[id]
-  return hash ? byHash[hash] : undefined
-}

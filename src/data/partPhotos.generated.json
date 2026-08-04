@@ -36,37 +36,30 @@
     "ipad-mini-6|battery": "oMWmGexrcGsASuq5",
     "ipad-mini-6|screen": "XSkb1HfLBmsNXOmk",
     "ipad-pro-11-4th-gen|screen": "RsB2j1VNqqAYfPOTc7c80931",
-    "iphone-11-pro-max|battery": "C1TmoWuuAZWsPahO",
     "iphone-11-pro-max|charging": "W1TGWiBWHZi1Qmfy",
     "iphone-11-pro-max|front-camera": "X5ZS31ysPmlhKh2v",
     "iphone-11-pro-max|rear-camera": "IsfsAfQXQLqULwBo",
     "iphone-11-pro-max|screen": "N2yGqEFYCfNNQbmX",
     "iphone-11-pro-max|speaker": "ps2JA3x1fYxcxis2",
-    "iphone-11-pro|battery": "b1Z2q36nUkCaqDBB",
     "iphone-11-pro|front-camera": "nuxPx2eckR5VVm42",
     "iphone-11-pro|rear-camera": "IsfsAfQXQLqULwBo",
     "iphone-11-pro|screen": "uymwYC3IOMtMmfKK96a11b31",
     "iphone-11-pro|speaker": "GOwtu1S4SNwFZJTV",
-    "iphone-11|battery": "2dN4CHulSloDQSmd65639186",
     "iphone-11|charging": "B1PWZvuXnqm5Yn2g",
     "iphone-11|rear-camera": "NHkPiNUAQNVYXBRi",
     "iphone-11|screen": "MYqprKdT5pPheYim",
     "iphone-11|speaker": "dy4x3LEYDvNFhr1f",
-    "iphone-12-mini|battery": "SRZoGXuG2nBMCTUS",
     "iphone-12-mini|rear-camera": "hXT264CGnykBcfiL",
     "iphone-12-mini|screen": "iAg5PhAILBWrIyfA",
     "iphone-12-mini|speaker": "bIJEkY2fkwoVJH4D",
-    "iphone-12-pro-max|battery": "mFgKiCoaVpgXDgwM",
     "iphone-12-pro-max|front-camera": "Y2Jbocm4f3vJBUcN",
     "iphone-12-pro-max|rear-camera": "ZVRhn1QgECGLUCtvb08c1a5f",
     "iphone-12-pro-max|screen": "VCR1BuUBRvtE6Vq4a6d17f12",
     "iphone-12-pro-max|speaker": "POohQCxwOxhp6at4534d7765",
-    "iphone-12-pro|battery": "KP1FYufaxHGaYJir",
     "iphone-12-pro|front-camera": "OegDlSmMBWMuwZOT",
     "iphone-12-pro|rear-camera": "6Yt1anpBwegF1nH6",
     "iphone-12-pro|screen": "YBOoXjIcRWPAKrse",
     "iphone-12-pro|speaker": "UK4HIuhRhePnKiTJ",
-    "iphone-12|battery": "KP1FYufaxHGaYJir",
     "iphone-12|rear-camera": "nhIlE1BVWLsDOXVF",
     "iphone-12|screen": "YBOoXjIcRWPAKrse",
     "iphone-12|speaker": "UK4HIuhRhePnKiTJ",
@@ -129,7 +122,6 @@
     "iphone-16-pro|screen": "WBGUBsMBKo3bCgjtc0d28b8d",
     "iphone-16|battery": "P1wiSAJYmFnVLagt3ce6c56a",
     "iphone-16|screen": "wA5gRofUqYXjXlGZ80446db9",
-    "iphone-se-2020|battery": "C1afPDNQC6hCuBfD",
     "iphone-se-2020|screen": "LyuTSVpgFXCaWHpr",
     "iphone-se-2020|speaker": "JmigayuIrIkaAQPI85c2325a",
     "iphone-se-2022|battery": "TywH6csIJeBPrDND916a910a",
@@ -137,19 +129,16 @@
     "iphone-se-2022|speaker": "JmigayuIrIkaAQPI85c2325a",
     "nothing-phone-1|screen": "MOFWbErjsCXlwOdD",
     "samsung-galaxy-s21-plus|back-glass": "MH5EOGBSlIQFLsj3ca5769db",
-    "samsung-galaxy-s21-plus|battery": "F4hLqZddd2VwXm6r58c8b50e",
     "samsung-galaxy-s21-plus|charging": "bFGGmhQqEK2IKGeWd22024a3",
     "samsung-galaxy-s21-plus|front-camera": "IWU3TgdjigZEuD5I6f9efe06",
     "samsung-galaxy-s21-plus|screen": "kKIulljZbyVHmlcC",
     "samsung-galaxy-s21-plus|speaker": "BW5kogcZ2OEAUlLu",
     "samsung-galaxy-s21-ultra|back-glass": "KFyi2oNLOPJYHcxY",
-    "samsung-galaxy-s21-ultra|battery": "OGWACWsTQRnaiaqn40faf840",
     "samsung-galaxy-s21-ultra|charging": "AJDXHWXdAUKITMJh895d4bf6",
     "samsung-galaxy-s21-ultra|front-camera": "31sXFWEvX6wegMhk41a5a231",
     "samsung-galaxy-s21-ultra|screen": "bUaISMaILApyr2cn5a0fd0ec",
     "samsung-galaxy-s21-ultra|speaker": "IphBuAeGToNgguMK",
     "samsung-galaxy-s21|back-glass": "paCawPOLZkQADCiKb451c2ef",
-    "samsung-galaxy-s21|battery": "MT1xbBNQFgPEbAje19b915dd",
     "samsung-galaxy-s21|charging": "4FtvWaBmCC6yD2NFb362be0b",
     "samsung-galaxy-s21|front-camera": "IWU3TgdjigZEuD5I6f9efe06",
     "samsung-galaxy-s21|screen": "1wRIWDquBJZUufKV",
@@ -198,12 +187,6 @@
       "product": "https://www.ifixit.com/products/galaxy-s21-screen",
       "variant": "Part Only",
       "source": "https://cdn.shopify.com/s/files/1/0045/4092/4007/files/1wRIWDquBJZUufKV.jpg?v=1752180374&width=140"
-    },
-    "2dN4CHulSloDQSmd65639186": {
-      "name": "iPhone 11 Battery",
-      "product": "https://www.ifixit.com/products/iphone-11-replacement-battery",
-      "variant": "Part Only",
-      "source": "https://cdn.shopify.com/s/files/1/0045/4092/4007/files/2dN4CHulSloDQSmd_65639186-9c87-4cec-81d4-60b9449d4c26.jpg?v=1754435398&width=140"
     },
     "2MH36IqdDOkdLHnl": {
       "name": "Samsung Galaxy S23+ Screen",
@@ -271,12 +254,6 @@
       "variant": "single",
       "source": "https://cdn.shopify.com/s/files/1/0045/4092/4007/files/B1PWZvuXnqm5Yn2g.jpg?v=1779884327"
     },
-    "b1Z2q36nUkCaqDBB": {
-      "name": "iPhone 11 Pro Battery",
-      "product": "https://www.ifixit.com/products/iphone-11-pro-replacement-battery",
-      "variant": "Part Only",
-      "source": "https://cdn.shopify.com/s/files/1/0045/4092/4007/files/b1Z2q36nUkCaqDBB.jpg?v=1754435479&width=140"
-    },
     "b2FZ5MJlBQT3YBn6": {
       "name": "iPhone 16 Plus Battery",
       "product": "https://www.ifixit.com/products/iphone-16-plus-battery",
@@ -324,18 +301,6 @@
       "product": "https://www.ifixit.com/products/samsung-galaxy-s24-plus-back-glass",
       "variant": "single",
       "source": "https://cdn.shopify.com/s/files/1/0045/4092/4007/files/bWVP3Ca6JDQZwxQL.jpg?v=1736265197"
-    },
-    "C1afPDNQC6hCuBfD": {
-      "name": "iPhone SE 2020 Battery",
-      "product": "https://www.ifixit.com/products/iphone-se-2020-replacement-battery",
-      "variant": "Part Only",
-      "source": "https://cdn.shopify.com/s/files/1/0045/4092/4007/products/C1afPDNQC6hCuBfD.jpg?v=1670434739&width=140"
-    },
-    "C1TmoWuuAZWsPahO": {
-      "name": "iPhone 11 Pro Max Battery",
-      "product": "https://www.ifixit.com/products/iphone-11-pro-max-replacement-battery",
-      "variant": "Part Only",
-      "source": "https://cdn.shopify.com/s/files/1/0045/4092/4007/files/C1TmoWuuAZWsPahO.jpg?v=1754435564&width=140"
     },
     "CbErefUreRLeafOraee2c086": {
       "name": "iPhone 14 Pro Max Earpiece Speaker",
@@ -420,12 +385,6 @@
       "product": "https://www.ifixit.com/products/samsung-galaxy-s23-plus-back-glass",
       "variant": "single",
       "source": "https://cdn.shopify.com/s/files/1/0045/4092/4007/files/F1DOq6HYlL5OxTHD.jpg?v=1736265151"
-    },
-    "F4hLqZddd2VwXm6r58c8b50e": {
-      "name": "Samsung Galaxy S21+ Battery",
-      "product": "https://www.ifixit.com/products/galaxy-s21plus-replacement-battery",
-      "variant": "Part Only",
-      "source": "https://cdn.shopify.com/s/files/1/0045/4092/4007/files/F4hLqZddd2VwXm6r_58c8b50e-c963-4f99-b6d4-1d4f83bfee57.jpg?v=1784585872&width=140"
     },
     "f5dWLMHIGLXgVfIG": {
       "name": "iPhone 14 Plus Rear Camera Assembly",
@@ -667,12 +626,6 @@
       "variant": "Part Only",
       "source": "https://cdn.shopify.com/s/files/1/0045/4092/4007/files/kKIulljZbyVHmlcC.jpg?v=1752181247&width=140"
     },
-    "KP1FYufaxHGaYJir": {
-      "name": "iPhone 12/12 Pro Battery",
-      "product": "https://www.ifixit.com/products/iphone-12-12-pro-replacement-battery",
-      "variant": "Part Only",
-      "source": "https://cdn.shopify.com/s/files/1/0045/4092/4007/files/KP1FYufaxHGaYJir.jpg?v=1752101236&width=140"
-    },
     "KqnMh6XmYtmblGbp": {
       "name": "Samsung Galaxy S23/S23+ 50MP Wide Angle Rear Camera",
       "product": "https://www.ifixit.com/products/samsung-galaxy-s23-s23-plus-50mp-wide-angle-rear-camera",
@@ -739,12 +692,6 @@
       "variant": "Part Only",
       "source": "https://cdn.shopify.com/s/files/1/0045/4092/4007/files/meni1eYQyQJgFHo5.jpg?v=1736290897&width=140"
     },
-    "mFgKiCoaVpgXDgwM": {
-      "name": "iPhone 12 Pro Max Battery",
-      "product": "https://www.ifixit.com/products/iphone-12-pro-max-replacement-battery",
-      "variant": "Part Only",
-      "source": "https://cdn.shopify.com/s/files/1/0045/4092/4007/files/mFgKiCoaVpgXDgwM.jpg?v=1739974678&width=140"
-    },
     "MH5EOGBSlIQFLsj3ca5769db": {
       "name": "Samsung Galaxy S21+ (USA) Back Glass - Genuine",
       "product": "https://www.ifixit.com/products/samsung-galaxy-s21-plus-usa-back-glass-genuine",
@@ -762,12 +709,6 @@
       "product": "https://www.ifixit.com/products/nothing-phone-1-screen",
       "variant": "single",
       "source": "https://cdn.shopify.com/s/files/1/0045/4092/4007/files/MOFWbErjsCXlwOdD.jpg?v=1726157228"
-    },
-    "MT1xbBNQFgPEbAje19b915dd": {
-      "name": "Samsung Galaxy S21 Battery",
-      "product": "https://www.ifixit.com/products/galaxy-s21-replacement-battery",
-      "variant": "Part Only",
-      "source": "https://cdn.shopify.com/s/files/1/0045/4092/4007/files/MT1xbBNQFgPEbAje_19b915dd-59d8-4c72-850e-023b6b58acb1.jpg?v=1736525758&width=140"
     },
     "MYqprKdT5pPheYim": {
       "name": "iPhone 11 Screen",
@@ -846,12 +787,6 @@
       "product": "https://www.ifixit.com/products/iphone-12-pro-front-camera-assembly",
       "variant": "single",
       "source": "https://cdn.shopify.com/s/files/1/0045/4092/4007/files/OegDlSmMBWMuwZOT.jpg?v=1733346564"
-    },
-    "OGWACWsTQRnaiaqn40faf840": {
-      "name": "Samsung Galaxy S21 Ultra Battery",
-      "product": "https://www.ifixit.com/products/galaxy-s21-ultra-replacement-battery",
-      "variant": "Part Only",
-      "source": "https://cdn.shopify.com/s/files/1/0045/4092/4007/files/OGWACWsTQRnaiaqn_40faf840-7604-4bfa-92e8-6db576cd6541.jpg?v=1736525967&width=140"
     },
     "OKSVAYdhjmcpkPwT": {
       "name": "Google Pixel 8 Pro Screen - Genuine",
@@ -978,12 +913,6 @@
       "product": "https://www.ifixit.com/products/samsung-galaxy-s23-s23-plus-s23-ultra-front-camera",
       "variant": "single",
       "source": "https://cdn.shopify.com/s/files/1/0045/4092/4007/products/SoPwBxJRaPviTRS6.jpg?v=1695837941"
-    },
-    "SRZoGXuG2nBMCTUS": {
-      "name": "iPhone 12 mini Battery",
-      "product": "https://www.ifixit.com/products/iphone-12-mini-replacement-battery",
-      "variant": "Part Only",
-      "source": "https://cdn.shopify.com/s/files/1/0045/4092/4007/files/SRZoGXuG2nBMCTUS.jpg?v=1739301791&width=140"
     },
     "SWPlHORLUjdckInV": {
       "name": "iPhone 15 Pro Screen",
@@ -1266,92 +1195,6 @@
       "product": "https://www.ifixit.com/products/iphone-13-pro-loudspeaker",
       "variant": "single",
       "source": "https://cdn.shopify.com/s/files/1/0045/4092/4007/products/ZyTOUc65wnXbHoXK.jpg?v=1684260387"
-    },
-    "ckpuwVFwUFVCivaY": {
-      "name": "pro-tech-toolkit",
-      "product": "https://www.ifixit.com/products/pro-tech-toolkit",
-      "variant": "single",
-      "source": "https://cdn.shopify.com/s/files/1/0045/4092/4007/files/ckpuwVFwUFVCivaY.jpg?v=1747851460"
-    },
-    "6JwXuUWvBHYYrIRjc64177b3": {
-      "name": "essential-electronics-toolkit",
-      "product": "https://www.ifixit.com/products/essential-electronics-toolkit",
-      "variant": "single",
-      "source": "https://cdn.shopify.com/s/files/1/0045/4092/4007/files/6JwXuUWvBHYYrIRj_c64177b3-3839-4cba-8134-ac16b9d7fa19.jpg?v=1738158384"
-    },
-    "WqPHdEQElATwTkhB": {
-      "name": "mako-driver-kit-64-precision-bits",
-      "product": "https://www.ifixit.com/products/mako-driver-kit-64-precision-bits",
-      "variant": "single",
-      "source": "https://cdn.shopify.com/s/files/1/0045/4092/4007/files/WqPHdEQElATwTkhB.jpg?v=1743459037"
-    },
-    "GdLBXgihLH5iFnHZ": {
-      "name": "moray-driver-kit",
-      "product": "https://www.ifixit.com/products/moray-driver-kit",
-      "variant": "single",
-      "source": "https://cdn.shopify.com/s/files/1/0045/4092/4007/files/GdLBXgihLH5iFnHZ.jpg?v=1771852759"
-    },
-    "rEK2nSRa5FspqkP54f4c0055": {
-      "name": "p2-pentalobe-screwdriver-iphone",
-      "product": "https://www.ifixit.com/products/p2-pentalobe-screwdriver-iphone",
-      "variant": "single",
-      "source": "https://cdn.shopify.com/s/files/1/0045/4092/4007/products/rEK2nSRa5FspqkP5_4f4c0055-194c-41ee-b4ac-8a0c4c4947d5.jpg?v=1701371901"
-    },
-    "3ahcQcH15V2W2ZOf": {
-      "name": "ifixit-opening-picks-set-of-6",
-      "product": "https://www.ifixit.com/products/ifixit-opening-picks-set-of-6",
-      "variant": "single",
-      "source": "https://cdn.shopify.com/s/files/1/0045/4092/4007/files/3ahcQcH15V2W2ZOf.jpg?v=1762351859"
-    },
-    "5Sf2Uh4OSLtsGpXk0e931ae0": {
-      "name": "suction-handle",
-      "product": "https://www.ifixit.com/products/suction-handle",
-      "variant": "single",
-      "source": "https://cdn.shopify.com/s/files/1/0045/4092/4007/products/5Sf2Uh4OSLtsGpXk_0e931ae0-8f64-435a-8066-3492d3a1f3f8.jpg?v=1667237891"
-    },
-    "KNSknbTAhPXVCtwC": {
-      "name": "metal-spudger",
-      "product": "https://www.ifixit.com/products/metal-spudger",
-      "variant": "single",
-      "source": "https://cdn.shopify.com/s/files/1/0045/4092/4007/products/KNSknbTAhPXVCtwC.jpg?v=1695168531"
-    },
-    "xyGnD2aWDEcVatDn8d00619a": {
-      "name": "iopener",
-      "product": "https://www.ifixit.com/products/iopener",
-      "variant": "single",
-      "source": "https://cdn.shopify.com/s/files/1/0045/4092/4007/products/xyGnD2aWDEcVatDn_8d00619a-1824-4301-883a-6753d7dbcbc6.jpg?v=1674606779"
-    },
-    "MxaYNPa6uqBXkmWn96c4a76e": {
-      "name": "tesa-61395-tape",
-      "product": "https://www.ifixit.com/products/tesa-61395-tape",
-      "variant": "single",
-      "source": "https://cdn.shopify.com/s/files/1/0045/4092/4007/products/MxaYNPa6uqBXkmWn_96c4a76e-5cc3-4547-9a56-ffa1e097e26d.jpg?v=1689769259"
-    },
-    "wtZXsAyUnJ5ZGWOc4405885c": {
-      "name": "lint-free-clean-room-wipes",
-      "product": "https://www.ifixit.com/products/lint-free-clean-room-wipes",
-      "variant": "single",
-      "source": "https://cdn.shopify.com/s/files/1/0045/4092/4007/files/wtZXsAyUnJ5ZGWOc_4405885c-b014-4174-8f98-2da4f66d4936.jpg?v=1754062233"
-    },
-    "CpoKoGagOIcQLPvM87804af5": {
-      "name": "anti-static-wrist-strap",
-      "product": "https://www.ifixit.com/products/anti-static-wrist-strap",
-      "variant": "single",
-      "source": "https://cdn.shopify.com/s/files/1/0045/4092/4007/products/CpoKoGagOIcQLPvM_87804af5-4ec2-4748-81eb-b4868698313d.jpg?v=1667237450"
     }
-  },
-  "byToolId": {
-    "bench-pro-toolkit": "ckpuwVFwUFVCivaY",
-    "essential-repair-toolkit": "6JwXuUWvBHYYrIRjc64177b3",
-    "precision-driver-64": "WqPHdEQElATwTkhB",
-    "precision-driver-24": "GdLBXgihLH5iFnHZ",
-    "pentalobe-driver": "rEK2nSRa5FspqkP54f4c0055",
-    "opening-pick-set": "3ahcQcH15V2W2ZOf",
-    "suction-handle": "5Sf2Uh4OSLtsGpXk0e931ae0",
-    "metal-spudger": "KNSknbTAhPXVCtwC",
-    "heat-pad": "xyGnD2aWDEcVatDn8d00619a",
-    "adhesive-strips": "MxaYNPa6uqBXkmWn96c4a76e",
-    "isopropyl-wipes": "wtZXsAyUnJ5ZGWOc4405885c",
-    "esd-wrist-strap": "CpoKoGagOIcQLPvM87804af5"
   }
 }
